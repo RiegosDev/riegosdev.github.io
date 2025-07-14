@@ -1,16 +1,22 @@
-## Hi there 👋
+## https://riegos.dev
+🚀 Em Construção | Something Big is Coming!
+Bem-vindo ao repositório oficial do riegos.dev.
 
-<!--
-**RiegosDev/riegosdev** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Somos Daniel Riêgo e Tiago Riêgo, desenvolvedores Full Stack e futuros Arquitetos de Software, apaixonados por transformar ideias em soluções digitais robustas, escaláveis e eficientes.
 
-Here are some ideas to get you started:
+Este espaço é o epicentro dos nossos projetos, estudos e colaborações. Estamos construindo algo incrível e mal podemos esperar para compartilhar com o mundo.
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+Conecte-se Conosco
+Daniel Riêgo
+
+LinkedIn
+
+Portfólio
+
+Tiago Riêgo
+
+LinkedIn
+
+Portfólio (Em breve)
+
+Fique ligado para futuras atualizações!
