@@ -1,0 +1,6 @@
+# Permite que todos os robôs de busca (crawlers) acessem todo o conteúdo do site.
+User-agent: *
+Allow: /
+
+# Localização do sitemap
+Sitemap: https://riegos.dev/sitemap.xml

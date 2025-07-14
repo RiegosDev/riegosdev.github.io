@@ -1,0 +1,60 @@
+/*
+  CSS Customizado para riegos.dev
+  As diretivas @tailwind e @layer foram removidas pois estamos usando o Tailwind via CDN (Play),
+  que não processa arquivos CSS externos. Este arquivo agora contém apenas CSS padrão.
+*/
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+/* Background com imagem customizada e efeito parallax */
+#main-content {
+  /* Imagem de fundo embutida diretamente no CSS (Base64) para garantir o carregamento. */
+  background-image: url("./img/riegosdev.png");
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed; /* Efeito parallax */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Overlay escuro para garantir a legibilidade do texto sobre a imagem */
+#main-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Cor slate-900 com 70% de opacidade para escurecer um pouco menos */
+  background-color: rgba(
+    15,
+    23,
+    42,
+    0.7
+  );
+  z-index: 1;
+}
+
+/* Container do texto principal */
+.text-container {
+  position: relative;
+  /* Garante que o conteúdo fique na frente do overlay */
+  z-index: 2;
+}
+
+/* Estilo para o menu dropdown para garantir que ele apareça */
+.dropdown-menu {
+  display: block !important;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.2s ease-out,
+    transform 0.2s ease-out;
+}
+
+.dropdown-menu.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
