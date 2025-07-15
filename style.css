@@ -13,8 +13,8 @@ body {
 /* Header com a nova logo de fundo */
 .main-header {
   /* Substitua pelo caminho da imagem que gerei para você */
-  background-image: url("./img/cover.png");
-  background-size: 25% 170px;
+  background-image: url("./img/conver-r-resized.png");
+  background-size: 100% 160px;
   background-repeat: no-repeat;
   background-position: 44% 5%;
   height: 150px; /* Altura aumentada para a logo */
