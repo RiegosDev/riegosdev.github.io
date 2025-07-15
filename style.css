@@ -74,6 +74,50 @@ body {
   pointer-events: none;
 }
 
+/* Estilos para o thumbnail do portfólio no dropdown */
+.thumbnail-link {
+  position: relative;
+  display: block;
+}
+
+.thumbnail-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem; /* cantos arredondados */
+  transition: filter 0.3s ease;
+}
+
+.thumbnail-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.thumbnail-text {
+  color: white;
+  font-size: 0.75rem; /* 12px */
+  font-weight: bold;
+}
+
+/* Efeito ao passar o mouse */
+.thumbnail-link:hover .thumbnail-image {
+  filter: brightness(75%);
+}
+
+.thumbnail-link:hover
+  .thumbnail-overlay {
+  opacity: 1;
+}
+
 /* Media query para responsividade em mobile */
 @media (max-width: 768px) {
   body {

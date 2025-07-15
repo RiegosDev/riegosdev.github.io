@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /**
      * NOVO: Adiciona funcionalidade de "Em desenvolvimento" para o portfólio do Tiago.
-     */
+
     const tiagoPortfolioLink = document.getElementById('tiago-portfolio-link');
 
     if (tiagoPortfolioLink) {
@@ -76,4 +76,5 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+             */
 });
