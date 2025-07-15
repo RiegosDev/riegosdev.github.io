@@ -2,32 +2,42 @@
   CSS Customizado para riegos.dev
 */
 
-/* MODIFICAÇÃO: A imagem de fundo agora é aplicada ao 'body' para ocupar a tela inteira.
-  A fonte base também é definida aqui.
-*/
 body {
   font-family: "Inter", sans-serif;
-  /* Caminho para a sua imagem de fundo */
   background-image: url("./img/riegosdev.png");
   background-size: cover;
   background-position: center center;
-  /* Efeito parallax (imagem fixa) é o padrão para telas maiores (desktop) */
   background-attachment: fixed;
 }
 
-/* MODIFICAÇÃO: Removemos as propriedades de fundo do #main-content.
-  Ele agora serve apenas como um container para o conteúdo principal.
-  Mantemos a posição relativa para que o pseudo-elemento ::before funcione corretamente.
-*/
-#main-content {
+/* Header com a nova logo de fundo */
+.main-header {
+  /* Substitua pelo caminho da imagem que gerei para você */
+  background-image: url("./img/cover.png");
+  background-size: 25% 170px;
+  background-repeat: no-repeat;
+  background-position: 44% 5%;
+  height: 150px; /* Altura aumentada para a logo */
   position: relative;
-  overflow: hidden; /* Mantém o overflow para o caso de algum elemento filho exceder o limite */
+  z-index: 10; /* Garante que o header fique sobre outros elementos */
 }
 
-/* O overlay escuro continua sendo aplicado apenas sobre a área do #main-content,
-  garantindo a legibilidade do texto principal sem afetar o header.
-  Nenhuma mudança necessária aqui.
-*/
+/* Texto "riegos.dev" estilizado para melhor visibilidade */
+.logo-text {
+  font-size: 2.5em; /* Aumentei o tamanho para maior destaque */
+  font-weight: 900; /* Usei a fonte mais pesada (black) */
+  color: #ffffff; /* Cor branca para melhor contraste com o fundo verde */
+  text-decoration: none;
+  /* Sombra sutil para fazer o texto "saltar" do fundo */
+  text-shadow: 1px 1px 3px
+    rgba(0, 0, 0, 0.5);
+}
+
+#main-content {
+  position: relative;
+  overflow: hidden;
+}
+
 #main-content::before {
   content: "";
   position: absolute;
@@ -35,25 +45,21 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  /* Cor slate-900 com 70% de opacidade */
   background-color: rgba(
     15,
     23,
     42,
     0.7
   );
-  z-index: 1; /* Coloca o overlay acima do fundo do body mas abaixo do texto */
+  z-index: 1;
 }
 
-/* O container de texto precisa de um z-index maior que o do overlay para ser visível.
-  Nenhuma mudança necessária aqui.
-*/
 .text-container {
   position: relative;
   z-index: 2;
 }
 
-/* Estilos do menu dropdown (sem alterações) */
+/* Estilos do menu dropdown */
 .dropdown-menu {
   display: block !important;
   opacity: 1;
@@ -68,13 +74,9 @@ body {
   pointer-events: none;
 }
 
-/* MODIFICAÇÃO: A media query agora ajusta o 'background-attachment' do 'body'.
-*/
+/* Media query para responsividade em mobile */
 @media (max-width: 768px) {
   body {
-    /* Isso desativa o efeito parallax em telas menores, que causa problemas de zoom e performance em mobile,
-      e faz com que o fundo role junto com o conteúdo, garantindo o comportamento correto.
-    */
     background-attachment: scroll;
   }
 }

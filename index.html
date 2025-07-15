@@ -12,10 +12,8 @@
       name="description"
       content="Daniel e Tiago Riêgo - Desenvolvedores Full Stack e futuros Arquitetos de Software. Algo grande está por vir." />
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- Google Fonts -->
     <link
       rel="preconnect"
       href="https://fonts.googleapis.com" />
@@ -27,131 +25,120 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
       rel="stylesheet" />
 
-    <!-- Custom CSS -->
     <link
       rel="stylesheet"
       href="style.css" />
 
-    <!-- Favicon (Exemplo) -->
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>" />
   </head>
   <body
     class="bg-slate-900 text-white font-sans">
-    <!-- Header -->
-    <header
-      class="fixed top-0 left-0 w-full bg-slate-900/80 backdrop-blur-sm z-50 border-b border-slate-700/50">
-      <nav
-        class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <!-- Logo -->
-        <a
-          href="#"
-          class="text-2xl font-bold tracking-tighter text-cyan-400"
+    <header class="main-header">
+      <div
+        class="container mx-auto px-6 h-full flex items-center justify-between">
+        <a href="/" class="logo-text"
           >riegos.dev</a
         >
 
-        <!-- Menu Items -->
-        <div
-          class="flex items-center space-x-4 sm:space-x-8">
-          <!-- Daniel Riego Dropdown -->
+        <nav>
           <div
-            class="relative"
-            id="daniel-dropdown-container">
-            <button
-              id="daniel-menu-button"
-              class="flex items-center space-x-3 focus:outline-none">
-              <img
-                src="./img/DLN.jpg"
-                alt="Foto de Daniel Riêgo"
-                class="w-10 h-10 rounded-full border-2 border-slate-600 hover:border-cyan-400 transition-all duration-300" />
-              <span
-                class="font-medium hidden sm:inline"
-                >Daniel Riêgo</span
-              >
-              <svg
-                class="w-4 h-4 text-slate-400 hidden sm:inline"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
+            class="flex items-center space-x-4 sm:space-x-8">
             <div
-              id="daniel-menu"
-              class="hidden absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-2 z-50 border border-slate-700">
-              <a
-                href="https://www.linkedin.com/in/danielriegoor/"
-                target="_blank"
-                class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-cyan-400"
-                >LinkedIn</a
-              >
-              <a
-                href="https://daniel.riegos.dev"
-                target="_blank"
-                class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-cyan-400"
-                >Portfólio</a
-              >
+              class="relative"
+              id="daniel-dropdown-container">
+              <button
+                id="daniel-menu-button"
+                class="flex items-center space-x-3 focus:outline-none">
+                <img
+                  src="./img/DLN.jpg"
+                  alt="Foto de Daniel Riêgo"
+                  class="w-10 h-10 rounded-full border-2 border-slate-600 hover:border-cyan-400 transition-all duration-300" />
+                <span
+                  class="font-medium hidden sm:inline"
+                  >Daniel Riêgo</span
+                >
+                <svg
+                  class="w-4 h-4 text-slate-400 hidden sm:inline"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div
+                id="daniel-menu"
+                class="hidden absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-2 z-50 border border-slate-700">
+                <a
+                  href="https://www.linkedin.com/in/danielriegoor/"
+                  target="_blank"
+                  class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-cyan-400"
+                  >LinkedIn</a
+                >
+                <a
+                  href="https://daniel.riegos.dev"
+                  target="_blank"
+                  class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-cyan-400"
+                  >Portfólio</a
+                >
+              </div>
             </div>
-            <!-- Modificado o link para o domain registrado na CloudeFlare -->
-          </div>
 
-          <!-- Tiago Riego Dropdown -->
-          <div
-            class="relative"
-            id="tiago-dropdown-container">
-            <button
-              id="tiago-menu-button"
-              class="flex items-center space-x-3 focus:outline-none">
-              <img
-                src="./img/TLN.jpg"
-                alt="Foto de Tiago Riêgo"
-                class="w-10 h-10 rounded-full border-2 border-slate-600 hover:border-teal-400 transition-all duration-300" />
-              <span
-                class="font-medium hidden sm:inline"
-                >Tiago Riêgo</span
-              >
-              <svg
-                class="w-4 h-4 text-slate-400 hidden sm:inline"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </button>
             <div
-              id="tiago-menu"
-              class="hidden absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-2 z-50 border border-slate-700">
-              <a
-                href="https://www.linkedin.com/in/tiagoriegodr/"
-                target="_blank"
-                class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-teal-400"
-                >LinkedIn</a
-              >
-              <!-- MODIFICADO: Adicionado ID e alterado href para manipulação via JS -->
-              <a
-                href="#"
-                id="tiago-portfolio-link"
-                class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-teal-400 transition-colors duration-300"
-                >Portfólio</a
-              >
+              class="relative"
+              id="tiago-dropdown-container">
+              <button
+                id="tiago-menu-button"
+                class="flex items-center space-x-3 focus:outline-none">
+                <img
+                  src="./img/TLN.jpg"
+                  alt="Foto de Tiago Riêgo"
+                  class="w-10 h-10 rounded-full border-2 border-slate-600 hover:border-teal-400 transition-all duration-300" />
+                <span
+                  class="font-medium hidden sm:inline"
+                  >Tiago Riêgo</span
+                >
+                <svg
+                  class="w-4 h-4 text-slate-400 hidden sm:inline"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div
+                id="tiago-menu"
+                class="hidden absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-2 z-50 border border-slate-700">
+                <a
+                  href="https://www.linkedin.com/in/tiagoriegodr/"
+                  target="_blank"
+                  class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-teal-400"
+                  >LinkedIn</a
+                >
+                <a
+                  href="#"
+                  id="tiago-portfolio-link"
+                  class="block px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-teal-400 transition-colors duration-300"
+                  >Portfólio</a
+                >
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </header>
 
-    <!-- Main Content -->
     <main
       id="main-content"
       class="min-h-screen flex items-center justify-center pt-20">
@@ -188,7 +175,6 @@
       </div>
     </main>
 
-    <!-- Custom JS -->
     <script src="script.js"></script>
   </body>
 </html>
