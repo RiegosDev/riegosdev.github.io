@@ -13,10 +13,10 @@ body {
 /* Header com a nova logo de fundo */
 .main-header {
   /* Substitua pelo caminho da imagem que gerei para você */
-  background-image: url("./img/conver-r-resized.png");
-  background-size: 100% 160px;
+  background-image: url("./img/logo-header-metade.png");
+  background-size: 91% 150px;
   background-repeat: no-repeat;
-  background-position: 44% 5%;
+  background-position: 50%;
   height: 150px; /* Altura aumentada para a logo */
   position: relative;
   z-index: 10; /* Garante que o header fique sobre outros elementos */
@@ -26,7 +26,7 @@ body {
 .logo-text {
   font-size: 2.5em; /* Aumentei o tamanho para maior destaque */
   font-weight: 900; /* Usei a fonte mais pesada (black) */
-  color: #ffffff; /* Cor branca para melhor contraste com o fundo verde */
+  color: #160788; /* Cor branca para melhor contraste com o fundo verde */
   text-decoration: none;
   /* Sombra sutil para fazer o texto "saltar" do fundo */
   text-shadow: 1px 1px 3px
