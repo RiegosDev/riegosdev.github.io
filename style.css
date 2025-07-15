@@ -1,25 +1,33 @@
 /*
   CSS Customizado para riegos.dev
-  As diretivas @tailwind e @layer foram removidas pois estamos usando o Tailwind via CDN (Play),
-  que não processa arquivos CSS externos. Este arquivo agora contém apenas CSS padrão.
 */
 
+/* MODIFICAÇÃO: A imagem de fundo agora é aplicada ao 'body' para ocupar a tela inteira.
+  A fonte base também é definida aqui.
+*/
 body {
   font-family: "Inter", sans-serif;
-}
-
-/* Background com imagem customizada e efeito parallax */
-#main-content {
-  /* Imagem de fundo embutida diretamente no CSS (Base64) para garantir o carregamento. */
+  /* Caminho para a sua imagem de fundo */
   background-image: url("./img/riegosdev.png");
   background-size: cover;
   background-position: center center;
-  background-attachment: fixed; /* Efeito parallax */
-  position: relative;
-  overflow: hidden;
+  /* Efeito parallax (imagem fixa) é o padrão para telas maiores (desktop) */
+  background-attachment: fixed;
 }
 
-/* Overlay escuro para garantir a legibilidade do texto sobre a imagem */
+/* MODIFICAÇÃO: Removemos as propriedades de fundo do #main-content.
+  Ele agora serve apenas como um container para o conteúdo principal.
+  Mantemos a posição relativa para que o pseudo-elemento ::before funcione corretamente.
+*/
+#main-content {
+  position: relative;
+  overflow: hidden; /* Mantém o overflow para o caso de algum elemento filho exceder o limite */
+}
+
+/* O overlay escuro continua sendo aplicado apenas sobre a área do #main-content,
+  garantindo a legibilidade do texto principal sem afetar o header.
+  Nenhuma mudança necessária aqui.
+*/
 #main-content::before {
   content: "";
   position: absolute;
@@ -27,24 +35,25 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  /* Cor slate-900 com 70% de opacidade para escurecer um pouco menos */
+  /* Cor slate-900 com 70% de opacidade */
   background-color: rgba(
     15,
     23,
     42,
     0.7
   );
-  z-index: 1;
+  z-index: 1; /* Coloca o overlay acima do fundo do body mas abaixo do texto */
 }
 
-/* Container do texto principal */
+/* O container de texto precisa de um z-index maior que o do overlay para ser visível.
+  Nenhuma mudança necessária aqui.
+*/
 .text-container {
   position: relative;
-  /* Garante que o conteúdo fique na frente do overlay */
   z-index: 2;
 }
 
-/* Estilo para o menu dropdown para garantir que ele apareça */
+/* Estilos do menu dropdown (sem alterações) */
 .dropdown-menu {
   display: block !important;
   opacity: 1;
@@ -57,4 +66,15 @@ body {
   opacity: 0;
   transform: translateY(-10px);
   pointer-events: none;
+}
+
+/* MODIFICAÇÃO: A media query agora ajusta o 'background-attachment' do 'body'.
+*/
+@media (max-width: 768px) {
+  body {
+    /* Isso desativa o efeito parallax em telas menores, que causa problemas de zoom e performance em mobile,
+      e faz com que o fundo role junto com o conteúdo, garantindo o comportamento correto.
+    */
+    background-attachment: scroll;
+  }
 }
