@@ -1,0 +1,39 @@
+[
+  {
+    "title": "Riegos.Dev Flix",
+    "description": "Nosso projeto Riegos-DevFlix é um Hub que consta informações sobre as mais recentes atualizações de filmes e séries do Cinema e dos mais variados streams!<br><br>Explore, se informe e se divirta!",
+    "stacks": "React JS | HTML5 | CSS3",
+    "links": [
+      {
+        "href": "https://riegos-dev.netlify.app/",
+        "text": "Acesse"
+      }
+    ]
+  },
+  {
+    "title": "Riegos.Dev Tower-Defense",
+    "description": "Divirta-se revivendo os momentos saudosos dos games da década de 90!<br>No nosso tower-defense, você terá a oportunidade de defender sua base dos inimigos de Hyrule!<br>Diversão garantida com um sistema imersivo e dinâmico de inimigos, pontuação e saúde financeira!",
+    "stacks": "Vanilla JS | HTML5 | CSS3",
+    "links": [
+      {
+        "href": "https://riegos.dev/TowerDefense/",
+        "text": "Acesse"
+      }
+    ]
+  },
+  {
+    "title": "Riegos.Dev mailOrganizer",
+    "description": "Ferramenta projetada para simplificar a maneira como você gerencia suas caixas de entrada de e-mail, automatizando tarefas repetitivas e organizando suas mensagens de forma inteligente.",
+    "stacks": "Python | HTML5 | Tailwind CSS | JavaScript",
+    "links": [
+      {
+        "href": "https://daniel.riegos.dev/forkDRcodes/mailOrganizer/",
+        "text": "Acesse a ferramenta"
+      },
+      {
+        "href": "https://daniel.riegos.dev/forkDRcodes/doCmailOrganizer.html",
+        "text": "Acesse a documentação"
+      }
+    ]
+  }
+]

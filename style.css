@@ -10,117 +10,132 @@ body {
   background-attachment: fixed;
 }
 
-/* Header com a nova logo de fundo */
-.main-header {
-  /* Substitua pelo caminho da imagem que gerei para você */
-  background-image: url("./img/logo-header-metade.png");
-  background-size: 91% 150px;
-  background-repeat: no-repeat;
-  background-position: 50%;
-  height: 150px; /* Altura aumentada para a logo */
-  position: relative;
-  z-index: 10; /* Garante que o header fique sobre outros elementos */
-}
-
-/* Texto "riegos.dev" estilizado para melhor visibilidade */
-.logo-text {
-  font-size: 2.5em; /* Aumentei o tamanho para maior destaque */
-  font-weight: 900; /* Usei a fonte mais pesada (black) */
-  color: #160788; /* Cor branca para melhor contraste com o fundo verde */
-  text-decoration: none;
-  /* Sombra sutil para fazer o texto "saltar" do fundo */
-  text-shadow: 1px 1px 3px
-    rgba(0, 0, 0, 0.5);
-}
-
-#main-content {
-  position: relative;
-  overflow: hidden;
-}
-
-#main-content::before {
-  content: "";
-  position: absolute;
+/* Header Fixo com a nova logo de fundo */
+.fixed-header {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  background-image: url("./img/logo-header-metade.png");
+  background-size: 91% 150px;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 150px;
+  z-index: 1000;
   background-color: rgba(
     15,
     23,
     42,
-    0.7
+    0.8
+  ); /* Fundo semi-transparente para o header */
+  backdrop-filter: blur(
+    5px
+  ); /* Efeito de blur no fundo do header */
+}
+
+/* Ajuste no conteúdo principal para não ficar sob o header fixo */
+#main-content {
+  padding-top: 170px; /* Altura do header + um pouco de espaço */
+  padding-bottom: 40px;
+}
+
+/* Texto "riegos.dev" estilizado */
+.logo-text {
+  font-size: 2.5em;
+  font-weight: 900;
+  color: #160788;
+  text-decoration: none;
+  text-shadow: 1px 1px 3px
+    rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos gerais para os cards de projeto */
+.project-card {
+  background-color: rgba(
+    15,
+    23,
+    42,
+    0.6
   );
-  z-index: 1;
-}
-
-.text-container {
-  position: relative;
-  z-index: 2;
-}
-
-/* Estilos do menu dropdown */
-.dropdown-menu {
-  display: block !important;
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 0.2s ease-out,
-    transform 0.2s ease-out;
-}
-
-.dropdown-menu.hidden {
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-}
-
-/* Estilos para o thumbnail do portfólio no dropdown */
-.thumbnail-link {
-  position: relative;
-  display: block;
-}
-
-.thumbnail-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 0.25rem; /* cantos arredondados */
-  transition: filter 0.3s ease;
-}
-
-.thumbnail-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1px solid
+    rgba(51, 65, 85, 0.5);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 10px 30px
+    rgba(0, 0, 0, 0.3);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  flex-direction: column;
+  height: 100%; /* Garante que os cards na mesma linha tenham a mesma altura */
 }
 
-.thumbnail-text {
-  color: white;
-  font-size: 0.75rem; /* 12px */
+.project-card .card-content {
+  flex-grow: 1; /* Faz o conteúdo crescer para preencher o espaço */
+}
+
+.project-card h2 {
+  font-size: 2.25rem;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  background: linear-gradient(
+    to right,
+    #22d3ee,
+    #0d9488
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.project-card p {
+  font-size: 1.125rem;
+  color: #f8fafc;
+  line-height: 1.6;
+}
+
+.project-card .stacks {
+  margin-top: 1.5rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.project-card .links {
+  margin-top: auto; /* Empurra os links para o final do card */
+  padding-top: 1rem; /* Espaçamento acima dos links */
+}
+
+.project-card a {
+  display: inline-block;
+  color: #22d3ee;
   font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  margin-right: 1rem;
 }
 
-/* Efeito ao passar o mouse */
-.thumbnail-link:hover .thumbnail-image {
-  filter: brightness(75%);
+.project-card a:hover {
+  color: #0d9488;
 }
 
-.thumbnail-link:hover
-  .thumbnail-overlay {
-  opacity: 1;
+#sitemap-dropdown-container {
+  position: absolute; /* Define o posicionamento como absoluto */
+  left: 18%; /* Distância da esquerda. Teste valores como 25%, 30%, etc. */
+  top: 60px; /* Distância do topo. Ajuste o valor em pixels conforme necessário */
 }
 
 /* Media query para responsividade em mobile */
 @media (max-width: 768px) {
   body {
     background-attachment: scroll;
+  }
+  .fixed-header {
+    background-size: 150% 100px;
+    height: 100px;
+  }
+  #main-content {
+    padding-top: 120px;
+  }
+  .logo-text {
+    font-size: 1.8em;
   }
 }

@@ -1,80 +1,140 @@
-document.addEventListener('DOMContentLoaded', function () {
-    
-    /**
-     * Função genérica para controlar a visibilidade de um menu dropdown.
-     * @param {string} buttonId - O ID do botão que aciona o dropdown.
-     * @param {string} menuId - O ID do menu que será exibido/ocultado.
-     * @param {string} containerId - O ID do container que envolve o botão e o menu.
-     */
-    const setupDropdown = (buttonId, menuId, containerId) => {
-        const button = document.getElementById(buttonId);
-        const menu = document.getElementById(menuId);
-        const container = document.getElementById(containerId);
+/**
+ * @file script.js
+ * @description Lógica principal para a página riegos.dev, incluindo controle de dropdowns,
+ * carregamento dinâmico de projetos e interatividade do menu.
+ */
 
-        if (!button || !menu || !container) {
-            console.error(`Dropdown elements not found for: ${containerId}`);
-            return;
-        }
+document.addEventListener("DOMContentLoaded", function () {
+  /**
+   * Gerencia todos os menus dropdown da página.
+   * Fecha um menu quando outro é aberto ou quando o usuário clica fora.
+   */
+  const manageDropdowns = () => {
+    const dropdowns = [
+      {
+        buttonId: "daniel-menu-button",
+        menuId: "daniel-menu",
+      },
+      {
+        buttonId: "tiago-menu-button",
+        menuId: "tiago-menu",
+      },
+      {
+        buttonId: "sitemap-menu-button",
+        menuId: "sitemap-menu",
+      },
+    ];
 
-        // Exibe ou oculta o menu ao clicar no botão
-        button.addEventListener('click', (event) => {
-            event.stopPropagation(); // Impede que o clique se propague para o document
-            // Oculta o outro menu se estiver aberto
-            if (containerId === 'daniel-dropdown-container') {
-                document.getElementById('tiago-menu').classList.add('hidden');
-            } else {
-                document.getElementById('daniel-menu').classList.add('hidden');
-            }
-            menu.classList.toggle('hidden');
+    dropdowns.forEach((d) => {
+      const button = document.getElementById(d.buttonId);
+      const menu = document.getElementById(d.menuId);
+
+      if (!button || !menu) {
+        console.warn(`Dropdown not found: ${d.buttonId}`);
+        return;
+      }
+
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        // Fecha todos os outros menus antes de abrir o atual
+        dropdowns.forEach((other_d) => {
+          if (d.menuId !== other_d.menuId) {
+            document.getElementById(other_d.menuId)?.classList.add("hidden");
+          }
         });
-    };
+        // Alterna a visibilidade do menu clicado
+        menu.classList.toggle("hidden");
+      });
+    });
 
-    // Configura os dropdowns para Daniel e Tiago
-    setupDropdown('daniel-menu-button', 'daniel-menu', 'daniel-dropdown-container');
-    setupDropdown('tiago-menu-button', 'tiago-menu', 'tiago-dropdown-container');
-
-    // Oculta os menus se clicar fora deles
-    document.addEventListener('click', () => {
-        document.getElementById('daniel-menu').classList.add('hidden');
-        document.getElementById('tiago-menu').classList.add('hidden');
+    // Fecha todos os menus ao clicar em qualquer lugar do documento
+    document.addEventListener("click", () => {
+      dropdowns.forEach((d) => {
+        document.getElementById(d.menuId)?.classList.add("hidden");
+      });
     });
     
-    // Oculta os menus ao pressionar a tecla 'Escape'
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            document.getElementById('daniel-menu').classList.add('hidden');
-            document.getElementById('tiago-menu').classList.add('hidden');
+    // Fecha todos os menus ao pressionar a tecla 'Escape'
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            dropdowns.forEach((d) => {
+                document.getElementById(d.menuId)?.classList.add("hidden");
+            });
         }
     });
+  };
 
-    /**
-     * NOVO: Adiciona funcionalidade de "Em desenvolvimento" para o portfólio do Tiago.
+  /**
+   * Carrega os cards de projeto a partir de um arquivo JSON e os insere na página.
+   */
+  const loadProjectCards = async () => {
+    const container = document.getElementById("cards-container");
+    if (!container) return;
 
-    const tiagoPortfolioLink = document.getElementById('tiago-portfolio-link');
+    try {
+      const response = await fetch("card-content.json");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const cardsData = await response.json();
 
-    if (tiagoPortfolioLink) {
-        const originalText = tiagoPortfolioLink.textContent;
-        const devText = 'Em desenvolvimento...';
+      container.innerHTML = ""; // Limpa o container
 
-        tiagoPortfolioLink.addEventListener('click', (event) => {
-            event.preventDefault(); // Previne a navegação para '#'
-            event.stopPropagation(); // Previne que o menu feche imediatamente
+      cardsData.forEach((card) => {
+        const cardElement = document.createElement("div");
+        cardElement.className = "project-card";
 
-            // Altera o texto apenas se não já estiver alterado
-            if (tiagoPortfolioLink.textContent === originalText) {
-                tiagoPortfolioLink.textContent = devText;
-                // Adiciona uma classe para feedback visual (cor âmbar)
-                tiagoPortfolioLink.classList.add('text-amber-400');
-                tiagoPortfolioLink.classList.remove('text-slate-300');
+        const linksHTML = card.links
+          .map(
+            (link) =>
+              `<a href="${link.href}" target="_blank">${link.text}</a>`
+          )
+          .join("");
 
-                // Reverte o texto após 2.5 segundos
-                setTimeout(() => {
-                    tiagoPortfolioLink.textContent = originalText;
-                    tiagoPortfolioLink.classList.remove('text-amber-400');
-                    tiagoPortfolioLink.classList.add('text-slate-300');
-                }, 2500);
-            }
-        });
+        cardElement.innerHTML = `
+          <div class="card-content">
+            <h2>${card.title}</h2>
+            <p>${card.description}</p>
+            <p class="stacks"><strong>• Stacks:</strong> ${card.stacks}</p>
+          </div>
+          <div class="links">
+            ${linksHTML}
+          </div>
+        `;
+        container.appendChild(cardElement);
+      });
+    } catch (error) {
+      console.error("Erro ao carregar os cards:", error);
+      container.innerHTML = `<p class="text-red-400 text-center col-span-full">Não foi possível carregar os projetos. Tente novamente mais tarde.</p>`;
     }
-             */
+  };
+  
+  /**
+   * NOVA FEATURE: Adiciona o efeito "UpComing..." nos links do menu Site Map.
+   */
+  const setupUpcomingFeature = () => {
+    const siteMapMenu = document.getElementById("sitemap-menu");
+    if (!siteMapMenu) return;
+
+    const links = siteMapMenu.querySelectorAll("a");
+
+    links.forEach(link => {
+      const originalText = link.innerText;
+
+      // Evento quando o mouse entra no link (onmouseover)
+      link.addEventListener("mouseover", () => {
+        link.innerText = "UpComing...";
+      });
+
+      // Evento quando o mouse sai do link (onmouseout)
+      link.addEventListener("mouseout", () => {
+        link.innerText = originalText;
+      });
+    });
+  };
+
+  // --- INICIALIZAÇÃO DAS FUNÇÕES ---
+  manageDropdowns();
+  loadProjectCards();
+  setupUpcomingFeature();
 });

@@ -6,18 +6,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0" />
     <title>
-      riegos.dev | Em Construção
+      riegos.dev | Inovação e Tecnologia
     </title>
     <meta
       name="description"
-      content="Daniel e Tiago Riêgo - Desenvolvedores Full Stack e futuros Arquitetos de Software. Algo grande está por vir." />
+      content="Hub de inovação de Daniel e Tiago Riêgo. Explore nossos projetos, artigos e tutoriais sobre desenvolvimento de software." />
 
-    <meta
-      property="og:image"
-      content="https://riegos.dev/img/logo-header-metade.png" />
-    <meta
-      property="og:title"
-      content="riegos.dev | Algo grande está por vir." />
     <meta
       property="og:type"
       content="website" />
@@ -25,11 +19,14 @@
       property="og:url"
       content="https://riegos.dev/" />
     <meta
-      property="og:image"
-      content="https://riegos.dev/URL_DA_SUA_IMAGEM_AQUI.jpg" />
+      property="og:title"
+      content="riegos.dev | Inovação e Tecnologia" />
     <meta
       property="og:description"
-      content="Daniel e Tiago Riêgo - Desenvolvedores Full Stack e futuros Arquitetos de Software. Estamos desenvolvendo o futuro da tecnologia, uma linha de código de cada vez." />
+      content="Explore o universo de desenvolvimento de Daniel e Tiago Riêgo. Projetos inovadores, artigos e tutoriais." />
+    <meta
+      property="og:image"
+      content="https://riegos.dev/img/logo-header-metade.png" />
     <meta
       property="og:site_name"
       content="riegos.dev" />
@@ -64,14 +61,64 @@
   </head>
   <body
     class="bg-slate-900 text-white font-sans">
-    <header class="main-header">
+    <header
+      class="main-header fixed-header">
       <div
         class="container mx-auto px-6 h-full flex items-center justify-between">
-        <a href="/" class="logo-text"
-          >riegos.dev</a
-        >
+        <div class="flex-1">
+          <a href="/" class="logo-text"
+            >riegos.dev</a
+          >
+        </div>
 
-        <nav>
+        <div
+          class="flex-1 flex justify-center ml-16"
+          id="sitemap-dropdown-container">
+          <button
+            id="sitemap-menu-button"
+            class="flex items-center space-x-2 focus:outline-none bg-indigo-800 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-full transition-all duration-300">
+            <span>Site Map</span>
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div
+            id="sitemap-menu"
+            class="hidden absolute mt-12 w-48 bg-slate-800 rounded-lg shadow-lg py-2 z-50 border border-slate-700">
+            <a
+              href="#apps"
+              class="block px-4 py-2 text-zinc-50 hover:bg-slate-700 hover:text-cyan-400 font-bold"
+              >Apps Riegos.Dev</a
+            >
+            <a
+              href="#articles"
+              class="block px-4 py-2 text-zinc-50 hover:bg-slate-700 hover:text-cyan-400 font-bold"
+              >Artigos</a
+            >
+            <a
+              href="#tutorials"
+              class="block px-4 py-2 text-zinc-50 hover:bg-slate-700 hover:text-cyan-400 font-bold"
+              >Tutoriais</a
+            >
+            <a
+              href="#about"
+              class="block px-4 py-2 text-zinc-50 hover:bg-slate-700 hover:text-cyan-400 font-bold"
+              >Sobre nós</a
+            >
+          </div>
+        </div>
+
+        <nav
+          class="flex-1 flex justify-end">
           <div
             class="flex items-center space-x-4 sm:space-x-8">
             <div
@@ -85,21 +132,9 @@
                   alt="Foto de Daniel Riêgo"
                   class="w-10 h-10 rounded-full border-2 border-sky-950 hover:border-sky-950 transition-all duration-300 bg-indigo-800" />
                 <span
-                  class="font-medium hidden sm:inline bg-indigo-800 rounded-full"
+                  class="font-medium hidden sm:inline bg-indigo-800 rounded-full p-1"
                   >Daniel Riêgo</span
                 >
-                <svg
-                  class="w-4 h-4 text-slate-400 hidden sm:inline bg-indigo-800 rounded-full"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"></path>
-                </svg>
               </button>
               <div
                 id="daniel-menu"
@@ -136,21 +171,9 @@
                   alt="Foto de Tiago Riêgo"
                   class="w-10 h-10 rounded-full border-2 border-slate-600 hover:border-teal-400 transition-all duration-300" />
                 <span
-                  class="font-medium hidden sm:inline bg-indigo-800 rounded-full"
+                  class="font-medium hidden sm:inline bg-indigo-800 rounded-full p-1"
                   >Tiago Riêgo</span
                 >
-                <svg
-                  class="w-4 h-4 text-slate-400 hidden sm:inline bg-indigo-800 rounded-full"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"></path>
-                </svg>
               </button>
               <div
                 id="tiago-menu"
@@ -172,7 +195,6 @@
                     class="text-xs text-zinc-50 mb-2 px-2 font-bold">
                     Em Construção:
                   </p>
-
                   <a
                     href="./img/Portfolio-TR.jpeg"
                     target="_blank"
@@ -203,42 +225,12 @@
 
     <main
       id="main-content"
-      class="min-h-screen flex items-center justify-center pt-20">
+      class="pt-48">
       <div
-        class="text-container text-center container mx-auto px-6">
-        <div
-          class="bg-slate-900/60 backdrop-blur-md p-8 md:p-12 rounded-xl inline-block border border-slate-700/50 shadow-2xl">
-          <h1
-            class="text-5xl md:text-7xl font-black tracking-tighter mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
-            Algo grande está por vir.
-          </h1>
-          <p
-            class="text-lg md:text-xl text-zinc-50 max-w-2xl mx-auto">
-            Estamos desenvolvendo o
-            futuro da tecnologia, uma
-            linha de código de cada vez.
-            <br />O
-            <span
-              class="font-bold text-cyan-400"
-              >riegos.dev</span
-            >
-            será o nosso hub de
-            inovação. Fique atento!
-          </p>
-          <div
-            class="mt-8 text-sm text-slate-500">
-            <p>
-              Desenvolvedores Full Stack
-              & Futuros Arquitetos de
-              Software
-            </p>
-          </div>
-        </div>
-      </div>
+        id="cards-container"
+        class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8"></div>
     </main>
 
     <script src="script.js"></script>
-
-    <!-- Correção main.yml -->
   </body>
 </html>

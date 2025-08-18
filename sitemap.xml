@@ -5,11 +5,33 @@
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-<!-- URL principal do site -->
 <url>
   <loc>https://riegos.dev/</loc>
-  <lastmod>2025-07-14T20:00:00-03:00</lastmod>
+  <lastmod>2025-08-18T14:00:00-03:00</lastmod>
   <priority>1.00</priority>
+</url>
+
+<url>
+  <loc>https://riegos-dev.netlify.app/</loc>
+  <lastmod>2025-08-18T14:00:00-03:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+<url>
+  <loc>https://riegos.dev/TowerDefense/</loc>
+  <lastmod>2025-08-18T14:00:00-03:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+<url>
+  <loc>https://daniel.riegos.dev/forkDRcodes/mailOrganizer/</loc>
+  <lastmod>2025-08-18T14:00:00-03:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://daniel.riegos.dev/forkDRcodes/doCmailOrganizer.html</loc>
+  <lastmod>2025-08-18T14:00:00-03:00</lastmod>
+  <priority>0.70</priority>
 </url>
 
 </urlset>
