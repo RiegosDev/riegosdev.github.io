@@ -61,6 +61,8 @@ services:
     depends_on:
       - app
       - n8n
+    networks:
+      - dotf4p_net
 
 networks:
   dotf4p_net:
