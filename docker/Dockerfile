@@ -36,3 +36,5 @@ EXPOSE 3000
 
 # Inicia o servidor em produção
 CMD ["pnpm", "start"]
+
+# COMMIT
