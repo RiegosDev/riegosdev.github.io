@@ -22,6 +22,9 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: dotf4p_app
+    env_file:
+      - .env
+
     restart: always
     depends_on:
       - db
