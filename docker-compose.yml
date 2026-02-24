@@ -26,7 +26,7 @@ services:
     depends_on:
       - db
     ports:
-      - '3000:3000'
+      - '80:3000'
     environment:
       # A URL do banco agora aponta pro nome do container 'db' dentro da rede do Docker
       - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-teste124}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
