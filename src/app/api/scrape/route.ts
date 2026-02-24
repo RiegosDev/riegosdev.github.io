@@ -8,39 +8,21 @@ import { crawlCategoryAction } from '@/actions/scraper.actions';
 export async function POST(
   request: NextRequest,
 ) {
-  const authHeader =
-    request.headers.get('x-api-secret');
-
-  // 2. LOGS DE SEGURANÇA (O pulo do gato pra gente matar a charada) [cite: 2026-02-16]
-  console.log('--- DEBUG SCRAPE ---');
-  console.log(
-    'Secret no ENV:',
-    process.env.N8N_API_SECRET,
-  );
-  console.log(
-    'Secret no Header:',
-    authHeader,
-  );
-  console.log(
-    'Comparação:',
-    process.env.N8N_API_SECRET ===
-      authHeader,
-  );
   try {
-    // 1. SEGURANÇA: O Leão de Chácara
     const authHeader =
       request.headers.get(
-        'authorization',
+        'x-api-secret',
       );
     const secret =
       process.env.N8N_API_SECRET;
 
+    // Validação de Segurança Sólida
     if (
       !secret ||
-      authHeader !== `Bearer ${secret}`
+      authHeader !== secret
     ) {
       console.warn(
-        '🚨 [API] Tentativa de acesso não autorizado na rota de Scrape!',
+        '🚨 [API] Bloqueio: Crachá inválido ou ausente.',
       );
       return NextResponse.json(
         {
@@ -51,25 +33,21 @@ export async function POST(
       );
     }
 
-    // 2. Lendo as ordens do n8n
-    const body = await request.json();
     const {
       command,
       categorySlug,
       targetUrl,
-    } = body;
+    } = await request.json();
 
-    // 3. ROTEADOR DE COMANDOS
     if (command === 'DISCOVERY') {
       console.log(
-        '🤖 [API] n8n acionou o Discovery Mode...',
+        '🤖 [API] Iniciando mapeamento de categorias...',
       );
       const discoveredSlugs =
         await discoverNewCategoriesAction();
       return NextResponse.json({
         success: true,
-        type: 'discovery',
-        message: `${discoveredSlugs.length} categorias dinâmicas encontradas.`,
+        message: `${discoveredSlugs.length} novas rotas mapeadas.`,
         data: discoveredSlugs,
       });
     }
@@ -79,13 +57,13 @@ export async function POST(
         return NextResponse.json(
           {
             error:
-              'Comando SCRAPE exige categorySlug e targetUrl no JSON.',
+              'Faltam parâmetros para SCRAPE.',
           },
           { status: 400 },
         );
       }
       console.log(
-        `🤖 [API] n8n acionou o Scraper para a categoria: ${categorySlug}...`,
+        `🤖 [API] Raspagem iniciada: ${categorySlug}`,
       );
       await crawlCategoryAction(
         categorySlug,
@@ -93,27 +71,25 @@ export async function POST(
       );
       return NextResponse.json({
         success: true,
-        type: 'scrape',
-        message: `Categoria ${categorySlug} populada com sucesso.`,
+        category: categorySlug,
       });
     }
 
-    // Se o n8n mandar algo estranho
     return NextResponse.json(
-      {
-        error:
-          'Comando desconhecido. Use DISCOVERY ou SCRAPE.',
-      },
+      { error: 'Comando inválido.' },
       { status: 400 },
     );
     // eslint-disable-next-line
   } catch (error: any) {
     console.error(
-      '❌ [API] Erro Crítico no Motor:',
-      error,
+      '❌ [API] Erro no motor de scrape:',
+      error.message,
     );
     return NextResponse.json(
-      { error: error.message },
+      {
+        error:
+          'Erro interno no processamento.',
+      },
       { status: 500 },
     );
   }

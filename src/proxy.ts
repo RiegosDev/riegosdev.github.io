@@ -7,19 +7,26 @@ import { decrypt } from '@/lib/auth';
 export async function proxy(
   request: NextRequest,
 ) {
-  const session =
-    request.cookies.get(
-      'session',
-    )?.value;
   const { pathname } = request.nextUrl;
 
-  // Permite acesso à página de login
+  // 1. 🚀 EXCEÇÃO API: Liberdade total para as rotas de backend
+  // A segurança aqui é tratada via Header x-api-secret na própria Route
+  if (pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
+  // 2. EXCEÇÃO LOGIN: Evita loop de redirecionamento
   if (pathname === '/admin/login') {
     return NextResponse.next();
   }
 
-  // Protege todas as outras rotas /admin
+  // 3. 🛡️ PROTEÇÃO ADMIN: Validação de Sessão via JWT
   if (pathname.startsWith('/admin')) {
+    const session =
+      request.cookies.get(
+        'session',
+      )?.value;
+
     if (!session) {
       return NextResponse.redirect(
         new URL(
@@ -33,7 +40,10 @@ export async function proxy(
       await decrypt(session);
       return NextResponse.next();
       // eslint-disable-next-line
-    } catch (e) {
+    } catch (error) {
+      console.warn(
+        '🚨 [Proxy] Sessão expirada ou inválida.',
+      );
       return NextResponse.redirect(
         new URL(
           '/admin/login',
@@ -46,6 +56,10 @@ export async function proxy(
   return NextResponse.next();
 }
 
+// O Matcher garante que o middleware só rode onde é estritamente necessário
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: [
+    '/admin/:path*',
+    '/api/:path*',
+  ],
 };
