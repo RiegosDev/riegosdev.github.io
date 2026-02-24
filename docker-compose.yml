@@ -20,7 +20,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: docker/Dockerfile
     container_name: dotf4p_app
     restart: always
     depends_on:
