@@ -1,10 +1,31 @@
-import { NextResponse } from 'next/server';
+import {
+  NextRequest,
+  NextResponse,
+} from 'next/server';
 import { discoverNewCategoriesAction } from '@/actions/discovery.actions';
 import { crawlCategoryAction } from '@/actions/scraper.actions';
 
 export async function POST(
-  request: Request,
+  request: NextRequest,
 ) {
+  const authHeader =
+    request.headers.get('x-api-secret');
+
+  // 2. LOGS DE SEGURANÇA (O pulo do gato pra gente matar a charada) [cite: 2026-02-16]
+  console.log('--- DEBUG SCRAPE ---');
+  console.log(
+    'Secret no ENV:',
+    process.env.N8N_API_SECRET,
+  );
+  console.log(
+    'Secret no Header:',
+    authHeader,
+  );
+  console.log(
+    'Comparação:',
+    process.env.N8N_API_SECRET ===
+      authHeader,
+  );
   try {
     // 1. SEGURANÇA: O Leão de Chácara
     const authHeader =
