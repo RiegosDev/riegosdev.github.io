@@ -10,8 +10,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-dotf4pprod} #
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teste124} #
       POSTGRES_DB: ${POSTGRES_DB:-dotf4pvprod} #
-    ports:
-      - '5432:5432'
+    expose:
+      - '3000'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -40,8 +40,8 @@ services:
     image: docker.n8n.io/n8nio/n8n
     container_name: dotf4p_n8n
     restart: always
-    ports:
-      - '5678:5678'
+    expose:
+      - '5678'
     environment:
       - N8N_PORT=5678
       - NODE_ENV=production
@@ -50,6 +50,17 @@ services:
       - n8n_data:/home/node/.n8n
     networks:
       - dotf4p_net
+
+  nginx:
+    image: nginx:alpine
+    container_name: dotf4p_proxy
+    ports:
+      - '80:80'
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+      - n8n
 
 networks:
   dotf4p_net:
