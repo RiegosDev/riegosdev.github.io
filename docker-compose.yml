@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teste124} #
       POSTGRES_DB: ${POSTGRES_DB:-dotf4pvprod} #
     expose:
-      - '3000'
+      - '5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -25,8 +25,8 @@ services:
     restart: always
     depends_on:
       - db
-    ports:
-      - '80:3000'
+    expose:
+      - '3000'
     environment:
       # A URL do banco agora aponta pro nome do container 'db' dentro da rede do Docker
       - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-teste124}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
