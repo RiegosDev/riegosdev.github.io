@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import LogoutButton from '@/components/Admin/LogoutButton';
+export const dynamic = 'force-dynamic'; // Isso impede o erro de prerender no build
 
 const prisma = new PrismaClient();
 
