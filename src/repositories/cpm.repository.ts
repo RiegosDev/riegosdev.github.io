@@ -3,7 +3,7 @@ export const CPM_REPOSITORY = {
   globalScripts: [
     {
       id: 'adsterra-pop',
-      src: 'https://pl28794499.effectivegatecpm.com/.../script.js',
+      src: 'https://pl28794499.effectivegatecpm.com/3d/4b/df/3d4bdf99a30f17ce3f09f85b4e7868f1.js',
     },
     {
       id: 'juicyads-pop',
