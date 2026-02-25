@@ -1,4 +1,4 @@
-// src/components/NavBar.tsx
+// src/components/NavBar/index.tsx
 'use client';
 
 import {
@@ -8,9 +8,7 @@ import {
 import {
   ChevronDown,
   Video,
-  Menu,
-  X,
-} from 'lucide-react';
+} from 'lucide-react'; // 🚀 Removidos Menu e X, pois não tem mobile aqui mais
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import clsx from 'clsx';
@@ -28,10 +26,6 @@ const NavBar: React.FC = () => {
 
   const [isCatOpen, setIsCatOpen] =
     useState(false);
-  const [
-    isMobileMenuOpen,
-    setIsMobileMenuOpen,
-  ] = useState(false);
   const [
     dbCategories,
     setDbCategories,
@@ -64,35 +58,13 @@ const NavBar: React.FC = () => {
   return (
     <div
       className={clsx(
-        'w-full bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-white/5 relative z-40 transition-colors duration-300',
+        // 🚀 CORREÇÃO SÊNIOR: hidden md:block (Some no mobile!) e z-30 seguro.
+        'hidden md:block w-full bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-white/5 relative z-30 transition-colors duration-300',
         `transition-transform duration-500 ${isTheaterMode ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`,
       )}>
-      <div className='container mx-auto max-w-450'>
-        {/* MOBILE TOGGLE */}
-        <div className='flex md:hidden items-center justify-between px-4 py-3'>
-          <span className='font-bold text-gray-800 dark:text-gray-200 capitalize'>
-            {activeCategory ===
-            'recommended'
-              ? 'Menu'
-              : activeCategory}
-          </span>
-          <button
-            onClick={() =>
-              setIsMobileMenuOpen(
-                !isMobileMenuOpen,
-              )
-            }
-            className='p-1 text-gray-600 dark:text-gray-400 hover:text-rose-500 transition-colors'>
-            {isMobileMenuOpen ? (
-              <X className='w-6 h-6' />
-            ) : (
-              <Menu className='w-6 h-6' />
-            )}
-          </button>
-        </div>
-
-        {/* DESKTOP MENU */}
-        <div className='hidden md:flex items-center gap-6 py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300 flex-wrap'>
+      <div className='container mx-auto max-w-362.5'>
+        {/* DESKTOP MENU (Única coisa que sobrou, mobile foi arrancado) */}
+        <div className='flex items-center gap-6 py-3 px-4 text-sm font-medium text-gray-700 dark:text-gray-300 flex-wrap'>
           <Link
             href='/?cat=recommended'
             className={clsx(
@@ -121,9 +93,10 @@ const NavBar: React.FC = () => {
               />
             </button>
 
+            {/* DROPDOWN DESKTOP DA NAVBAR */}
             {isCatOpen && (
-              <div className='absolute top-full left-0 pt-1 w-64 z-40'>
-                <div className='bg-white dark:bg-dark-800 rounded-md shadow-2xl border border-gray-200 dark:border-white/10 overflow-hidden py-2'>
+              <div className='absolute top-full left-0 pt-1 w-64 z-40 animate-in fade-in slide-in-from-top-2'>
+                <div className='bg-white dark:bg-dark-800 rounded-xl shadow-2xl border border-gray-200 dark:border-white/10 overflow-hidden py-2'>
                   {dbCategories.map(
                     (cat) => (
                       <Link
@@ -137,8 +110,8 @@ const NavBar: React.FC = () => {
                         className={clsx(
                           `w-full text-left px-4 py-2.5 hover:bg-gray-100 dark:hover:bg-white/5 flex items-center gap-3 transition-colors ${activeCategory === cat.slug ? 'text-rose-500 bg-gray-50 dark:bg-white/5' : 'text-gray-700 dark:text-gray-300'}`,
                         )}>
-                        <Video className='w-4 h-4 text-gray-400' />{' '}
-                        <span className='capitalize'>
+                        <Video className='w-4 h-4 text-gray-400 opacity-50' />{' '}
+                        <span className='capitalize font-bold text-[13px]'>
                           {cat.name}
                         </span>
                       </Link>
@@ -160,48 +133,6 @@ const NavBar: React.FC = () => {
               </Link>
             ))}
         </div>
-
-        {/* MOBILE MENU (GAVETA) */}
-        {isMobileMenuOpen && (
-          <div className='md:hidden flex flex-col px-4 py-2 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-dark-800/50'>
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                onClick={() =>
-                  setIsMobileMenuOpen(
-                    false,
-                  )
-                }
-                className='py-3 font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-white/5 last:border-0'>
-                {item.label}
-              </Link>
-            ))}
-            <div className='py-2 text-xs font-bold text-gray-400 uppercase tracking-widest mt-2'>
-              Categorias
-            </div>
-            <div className='grid grid-cols-2 gap-2 mb-4'>
-              {dbCategories.map(
-                (cat) => (
-                  <Link
-                    key={cat.id}
-                    href={`/?cat=${cat.slug}`}
-                    onClick={() =>
-                      setIsMobileMenuOpen(
-                        false,
-                      )
-                    }
-                    className={clsx(
-                      `py-2 px-3 rounded-md text-sm capitalize flex items-center gap-2 ${activeCategory === cat.slug ? 'bg-rose-500/10 text-rose-500' : 'bg-white dark:bg-dark-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/5'}`,
-                    )}>
-                    <Video className='w-3 h-3 opacity-50' />{' '}
-                    {cat.name}
-                  </Link>
-                ),
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

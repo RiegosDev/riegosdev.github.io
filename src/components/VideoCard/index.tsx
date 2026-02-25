@@ -65,7 +65,7 @@ export default function VideoCard({
         </div>
 
         {/* Badge de Duração */}
-        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-40'>
+        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-10'>
           {video.duration}
         </div>
       </div>

@@ -1,10 +1,6 @@
 'use client';
 
-import React, {
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { useState } from 'react';
 import {
   Search,
   Settings,
@@ -36,13 +32,10 @@ const Header: React.FC<HeaderProps> = ({
   const { isDarkMode, toggleTheme } =
     useNavigation();
 
+  // Estados apenas para o Mobile
   const [
     isMobileSearchOpen,
     setIsMobileSearchOpen,
-  ] = useState(false);
-  const [
-    isCategoriesOpen,
-    setIsCategoriesOpen,
   ] = useState(false);
   const [
     isMobileMenuOpen,
@@ -53,39 +46,12 @@ const Header: React.FC<HeaderProps> = ({
     setIsMobileCatDropdownOpen,
   ] = useState(false);
 
-  const categoriesRef =
-    useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (
-      event: MouseEvent,
-    ) => {
-      if (
-        categoriesRef.current &&
-        !categoriesRef.current.contains(
-          event.target as Node,
-        )
-      ) {
-        setIsCategoriesOpen(false);
-      }
-    };
-    document.addEventListener(
-      'mousedown',
-      handleClickOutside,
-    );
-    return () =>
-      document.removeEventListener(
-        'mousedown',
-        handleClickOutside,
-      );
-  }, []);
-
   return (
     // 🚀 ROOT DO HEADER EM Z-50
     <header className='w-full bg-white/95 dark:bg-dark-950/95 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-xs relative z-50'>
       <div className='container mx-auto px-4'>
         <div className='flex items-center justify-between h-16 md:h-20 gap-4'>
-          {/* LADO ESQUERDO */}
+          {/* 🚀 LADO ESQUERDO (Hambúrguer Mobile + Logo) */}
           <div className='flex items-center gap-2 md:gap-4'>
             <button
               onClick={() =>
@@ -118,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({
             </Link>
           </div>
 
-          {/* BUSCA DESKTOP */}
+          {/* 🚀 CENTRO: BUSCA DESKTOP */}
           <div className='hidden md:block flex-1 max-w-2xl'>
             <SearchBar
               isMobileOpen={false}
@@ -126,76 +92,8 @@ const Header: React.FC<HeaderProps> = ({
             />
           </div>
 
-          {/* LADO DIREITO */}
+          {/* 🚀 LADO DIREITO (Busca Mobile + Dark Mode) */}
           <div className='flex items-center gap-2 md:gap-4'>
-            <div
-              className='hidden md:block relative'
-              ref={categoriesRef}>
-              <button
-                onClick={() =>
-                  setIsCategoriesOpen(
-                    !isCategoriesOpen,
-                  )
-                }
-                className={clsx(
-                  'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-black transition-all uppercase tracking-tight',
-                  isCategoriesOpen
-                    ? 'bg-rose-500 text-white'
-                    : 'text-zinc-500 hover:bg-zinc-100 dark:hover:bg-white/5',
-                )}>
-                <LayoutGrid className='w-4 h-4' />
-                Categorias
-                <ChevronDown
-                  className={clsx(
-                    'w-4 h-4 transition-transform',
-                    isCategoriesOpen &&
-                      'rotate-180',
-                  )}
-                />
-              </button>
-
-              {/* Mega Menu Dropdown */}
-              {isCategoriesOpen && (
-                <div className='absolute top-full right-0 w-150 bg-white dark:bg-dark-900 shadow-2xl border border-gray-100 dark:border-white/10 rounded-b-xl p-6 z-50 animate-in fade-in slide-in-from-top-2'>
-                  <div className='grid grid-cols-4 gap-4 max-h-100 overflow-y-auto custom-scrollbar'>
-                    <Link
-                      href='/categories'
-                      onClick={() =>
-                        setIsCategoriesOpen(
-                          false,
-                        )
-                      }
-                      className='col-span-4 text-[10px] font-black text-rose-500 border-b border-gray-100 dark:border-white/5 pb-2 mb-2 hover:underline'>
-                      VER TODAS AS
-                      CATEGORIAS (
-                      {
-                        categories.length
-                      }
-                      ) →
-                    </Link>
-                    {categories.map(
-                      (c) => (
-                        <Link
-                          key={c.id}
-                          href={`/category/${c.slug}`}
-                          onClick={() =>
-                            setIsCategoriesOpen(
-                              false,
-                            )
-                          }
-                          className='text-[11px] font-medium text-zinc-500 hover:text-rose-500 transition-colors truncate'>
-                          {c.name}{' '}
-                          <span className='text-[9px] text-zinc-400 ml-0.5'>
-                            ({c.count})
-                          </span>
-                        </Link>
-                      ),
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-
             <button
               onClick={() =>
                 setIsMobileSearchOpen(
@@ -235,7 +133,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
-      {/* 🚀 MENU HAMBÚRGUER MOBILE (Animação Fade+Top corrigida!) */}
+      {/* 🚀 MENU HAMBÚRGUER MOBILE */}
       {isMobileMenuOpen && (
         <div className='md:hidden fixed inset-x-0 top-16 bottom-0 bg-white dark:bg-dark-950 z-50 overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200'>
           <div className='flex flex-col p-4 space-y-4'>
