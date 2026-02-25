@@ -11,6 +11,16 @@ export async function discoverNewCategoriesAction() {
   const browser =
     await puppeteer.launch({
       headless: true,
+      executablePath:
+        process.env
+          .PUPPETEER_EXECUTABLE_PATH ||
+        undefined,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-blink-features=AutomationControlled',
+      ],
     });
 
   try {
@@ -24,6 +34,7 @@ export async function discoverNewCategoriesAction() {
 
     await page.goto(discoveryUrl, {
       waitUntil: 'networkidle2',
+      timeout: 60000,
     });
 
     // Minerando links com Tipagem Estrita
@@ -97,6 +108,13 @@ export async function discoverNewCategoriesAction() {
     }
 
     return discoveredSlugs;
+    // eslint-disable-next-line
+  } catch (error: any) {
+    console.error(
+      '❌ [DISCOVERY] Erro na mineração:',
+      error.message,
+    );
+    throw error;
   } finally {
     await browser.close();
   }

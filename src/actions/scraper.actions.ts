@@ -30,6 +30,7 @@ export async function crawlCategoryAction(
         '--disable-setuid-sandbox',
         '--disable-blink-features=AutomationControlled',
         '--lang=pt-BR,pt;q=0.9',
+        '--disable-dev-shm-usage', // 🚀 Dica sênior: evita crash de memória no Docker
       ],
     });
 
