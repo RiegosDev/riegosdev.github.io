@@ -7,13 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
-    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:up": "docker compose -f docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker-compose.yml down",
+    "docker:up-dev": "docker compose -f docker-compose-dev.yml up -d",
+    "docker:down-dev": "docker compose -f docker-compose-dev.yml down",
     "db:migrate": "pnpm prisma migrate dev",
     "db:generate": "npx prisma generate",
     "db:seed": "pnpm prisma db seed",
+    "db:seed:dev": "npx tsx src/db/seed-dev.ts",
     "db:reset": "pnpm prisma migrate reset --force && pnpm prisma db seed",
-    "dx": "pnpm docker:up && pnpm db:generate && pnpm db:migrate && pnpm db:reset && pnpm dev"
+    "dx": "pnpm docker:up && pnpm db:generate && pnpm db:migrate && pnpm db:reset && pnpm dev",
+    "dev:fast": "pnpm docker:up-dev && pnpm db:generate && pnpm prisma db push && pnpm db:seed:dev && pnpm dev"
   },
   "dependencies": {
     "@google/genai": "^1.40.0",

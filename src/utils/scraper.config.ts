@@ -10,7 +10,16 @@ export const SCRAPER_DICTIONARY: ScraperDictionary =
       linkIncludes: [
         '/cat/', // 🚀 PULO DO GATO: Só aceita links que tenham /cat/ (categorias reais)
       ],
-      linkExcludes: [],
+      linkExcludes: [
+        'child',
+        'underage',
+        'kid',
+        'kids',
+        'illegal',
+        'rape',
+        'ped',
+        'toddler',
+      ],
       selectors: {
         container:
           '.mbimg, .vbox, .post-container', // .mbimg é o que você achou agora!

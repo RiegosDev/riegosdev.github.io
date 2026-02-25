@@ -10,6 +10,8 @@
 !.yarn/releases
 !.yarn/versions
 .env*
+docker-compose-dev.yml
+/src/db/seed-dev.ts
 # testing
 /coverage
 

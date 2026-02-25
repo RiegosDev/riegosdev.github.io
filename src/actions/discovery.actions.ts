@@ -37,7 +37,7 @@ export async function discoverNewCategoriesAction() {
 
     const discoveredSlugs =
       await page.evaluate(
-        (includes) => {
+        (config) => {
           const links = Array.from(
             document.querySelectorAll(
               'a',
@@ -53,23 +53,27 @@ export async function discoverNewCategoriesAction() {
 
             // 🚀 Agora 'includes' existe de verdade (vem do config.linkIncludes)
             const isCategoryLink =
-              includes.some((inc) =>
-                href.includes(inc),
+              config.linkIncludes.some(
+                (inc) =>
+                  href.includes(inc),
               );
 
-            // Ignora coisas que não são categorias reais e links estáticos do site
+            // 🛡️ A BARREIRA: Se tiver qualquer palavra da blacklist, ignora na hora!
+            const isBlacklisted =
+              config.linkExcludes.some(
+                (exc) =>
+                  href.includes(exc),
+              );
+
             if (
               isCategoryLink &&
-              !href.includes(
-                'hd-porn',
-              ) &&
-              !href.includes('login')
+              !isBlacklisted &&
+              !href.includes('hd-porn')
             ) {
               const parts = href
                 .split('/')
                 .filter(Boolean);
               const slug = parts.pop();
-
               if (
                 slug &&
                 typeof slug ===
@@ -81,10 +85,14 @@ export async function discoverNewCategoriesAction() {
               }
             }
           });
-
           return validSlugs;
         },
-        config.linkIncludes, // Passando o ARRAY diretamente para a função do browser!
+        {
+          linkIncludes:
+            config.linkIncludes,
+          linkExcludes:
+            config.linkExcludes,
+        }, // 🚀 Passando o config completo
       );
 
     console.log(
