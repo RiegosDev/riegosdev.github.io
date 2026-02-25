@@ -5,6 +5,21 @@ import Header from '@/components/Header';
 import QuickCategoriesNav from '@/components/QuickCategoriesNav';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
 import { AgeGate } from '@/components/AgeGate';
+export const metadata = {
+  title: {
+    default:
+      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!', // 🚀 Título principal
+    template: '%s | DotF4p.com', // 🚀 Sufixo automático para as outras páginas
+  },
+  description:
+    'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+  keywords: [
+    'vídeos gratuitos',
+    'conteúdo adulto',
+    'hub adulto',
+    'dotf4p',
+  ],
+};
 
 export default async function RootLayout({
   children,

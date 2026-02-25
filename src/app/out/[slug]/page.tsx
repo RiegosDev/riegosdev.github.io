@@ -3,6 +3,29 @@ import { notFound } from 'next/navigation';
 import RedirectTimer from './RedirectTimer';
 import VideoGrid from '@/components/VideoGrid'; // Reutilizando seu componente de grid
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const video =
+    await prisma.video.findUnique({
+      where: {
+        slug: resolvedParams.slug,
+      },
+      select: { title: true },
+    });
+
+  if (!video)
+    return {
+      title: 'Vídeo não encontrado',
+    };
+
+  return {
+    title: `Assistindo: ${video.title}`, // 🚀 Vai renderizar: "Assistindo: Titulo do Video | DotF4p.com"
+  };
+}
 const prisma = new PrismaClient();
 
 interface OutPageProps {

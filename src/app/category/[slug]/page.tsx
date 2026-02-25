@@ -22,13 +22,12 @@ export async function generateMetadata({
 
   if (!category)
     return {
-      title:
-        'Categoria não encontrada - DotF4p',
+      title: 'Categoria não encontrada',
     };
 
   return {
-    title: `${category.name} Videos - DotF4p`,
-    description: `Assista aos melhores vídeos da categoria ${category.name} em alta qualidade.`,
+    title: `${category.name} - Vídeos Gratuitos e em Alta`, // 🚀 Vai renderizar: "Amador - Vídeos Gratuitos... | DotF4p.com"
+    description: `Assista aos melhores vídeos da categoria ${category.name} em alta qualidade no DotF4p.com.`,
   };
 }
 

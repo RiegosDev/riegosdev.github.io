@@ -11,11 +11,10 @@ export const dynamic = 'force-dynamic'; // 🚀 Garante dados frescos do Prisma 
 // 🚀 Metadata Sênior para o Google amar essa página
 export const metadata: Metadata = {
   title:
-    'Todas as Categorias - DotF4p.com',
+    'Todas as Categorias de Vídeos',
   description:
-    'Explore nossa lista completa de categorias e encontre exatamente o que você procura.',
+    'Explore nossa lista completa de categorias e encontre exatamente o que você procura no DotF4p.',
 };
-
 export default async function CategoriesPage() {
   // Busca os dados reais do banco
   const categories =
