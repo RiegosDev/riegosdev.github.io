@@ -8,7 +8,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-dotf4pprod} #
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teste124} #
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Doidos@$$$18} #
       POSTGRES_DB: ${POSTGRES_DB:-dotf4pvprod} #
     expose:
       - '5432'
@@ -32,7 +32,7 @@ services:
       - '3000'
     environment:
       # A URL do banco agora aponta pro nome do container 'db' dentro da rede do Docker
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-teste124}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-Doidos@$$$18}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
       - NODE_ENV=production
       - N8N_API_SECRET=${N8N_API_SECRET:-G6OdPfQuabG6O8mtWr4h2Xb2}
       # Adicione outras .env aqui (ex: NEXTAUTH_SECRET)
