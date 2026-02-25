@@ -5,6 +5,8 @@ import Header from '@/components/Header';
 import QuickCategoriesNav from '@/components/QuickCategoriesNav';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
 import { AgeGate } from '@/components/AgeGate';
+import { CPM_REPOSITORY } from '@/repositories/cpm.repository';
+import Script from 'next/script';
 export const metadata = {
   title: {
     default:
@@ -33,6 +35,13 @@ export default async function RootLayout({
   return (
     <html lang='pt-br' className='dark'>
       <body className='antialiased bg-sky-200 dark:bg-dark-950 transition-colors duration-300'>
+        {/* 🚀 POP-UNDER GLOBAL: Ativado no primeiro clique em qualquer lugar */}
+        <Script
+          src={
+            CPM_REPOSITORY.popUnder.src
+          }
+          strategy='afterInteractive'
+        />
         <AgeGate />
         <Suspense
           fallback={

@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import RedirectTimer from './RedirectTimer';
 import VideoGrid from '@/components/VideoGrid'; // Reutilizando seu componente de grid
+import Image from 'next/image';
 
 export async function generateMetadata({
   params,
@@ -86,29 +87,21 @@ export default async function OutPage({
 
   return (
     <div className='flex flex-col items-center min-h-screen bg-zinc-950 text-white p-4 md:p-8'>
-      {/* 🚀 ESPAÇO CPM 1: Banner Topo */}
-      <div className='w-full max-w-4xl h-24 bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-10 rounded-lg'>
-        <span className='text-zinc-600 font-bold tracking-widest'>
-          AD SPOT (728x90)
-        </span>
-      </div>
-
-      {/* BOX DE REDIRECIONAMENTO */}
-      <div className='w-full max-w-2xl bg-zinc-900 p-8 rounded-2xl shadow-2xl border border-zinc-800 text-center mb-16'>
-        <h1 className='text-2xl md:text-3xl font-black mb-4 text-rose-500 uppercase tracking-tight'>
-          Preparando seu vídeo...
-        </h1>
-        <p className='text-zinc-400 mb-8 leading-relaxed'>
-          Você está sendo redirecionado
-          para assistir: <br />
-          <span className='text-white font-bold text-lg'>
-            &quot;{video.title}&quot;
-          </span>
-        </p>
-
-        <RedirectTimer
-          targetUrl={video.externalUrl}
+      {/* 🔞 FAKE PLAYER (Igual fuq.com): Chama o clique do usuário */}
+      <div className='relative w-full max-w-4xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 mb-8 group cursor-pointer'>
+        <Image
+          src={video.thumbnail}
+          className='w-full h-full object-cover opacity-40 blur-[2px]'
+          alt='Preview'
         />
+        <div className='absolute inset-0 flex flex-col items-center justify-center gap-6'>
+          {/* O BOTÃO DE SKIP AD FICA AQUI NO MEIO DO VÍDEO */}
+          <RedirectTimer
+            targetUrl={
+              video.externalUrl
+            }
+          />
+        </div>
       </div>
 
       {/* 🔞 SEÇÃO DE RETENÇÃO: SUGESTÕES INTELIGENTES */}
@@ -123,9 +116,14 @@ export default async function OutPage({
           </span>
         </div>
 
-        <VideoGrid
-          videos={suggestedVideos}
-        />
+        <div className='w-full max-w-6xl'>
+          <h2 className='text-xl font-black mb-6 uppercase'>
+            Próximos vídeos sugeridos:
+          </h2>
+          <VideoGrid
+            videos={suggestedVideos}
+          />
+        </div>
       </div>
 
       {/* 🚀 ESPAÇO CPM 2: Banner Rodapé */}
