@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { VideoItem } from '@/models';
 import { Play } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link'; // Importante usar Link do Next.js para rotas internas
+import Link from 'next/link';
 import clsx from 'clsx';
 
 interface VideoCardProps {
@@ -18,7 +18,6 @@ export default function VideoCard({
     useState(false);
 
   return (
-    // A mágica acontece aqui: apontando para a página de retenção!
     <Link
       href={`/out/${video.slug}`}
       target='_blank'
@@ -29,12 +28,14 @@ export default function VideoCard({
       onMouseLeave={() =>
         setIsHovered(false)
       }
-      className='group relative flex flex-col gap-2 cursor-pointer'>
+      // 🚀 REFACTOR SÊNIOR: z-0 prende ele na base. hover:z-20 destaca apenas entre os irmãos.
+      className='group relative z-0 hover:z-20 flex flex-col gap-2 cursor-pointer'>
       {/* Container da Thumbnail */}
       <div
         className={clsx(
           'relative aspect-video w-full overflow-hidden rounded-lg',
-          'bg-slate-200 dark:bg-dark-800 shadow-md transition-all duration-300',
+          // 🚀 transform-gpu impede que a animação quebre o z-index nativo
+          'bg-slate-200 dark:bg-dark-800 shadow-md transition-all duration-300 transform-gpu',
           'group-hover:shadow-xl group-hover:ring-2 group-hover:ring-rose-500/50',
         )}>
         <Image
@@ -54,7 +55,7 @@ export default function VideoCard({
         {/* Overlay de Play */}
         <div
           className={clsx(
-            'absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] transition-opacity duration-300',
+            'absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] transition-opacity duration-300 z-10',
             isHovered
               ? 'opacity-100'
               : 'opacity-0',
@@ -64,8 +65,8 @@ export default function VideoCard({
           </div>
         </div>
 
-        {/* Badge de Duração */}
-        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-10'>
+        {/* Badge de Duração (z-20 para ficar acima do overlay preto de hover) */}
+        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-20'>
           {video.duration}
         </div>
       </div>
