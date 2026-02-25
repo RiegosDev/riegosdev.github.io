@@ -43,6 +43,7 @@ export default async function Page({
     const currentCategoryName =
       categoryQueries.getCategoryName(
         activeCategory || '',
+        searchQuery,
       );
 
     return (
