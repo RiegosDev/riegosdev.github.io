@@ -26,8 +26,6 @@ export async function discoverNewCategoriesAction() {
   try {
     const page =
       await browser.newPage();
-
-    // Foco no Eporner para o Discovery inicial
     const config =
       SCRAPER_DICTIONARY['eporner.com'];
     const discoveryUrl = `${config.baseUrl}${config.categoryPath}`;
@@ -37,7 +35,6 @@ export async function discoverNewCategoriesAction() {
       timeout: 60000,
     });
 
-    // Minerando links com Tipagem Estrita
     const discoveredSlugs =
       await page.evaluate(
         (includes) => {
@@ -47,31 +44,38 @@ export async function discoverNewCategoriesAction() {
             ),
           );
           const validSlugs: string[] =
-            []; // Array tipado para garantir que não vai undefined pro TS
+            [];
 
           links.forEach((a) => {
             const href =
               a.getAttribute('href') ||
               '';
 
-            // CORREÇÃO DO ESLINT: Agora usamos a variável 'includes' de forma dinâmica
+            // 🚀 Agora 'includes' existe de verdade (vem do config.linkIncludes)
             const isCategoryLink =
               includes.some((inc) =>
                 href.includes(inc),
               );
 
-            if (isCategoryLink) {
+            // Ignora coisas que não são categorias reais e links estáticos do site
+            if (
+              isCategoryLink &&
+              !href.includes(
+                'hd-porn',
+              ) &&
+              !href.includes('login')
+            ) {
               const parts = href
                 .split('/')
                 .filter(Boolean);
-              const slug = parts.pop(); // O pop() pode ser string ou undefined
+              const slug = parts.pop();
 
-              // CORREÇÃO DO TYPESCRIPT: Type Guard. Só entra se for string de verdade
               if (
                 slug &&
                 typeof slug ===
                   'string' &&
-                slug.length > 2
+                slug.length > 2 &&
+                slug.length < 30
               ) {
                 validSlugs.push(slug);
               }
@@ -80,19 +84,18 @@ export async function discoverNewCategoriesAction() {
 
           return validSlugs;
         },
-        config.linkIncludes,
+        config.linkIncludes, // Passando o ARRAY diretamente para a função do browser!
       );
 
     console.log(
       `🔎 Descobertas ${discoveredSlugs.length} categorias potenciais.`,
     );
 
-    // Salvando no banco de forma segura
     for (const slug of Array.from(
       new Set(discoveredSlugs),
     )) {
       await prisma.category.upsert({
-        where: { slug }, // TS agora sabe que slug é 100% string
+        where: { slug },
         update: {},
         create: {
           slug,

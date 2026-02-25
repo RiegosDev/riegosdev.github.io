@@ -8,10 +8,7 @@ export const SCRAPER_DICTIONARY: ScraperDictionary =
         'https://www.eporner.com',
       categoryPath: '/cat/',
       linkIncludes: [
-        '/video-', // Padrão de URL de player de vídeo
-        '/hd-porn/', // Garante que estamos pegando conteúdo em alta
-        '/cat/', // Permite que o robô navegue entre categorias se quisermos
-        '-porn-', // Keyword comum em slugs de vídeo reais
+        '/cat/', // 🚀 PULO DO GATO: Só aceita links que tenham /cat/ (categorias reais)
       ],
       linkExcludes: [],
       selectors: {

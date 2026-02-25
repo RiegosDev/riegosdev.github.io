@@ -1,3 +1,4 @@
+// src/app/api/scrape/route.ts
 import {
   NextRequest,
   NextResponse,
@@ -16,7 +17,6 @@ export async function POST(
     const secret =
       process.env.N8N_API_SECRET;
 
-    // Validação de Segurança Sólida
     if (
       !secret ||
       authHeader !== secret
@@ -25,10 +25,7 @@ export async function POST(
         '🚨 [API] Bloqueio: Crachá inválido ou ausente.',
       );
       return NextResponse.json(
-        {
-          error:
-            'Acesso Negado. Crachá inválido, parceiro.',
-        },
+        { error: 'Acesso Negado.' },
         { status: 401 },
       );
     }
@@ -41,14 +38,22 @@ export async function POST(
 
     if (command === 'DISCOVERY') {
       console.log(
-        '🤖 [API] Iniciando mapeamento de categorias...',
+        '🤖 [API] Iniciando mapeamento de categorias em BACKGROUND...',
       );
-      const discoveredSlugs =
-        await discoverNewCategoriesAction();
+
+      // 🚀 PULO DO GATO: Executa a ação sem usar o "await" para não travar a resposta
+      discoverNewCategoriesAction().catch(
+        (e) =>
+          console.error(
+            'Erro no discovery bg:',
+            e,
+          ),
+      );
+
+      // Responde imediatamente para o n8n não dar timeout!
       return NextResponse.json({
         success: true,
-        message: `${discoveredSlugs.length} novas rotas mapeadas.`,
-        data: discoveredSlugs,
+        message: `Mapeamento iniciado em segundo plano. O log mostrará o resultado.`,
       });
     }
 
@@ -56,22 +61,29 @@ export async function POST(
       if (!categorySlug || !targetUrl) {
         return NextResponse.json(
           {
-            error:
-              'Faltam parâmetros para SCRAPE.',
+            error: 'Faltam parâmetros.',
           },
           { status: 400 },
         );
       }
       console.log(
-        `🤖 [API] Raspagem iniciada: ${categorySlug}`,
+        `🤖 [API] Raspagem iniciada em BACKGROUND: ${categorySlug}`,
       );
-      await crawlCategoryAction(
+
+      // 🚀 Executa em background também!
+      crawlCategoryAction(
         categorySlug,
         targetUrl,
+      ).catch((e) =>
+        console.error(
+          'Erro no scrape bg:',
+          e,
+        ),
       );
+
       return NextResponse.json({
         success: true,
-        category: categorySlug,
+        message: `Raspagem da categoria ${categorySlug} iniciada em background.`,
       });
     }
 
@@ -82,14 +94,11 @@ export async function POST(
     // eslint-disable-next-line
   } catch (error: any) {
     console.error(
-      '❌ [API] Erro no motor de scrape:',
+      '❌ [API] Erro na rota:',
       error.message,
     );
     return NextResponse.json(
-      {
-        error:
-          'Erro interno no processamento.',
-      },
+      { error: 'Erro interno.' },
       { status: 500 },
     );
   }
