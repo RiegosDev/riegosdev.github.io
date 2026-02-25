@@ -15,6 +15,12 @@ export const metadata = {
   },
   description:
     'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+  verification: {
+    other: {
+      'juicyads-site-verification':
+        '1ac911a31e40bbfb6eee3ba6724c5b1b',
+    },
+  },
   keywords: [
     'vídeos gratuitos',
     'conteúdo adulto',
