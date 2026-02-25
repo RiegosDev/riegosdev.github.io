@@ -51,7 +51,7 @@ export default async function RootLayout({
             <div className='min-h-screen bg-dark-950 animate-pulse' />
           }>
           <RootClientLayout>
-            <div className='fixed top-0 left-0 right-0 z-120'>
+            <div className='fixed top-0 left-0 right-0 z-[999]'>
               <Header
                 categories={
                   allCategories
