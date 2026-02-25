@@ -1,15 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
-import Image from 'next/image'; // 🚀 Mantendo a otimização do Next.js
+import Image from 'next/image';
+import Script from 'next/script';
 import RedirectTimer from './RedirectTimer';
 import VideoGrid from '@/components/VideoGrid';
 import {
   formatISODuration,
   getEmbedContent,
-} from '@/utils/utils'; // 🚀 Nova Utils Sênior
+} from '@/utils/utils'; // 🚀 SEO ISO 8601 ativo aqui
+import { CPM_REPOSITORY } from '@/repositories/cpm.repository';
 
 const prisma = new PrismaClient();
 
+// 🚀 1. DEFINIÇÃO DA INTERFACE (Corrigindo o erro OutPageProps) [cite: 2026-02-16]
 interface OutPageProps {
   params: Promise<{ slug: string }>;
 }
@@ -33,7 +36,6 @@ export async function generateMetadata({
     return {
       title: 'Vídeo não encontrado',
     };
-
   return {
     title: `Assistindo: ${video.title}`,
   };
@@ -44,7 +46,7 @@ export default async function OutPage({
 }: OutPageProps) {
   const { slug } = await params;
 
-  // 1. Busca o vídeo e categorias relacionadas
+  // Busca o vídeo e categorias relacionadas
   const video =
     await prisma.video.findUnique({
       where: { slug },
@@ -58,7 +60,7 @@ export default async function OutPage({
   if (!video || !video.externalUrl)
     return notFound();
 
-  // 🚀 2. JSON-LD: Dados Estruturados com ISO 8601 [cite: 2026-02-16]
+  // 🚀 2. JSON-LD: Dados Estruturados com ISO 8601 (Utilizando as Utils)
   const videoSchema = {
     '@context': 'https://schema.org',
     '@type': 'VideoObject',
@@ -69,11 +71,11 @@ export default async function OutPage({
       video.publishedAt.toISOString(),
     duration: formatISODuration(
       video.duration,
-    ), // 🚀 Utilizando o novo formato ISO
+    ), // 🚀 Agora sendo usado corretamente
     contentUrl: video.externalUrl,
     embedUrl: getEmbedContent(
       video.externalUrl,
-    ), // 🚀 Gerando URL de player real
+    ), // 🚀 Agora sendo usado corretamente
     interactionStatistic: {
       '@type': 'InteractionCounter',
       interactionType: {
@@ -116,7 +118,18 @@ export default async function OutPage({
 
   return (
     <main className='flex flex-col items-center min-h-screen bg-zinc-950 text-white p-4'>
-      {/* 🚀 Injeção do Schema para o Google [cite: 2026-02-16] */}
+      {/* 🚀 MONETIZAÇÃO SÊNIOR: Scripts ativos apenas na página de saída */}
+      {CPM_REPOSITORY.globalScripts.map(
+        (script) => (
+          <Script
+            key={script.id}
+            src={script.src}
+            strategy='afterInteractive'
+          />
+        ),
+      )}
+
+      {/* 🚀 Injeção do Schema para o Google (Usando a variável do escopo) [cite: 2026-02-16] */}
       <script
         type='application/ld+json'
         dangerouslySetInnerHTML={{
@@ -145,7 +158,7 @@ export default async function OutPage({
         </div>
       </div>
 
-      {/* 🚀 SEÇÃO DE RELACIONADOS */}
+      {/* 🚀 SEÇÃO DE RELACIONADOS (Usando a variável sugerida) */}
       <div className='w-full max-w-6xl'>
         <div className='flex items-center justify-between mb-6 border-b border-zinc-800 pb-4'>
           <h2 className='text-xl md:text-2xl font-black text-white uppercase tracking-tighter'>

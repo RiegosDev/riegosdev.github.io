@@ -51,7 +51,7 @@ export async function GET(
           slug: true,
           externalUrl: true,
         },
-        take: 500, // 🚀 Limita para não quebrar o n8n
+        take: 200, // 🚀 Limita para não quebrar o n8n
         skip: randomSkip, // 🚀 Pega uma fatia diferente a cada execução
       });
     return NextResponse.json({
