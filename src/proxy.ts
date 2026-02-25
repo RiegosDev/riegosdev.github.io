@@ -39,7 +39,6 @@ export async function proxy(
     try {
       await decrypt(session);
       return NextResponse.next();
-      // eslint-disable-next-line
     } catch (error) {
       console.warn(
         '🚨 [Proxy] Sessão expirada ou inválida.',
