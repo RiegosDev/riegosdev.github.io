@@ -30,6 +30,17 @@ export async function GET(
 
   try {
     // 🚀 Puxa os vídeos que têm URL externa
+    const totalVideos =
+      await prisma.video.count({
+        where: {
+          externalUrl: { not: null },
+        },
+      });
+    const randomSkip = Math.floor(
+      Math.random() *
+        Math.max(0, totalVideos - 500),
+    );
+
     const videos =
       await prisma.video.findMany({
         where: {
@@ -40,9 +51,9 @@ export async function GET(
           slug: true,
           externalUrl: true,
         },
-        // take: 500, // 💡 Dica: Se a base passar de milhares, descomente isso e crie paginação
+        take: 500, // 🚀 Limita para não quebrar o n8n
+        skip: randomSkip, // 🚀 Pega uma fatia diferente a cada execução
       });
-
     return NextResponse.json({
       success: true,
       count: videos.length,
