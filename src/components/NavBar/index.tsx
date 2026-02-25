@@ -64,7 +64,7 @@ const NavBar: React.FC = () => {
   return (
     <div
       className={clsx(
-        'w-full bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-white/5 relative z-100 transition-colors duration-300',
+        'w-full bg-white dark:bg-dark-900 border-b border-gray-200 dark:border-white/5 relative z-40 transition-colors duration-300',
         `transition-transform duration-500 ${isTheaterMode ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`,
       )}>
       <div className='container mx-auto max-w-450'>
@@ -122,7 +122,7 @@ const NavBar: React.FC = () => {
             </button>
 
             {isCatOpen && (
-              <div className='absolute top-full left-0 pt-1 w-64 z-110'>
+              <div className='absolute top-full left-0 pt-1 w-64 z-40'>
                 <div className='bg-white dark:bg-dark-800 rounded-md shadow-2xl border border-gray-200 dark:border-white/10 overflow-hidden py-2'>
                   {dbCategories.map(
                     (cat) => (
