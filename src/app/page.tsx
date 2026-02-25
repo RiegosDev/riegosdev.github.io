@@ -1,8 +1,9 @@
 import { getVideosAction } from '@/actions/video.actions';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
 import { categoryQueries } from '@/lib/queries/category.queries';
-import VideoGrid from '@/components/VideoGrid';
+
 import CategoryCard from '@/components/CategoryCard';
+import VideoGrid from '@/components/VideoGrid';
 
 export const dynamic = 'force-dynamic';
 

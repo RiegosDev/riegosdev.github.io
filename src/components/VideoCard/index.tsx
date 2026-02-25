@@ -28,14 +28,11 @@ export default function VideoCard({
       onMouseLeave={() =>
         setIsHovered(false)
       }
-      // 🚀 REFACTOR SÊNIOR: z-0 prende ele na base. hover:z-20 destaca apenas entre os irmãos.
-      className='group relative z-0 hover:z-20 flex flex-col gap-2 cursor-pointer'>
-      {/* Container da Thumbnail */}
+      className='group relative flex flex-col gap-2 cursor-pointer'>
       <div
         className={clsx(
           'relative aspect-video w-full overflow-hidden rounded-lg',
-          // 🚀 transform-gpu impede que a animação quebre o z-index nativo
-          'bg-slate-200 dark:bg-dark-800 shadow-md transition-all duration-300 transform-gpu',
+          'bg-slate-200 dark:bg-dark-800 shadow-md transition-all duration-300',
           'group-hover:shadow-xl group-hover:ring-2 group-hover:ring-rose-500/50',
         )}>
         <Image
@@ -52,10 +49,9 @@ export default function VideoCard({
           )}
         />
 
-        {/* Overlay de Play */}
         <div
           className={clsx(
-            'absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] transition-opacity duration-300 z-10',
+            'absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] transition-opacity duration-300',
             isHovered
               ? 'opacity-100'
               : 'opacity-0',
@@ -65,13 +61,12 @@ export default function VideoCard({
           </div>
         </div>
 
-        {/* Badge de Duração (z-20 para ficar acima do overlay preto de hover) */}
-        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-20'>
+        {/* 🚀 Badge de tempo com z-10 nativo */}
+        <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-10'>
           {video.duration}
         </div>
       </div>
 
-      {/* Info do Vídeo */}
       <div className='flex flex-col px-1'>
         <h3
           className={clsx(

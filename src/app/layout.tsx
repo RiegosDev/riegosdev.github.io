@@ -51,9 +51,7 @@ export default async function RootLayout({
             <div className='min-h-screen bg-dark-950 animate-pulse' />
           }>
           <RootClientLayout>
-            <div
-              className='fixed top-0 inset-x-0'
-              style={{ zIndex: 9999 }}>
+            <div className='fixed top-0 inset-x-0 z-[100]'>
               <Header
                 categories={
                   allCategories
