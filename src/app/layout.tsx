@@ -4,6 +4,7 @@ import RootClientLayout from './RootClientLayout';
 import Header from '@/components/Header';
 import QuickCategoriesNav from '@/components/QuickCategoriesNav';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
+import { AgeGate } from '@/components/AgeGate';
 
 export default async function RootLayout({
   children,
@@ -17,6 +18,7 @@ export default async function RootLayout({
   return (
     <html lang='pt-br' className='dark'>
       <body className='antialiased bg-sky-200 dark:bg-dark-950 transition-colors duration-300'>
+        <AgeGate />
         <Suspense
           fallback={
             <div className='min-h-screen bg-dark-950 animate-pulse' />
