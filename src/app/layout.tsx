@@ -15,12 +15,6 @@ export const metadata = {
   },
   description:
     'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
-  verification: {
-    other: {
-      'juicyads-site-verification':
-        '1ac911a31e40bbfb6eee3ba6724c5b1b',
-    },
-  },
   keywords: [
     'vídeos gratuitos',
     'conteúdo adulto',
@@ -42,12 +36,15 @@ export default async function RootLayout({
     <html lang='pt-br' className='dark'>
       <body className='antialiased bg-sky-200 dark:bg-dark-950 transition-colors duration-300'>
         {/* 🚀 POP-UNDER GLOBAL: Ativado no primeiro clique em qualquer lugar */}
-        <Script
-          src={
-            CPM_REPOSITORY.popUnder.src
-          }
-          strategy='afterInteractive'
-        />
+        {CPM_REPOSITORY.globalScripts.map(
+          (script) => (
+            <Script
+              key={script.id}
+              src={script.src}
+              strategy='afterInteractive'
+            />
+          ),
+        )}
         <AgeGate />
         <Suspense
           fallback={

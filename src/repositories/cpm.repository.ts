@@ -1,15 +1,19 @@
-// src/repositories/cpm.repository.ts
-
 export const CPM_REPOSITORY = {
-  // Pop-under do Adsterra (Geralmente aciona no primeiro clique do usuário no site)
-  popUnder: {
-    id: 'adsterra-pop',
-    src: 'https://pl28794499.effectivegatecpm.com/3d/4b/df/3d4bdf99a30f17ce3f09f85b4e7868f1.js', // 🚀 Substitua pelo seu ID real
-  },
+  // 🚀 Use um Array para colocar quantos Pop-unders ou scripts globais quiser
+  globalScripts: [
+    {
+      id: 'adsterra-pop',
+      src: 'https://pl28794499.effectivegatecpm.com/.../script.js',
+    },
+    {
+      id: 'juicyads-pop',
+      src: 'https://js.juicyads.com/jp.php?c=446413z2u264u4r2p294x2d474&u=https%3A%2F%2Fwww.juicyads.rocks',
+    },
+  ],
 
-  // Skip Ad Overlay (Configuração visual)
+  // UI do Botão (Fica fixo, você só muda o estilo se quiser)
   skipAd: {
-    timer: 5, // segundos
+    timer: 5,
     text: 'Skip Ad >',
     waitingText: 'Aguarde...',
   },
