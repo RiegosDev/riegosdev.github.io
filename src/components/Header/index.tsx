@@ -44,8 +44,6 @@ const Header: React.FC<HeaderProps> = ({
     isCategoriesOpen,
     setIsCategoriesOpen,
   ] = useState(false);
-
-  // Estados para o Menu Mobile
   const [
     isMobileMenuOpen,
     setIsMobileMenuOpen,
@@ -83,11 +81,11 @@ const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    // 🚀 AQUI ESTÁ A MÁGICA: relative e z-[999] garantem o topo absoluto
-    <header className='w-full bg-white/95 dark:bg-dark-950/95 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-xs relative z-[999]'>
+    // 🚀 ROOT DO HEADER EM Z-50
+    <header className='w-full bg-white/95 dark:bg-dark-950/95 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-xs relative z-50'>
       <div className='container mx-auto px-4'>
         <div className='flex items-center justify-between h-16 md:h-20 gap-4'>
-          {/* LADO ESQUERDO: HAMBÚRGUER + LOGO */}
+          {/* LADO ESQUERDO */}
           <div className='flex items-center gap-2 md:gap-4'>
             <button
               onClick={() =>
@@ -128,7 +126,7 @@ const Header: React.FC<HeaderProps> = ({
             />
           </div>
 
-          {/* LADO DIREITO: CATEGORIAS DESKTOP E CONFIGS */}
+          {/* LADO DIREITO */}
           <div className='flex items-center gap-2 md:gap-4'>
             <div
               className='hidden md:block relative'
@@ -156,8 +154,9 @@ const Header: React.FC<HeaderProps> = ({
                 />
               </button>
 
+              {/* Mega Menu Dropdown */}
               {isCategoriesOpen && (
-                <div className='absolute top-full right-0 w-150 bg-white dark:bg-dark-900 shadow-2xl border border-gray-100 dark:border-white/10 rounded-b-xl p-6 z-[1000] animate-in fade-in slide-in-from-top-2'>
+                <div className='absolute top-full right-0 w-150 bg-white dark:bg-dark-900 shadow-2xl border border-gray-100 dark:border-white/10 rounded-b-xl p-6 z-50 animate-in fade-in slide-in-from-top-2'>
                   <div className='grid grid-cols-4 gap-4 max-h-100 overflow-y-auto custom-scrollbar'>
                     <Link
                       href='/categories'
@@ -197,7 +196,6 @@ const Header: React.FC<HeaderProps> = ({
               )}
             </div>
 
-            {/* BUSCA MOBILE (Lupa) */}
             <button
               onClick={() =>
                 setIsMobileSearchOpen(
@@ -208,7 +206,6 @@ const Header: React.FC<HeaderProps> = ({
               <Search className='w-6 h-6' />
             </button>
 
-            {/* DARK MODE TOGGLE */}
             <button
               onClick={toggleTheme}
               className='p-2 rounded-full text-zinc-500 hover:bg-zinc-100 dark:hover:bg-white/5 transition-all'>
@@ -226,7 +223,7 @@ const Header: React.FC<HeaderProps> = ({
 
       {/* OVERLAY BUSCA MOBILE */}
       {isMobileSearchOpen && (
-        <div className='md:hidden absolute inset-0 bg-white dark:bg-dark-950 z-[1000] p-4 flex items-center animate-in slide-in-from-top-full duration-300'>
+        <div className='md:hidden absolute inset-0 bg-white dark:bg-dark-950 z-50 p-4 flex items-center animate-in fade-in zoom-in-95 duration-200'>
           <SearchBar
             isMobileOpen={true}
             onCloseMobile={() =>
@@ -238,9 +235,9 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
-      {/* MENU HAMBÚRGUER MOBILE */}
+      {/* 🚀 MENU HAMBÚRGUER MOBILE (Animação Fade+Top corrigida!) */}
       {isMobileMenuOpen && (
-        <div className='md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white dark:bg-dark-950 z-[1000] overflow-y-auto animate-in slide-in-from-left-full duration-300'>
+        <div className='md:hidden fixed inset-x-0 top-16 bottom-0 bg-white dark:bg-dark-950 z-50 overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200'>
           <div className='flex flex-col p-4 space-y-4'>
             <div className='border border-zinc-200 dark:border-white/10 rounded-xl overflow-hidden'>
               <button
