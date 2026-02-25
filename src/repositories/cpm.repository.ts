@@ -9,6 +9,10 @@ export const CPM_REPOSITORY = {
       id: 'juicyads-pop',
       src: 'https://js.juicyads.com/jp.php?c=446413z2u264u4r2p294x2d474&u=https%3A%2F%2Fwww.juicyads.rocks',
     },
+    {
+      id: 'hill-tops',
+      src: 'https://shameful-fix.com/bO3OVl0JP.3Yptv/bCm/VAJUZqDO0O2zOVD/Ij2/NXDUIP1yLFT-Y/4NMOjcY/0CMOjBkl',
+    },
   ],
 
   // UI do Botão (Fica fixo, você só muda o estilo se quiser)

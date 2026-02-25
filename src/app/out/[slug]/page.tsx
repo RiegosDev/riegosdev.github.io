@@ -1,14 +1,25 @@
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import Image from 'next/image'; // 🚀 Mantendo a otimização do Next.js
 import RedirectTimer from './RedirectTimer';
-import VideoGrid from '@/components/VideoGrid'; // Reutilizando seu componente de grid
-import Image from 'next/image';
+import VideoGrid from '@/components/VideoGrid';
+import {
+  formatISODuration,
+  getEmbedContent,
+} from '@/utils/utils'; // 🚀 Nova Utils Sênior
 
+const prisma = new PrismaClient();
+
+interface OutPageProps {
+  params: Promise<{ slug: string }>;
+}
+
+/**
+ * 🚀 SEO METADATA: Títulos dinâmicos para indexação
+ */
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+}: OutPageProps) {
   const resolvedParams = await params;
   const video =
     await prisma.video.findUnique({
@@ -24,22 +35,16 @@ export async function generateMetadata({
     };
 
   return {
-    title: `Assistindo: ${video.title}`, // 🚀 Vai renderizar: "Assistindo: Titulo do Video | DotF4p.com"
+    title: `Assistindo: ${video.title}`,
   };
-}
-const prisma = new PrismaClient();
-
-interface OutPageProps {
-  params: Promise<{ slug: string }>;
 }
 
 export default async function OutPage({
   params,
 }: OutPageProps) {
-  const resolvedParams = await params;
-  const slug = resolvedParams.slug;
+  const { slug } = await params;
 
-  // 1. Busca o vídeo atual e suas categorias para encontrar relacionados
+  // 1. Busca o vídeo e categorias relacionadas
   const video =
     await prisma.video.findUnique({
       where: { slug },
@@ -50,16 +55,41 @@ export default async function OutPage({
       },
     });
 
-  if (!video || !video.externalUrl) {
+  if (!video || !video.externalUrl)
     return notFound();
-  }
 
-  // 2. Busca Vídeos Sugeridos (Relacionados por categoria)
+  // 🚀 2. JSON-LD: Dados Estruturados com ISO 8601 [cite: 2026-02-16]
+  const videoSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: video.title,
+    description: `Assista ao vídeo ${video.title} no DotF4p.com - Seu hub gratuito de conteúdos adultos.`,
+    thumbnailUrl: [video.thumbnail],
+    uploadDate:
+      video.publishedAt.toISOString(),
+    duration: formatISODuration(
+      video.duration,
+    ), // 🚀 Utilizando o novo formato ISO
+    contentUrl: video.externalUrl,
+    embedUrl: getEmbedContent(
+      video.externalUrl,
+    ), // 🚀 Gerando URL de player real
+    interactionStatistic: {
+      '@type': 'InteractionCounter',
+      interactionType: {
+        '@type':
+          'https://schema.org/WatchAction',
+      },
+      userInteractionCount:
+        video.views || 0,
+    },
+  };
+
+  // 3. Sugestões de Retenção
   const categoryIds =
     video.categories.map(
       (c) => c.categoryId,
     );
-
   const rawSuggested =
     await prisma.video.findMany({
       where: {
@@ -70,13 +100,12 @@ export default async function OutPage({
             },
           },
         },
-        NOT: { id: video.id }, // Não sugerir o próprio vídeo
+        NOT: { id: video.id },
       },
-      take: 8, // Grid de 2 linhas no desktop
+      take: 8,
       orderBy: { publishedAt: 'desc' },
     });
 
-  // Mapeamento para o formato do VideoGrid
   const suggestedVideos =
     rawSuggested.map((v) => ({
       ...v,
@@ -86,16 +115,28 @@ export default async function OutPage({
     }));
 
   return (
-    <div className='flex flex-col items-center min-h-screen bg-zinc-950 text-white p-4 md:p-8'>
-      {/* 🔞 FAKE PLAYER (Igual fuq.com): Chama o clique do usuário */}
-      <div className='relative w-full max-w-4xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 mb-8 group cursor-pointer'>
+    <main className='flex flex-col items-center min-h-screen bg-zinc-950 text-white p-4'>
+      {/* 🚀 Injeção do Schema para o Google [cite: 2026-02-16] */}
+      <script
+        type='application/ld+json'
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            videoSchema,
+          ),
+        }}
+      />
+
+      {/* 🔞 FAKE PLAYER UI */}
+      <div className='relative w-full max-w-4xl aspect-video bg-black rounded-3xl overflow-hidden shadow-2xl border border-zinc-800 mb-8 group'>
         <Image
           src={video.thumbnail}
-          className='w-full h-full object-cover opacity-40 blur-[2px]'
-          alt='Preview'
+          alt={video.title}
+          fill
+          priority
+          className='object-cover opacity-30 blur-sm'
+          sizes='(max-width: 1200px) 100vw, 1200px'
         />
         <div className='absolute inset-0 flex flex-col items-center justify-center gap-6'>
-          {/* O BOTÃO DE SKIP AD FICA AQUI NO MEIO DO VÍDEO */}
           <RedirectTimer
             targetUrl={
               video.externalUrl
@@ -104,34 +145,17 @@ export default async function OutPage({
         </div>
       </div>
 
-      {/* 🔞 SEÇÃO DE RETENÇÃO: SUGESTÕES INTELIGENTES */}
+      {/* 🚀 SEÇÃO DE RELACIONADOS */}
       <div className='w-full max-w-6xl'>
         <div className='flex items-center justify-between mb-6 border-b border-zinc-800 pb-4'>
           <h2 className='text-xl md:text-2xl font-black text-white uppercase tracking-tighter'>
-            Mudou de ideia? Veja estes
-            também:
+            Veja também nesta categoria:
           </h2>
-          <span className='text-rose-500 text-xs font-bold px-2 py-1 bg-rose-500/10 rounded'>
-            RECOMENDADOS
-          </span>
         </div>
-
-        <div className='w-full max-w-6xl'>
-          <h2 className='text-xl font-black mb-6 uppercase'>
-            Próximos vídeos sugeridos:
-          </h2>
-          <VideoGrid
-            videos={suggestedVideos}
-          />
-        </div>
+        <VideoGrid
+          videos={suggestedVideos}
+        />
       </div>
-
-      {/* 🚀 ESPAÇO CPM 2: Banner Rodapé */}
-      <div className='w-full max-w-4xl h-60 bg-zinc-900 border border-zinc-800 flex items-center justify-center mt-16 rounded-lg'>
-        <span className='text-zinc-600 font-bold tracking-widest'>
-          AD SPOT (NATIVE/CPA)
-        </span>
-      </div>
-    </div>
+    </main>
   );
 }
