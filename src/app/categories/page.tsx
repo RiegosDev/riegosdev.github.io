@@ -6,6 +6,8 @@ import {
 } from 'lucide-react';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic'; // 🚀 Garante dados frescos do Prisma a cada acesso
+
 // 🚀 Metadata Sênior para o Google amar essa página
 export const metadata: Metadata = {
   title:

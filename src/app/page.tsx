@@ -4,7 +4,6 @@ import { categoryQueries } from '@/lib/queries/category.queries';
 import VideoGrid from '@/components/VideoGrid';
 import CategoryCard from '@/components/CategoryCard';
 
-// Garante que a página seja sempre atualizada no servidor (Server First)
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
@@ -22,12 +21,12 @@ export default async function Page({
   const searchQuery = params.q;
 
   // ============================================================================
-  // 1. ROTA DE PESQUISA OU CATEGORIA ESPECÍFICA (O usuário usou o menu/busca)
+  // 1. ROTA DE PESQUISA OU CATEGORIA ESPECÍFICA
   // ============================================================================
   if (activeCategory || searchQuery) {
     const rawVideos =
       await getVideosAction(
-        activeCategory || 'recommended',
+        activeCategory || '', // 🚀 CORREÇÃO: Busca global se não houver categoria
         searchQuery,
       );
 
@@ -43,38 +42,35 @@ export default async function Page({
 
     const currentCategoryName =
       categoryQueries.getCategoryName(
-        activeCategory || 'recommended',
-        searchQuery,
+        activeCategory || '',
       );
 
     return (
-      <div className='container mx-auto p-4 max-w-7xl pb-20 mt-4'>
-        <div className='mb-6 border-b border-zinc-800 pb-4'>
-          <h1 className='text-2xl md:text-3xl font-black tracking-tight flex items-center gap-2 text-pink-500 capitalize'>
-            {currentCategoryName}
+      <main className='container mx-auto p-4 max-w-450 pb-20'>
+        <div className='mb-8 border-b border-zinc-300 dark:border-white/10 pb-4'>
+          <h1 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
+            {searchQuery
+              ? `Resultados Para: "${searchQuery}"`
+              : currentCategoryName}
           </h1>
         </div>
         <VideoGrid videos={videos} />
-      </div>
+      </main>
     );
   }
 
   // ============================================================================
-  // 2. ROTA PRINCIPAL (HOME) - O Funil Perfeito
+  // 2. HOME PADRÃO (Categorias e Trending)
   // ============================================================================
+  const [categories, trendingVideos] =
+    await Promise.all([
+      getCategoriesWithStatsAction(),
+      getVideosAction('', ''),
+    ]);
 
-  // 🚀 MODO SÊNIOR: Busca categorias e vídeos em paralelo para performance extrema
-  const [
-    categories,
-    rawTrendingVideos,
-  ] = await Promise.all([
-    getCategoriesWithStatsAction(),
-    getVideosAction('', ''), // Puxa os vídeos gerais em alta
-  ]);
-
-  // Filtro de Tipagem do Prisma pro Front-end
-  const trendingVideos =
-    rawTrendingVideos.map((video) => ({
+  const videos = trendingVideos
+    .slice(0, 15) // 🚀 REDUÇÃO: Apenas 15 vídeos em alta
+    .map((video) => ({
       ...video,
       publishedAt:
         video.publishedAt.toISOString(),
@@ -83,24 +79,23 @@ export default async function Page({
     }));
 
   return (
-    <div className='container mx-auto p-4 max-w-7xl pb-20 mt-4 space-y-16'>
-      {/* SEÇÃO 1: CATEGORIAS EM DESTAQUE */}
+    <main className='container mx-auto p-4 max-w-450 space-y-16 pb-20'>
+      {/* SEÇÃO 1: CATEGORIAS POPULARES */}
       <section>
-        <div className='mb-8 border-b border-zinc-800 pb-4'>
-          <h1 className='text-3xl font-black tracking-tight text-white uppercase'>
+        <div className='mb-8 border-b border-zinc-300 dark:border-white/10 pb-4'>
+          <h1 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
             Categorias Populares
           </h1>
-          <p className='text-zinc-400 mt-2 text-sm md:text-base'>
+          <p className='text-zinc-500 dark:text-zinc-400 mt-2 text-sm md:text-base'>
             Escolha o seu nicho favorito
             e aproveite o melhor
             conteúdo.
           </p>
         </div>
 
-        {/* Mostra apenas as 10 maiores categorias para manter a Home limpa */}
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
           {categories
-            .slice(0, 10)
+            .slice(0, 50) // 🚀 AUMENTO: Agora exibindo 50 categorias
             .map((category) => (
               <CategoryCard
                 key={category.id}
@@ -112,23 +107,20 @@ export default async function Page({
 
       {/* SEÇÃO 2: VÍDEOS EM ALTA */}
       <section>
-        <div className='mb-8 border-b border-zinc-800 pb-4 flex justify-between items-end'>
+        <div className='mb-8 border-b border-zinc-300 dark:border-white/10 pb-4 flex justify-between items-end'>
           <div>
-            <h2 className='text-3xl font-black tracking-tight text-pink-500 uppercase'>
+            <h2 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
               Vídeos em Alta
             </h2>
-            <p className='text-zinc-400 mt-2 text-sm md:text-base'>
+            <p className='text-zinc-500 dark:text-zinc-400 mt-2 text-sm md:text-base'>
               Os conteúdos mais
               assistidos e atualizados
               do momento.
             </p>
           </div>
         </div>
-
-        <VideoGrid
-          videos={trendingVideos}
-        />
+        <VideoGrid videos={videos} />
       </section>
-    </div>
+    </main>
   );
 }
