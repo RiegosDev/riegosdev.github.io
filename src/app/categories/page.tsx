@@ -90,6 +90,7 @@ export default async function CategoriesPage() {
                 letter
               ].map((category) => (
                 <Link
+                  target='_blank'
                   key={category.id}
                   href={`/category/${category.slug}`}
                   className='group flex flex-col items-center justify-center p-4 rounded-2xl bg-zinc-50 dark:bg-white/5 border border-zinc-200 dark:border-white/10 hover:border-rose-500 transition-all'>
