@@ -10,6 +10,7 @@ export async function POST(
   request: NextRequest,
 ) {
   try {
+    // 1. SEGURANÇA ÚNICA E SÓLIDA
     const authHeader =
       request.headers.get(
         'x-api-secret',
@@ -30,18 +31,18 @@ export async function POST(
       );
     }
 
+    // 2. PARSE DO JSON (Garante que o n8n está mandando RAW JSON)
     const {
       command,
       categorySlug,
       targetUrl,
     } = await request.json();
 
+    // 3. ROTEAMENTO
     if (command === 'DISCOVERY') {
       console.log(
         '🤖 [API] Iniciando mapeamento de categorias em BACKGROUND...',
       );
-
-      // 🚀 PULO DO GATO: Executa a ação sem usar o "await" para não travar a resposta
       discoverNewCategoriesAction().catch(
         (e) =>
           console.error(
@@ -49,11 +50,10 @@ export async function POST(
             e,
           ),
       );
-
-      // Responde imediatamente para o n8n não dar timeout!
       return NextResponse.json({
         success: true,
-        message: `Mapeamento iniciado em segundo plano. O log mostrará o resultado.`,
+        message:
+          'Mapeamento iniciado em segundo plano.',
       });
     }
 
@@ -69,8 +69,6 @@ export async function POST(
       console.log(
         `🤖 [API] Raspagem iniciada em BACKGROUND: ${categorySlug}`,
       );
-
-      // 🚀 Executa em background também!
       crawlCategoryAction(
         categorySlug,
         targetUrl,
@@ -80,7 +78,6 @@ export async function POST(
           e,
         ),
       );
-
       return NextResponse.json({
         success: true,
         message: `Raspagem da categoria ${categorySlug} iniciada em background.`,
