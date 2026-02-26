@@ -78,3 +78,23 @@ Para bypassar o n8n e controlar o motor diretamente na VPS, utilize os atalhos c
 ```bash
 docker compose exec app npm run seed:refresh
 ```
+
+## 🚢 Fluxo de Deploy Sênior (Local ➡️ VPS)
+
+Para garantir que não ocorram erros de Column not available (P2022) devido a mudanças no Prisma, siga sempre esta ordem:
+
+Local: Altere o código/schema.prisma e faça o git push.
+
+VPS: Dê o git pull na raiz do projeto.
+
+VPS: Rebuilde a imagem do Next.js:
+
+Bash
+docker compose up -d --build app
+VPS: Sincronize o banco de dados imediatamente após o container subir:
+
+Bash
+docker compose exec app npx prisma db push
+(Nota: Mudanças drásticas no DB em tabelas populadas devem usar o artifício de @default(now()) temporário no schema.prisma para não exigir --force-reset).
+
+DotF4p Architecture by Daniel Riêgo.

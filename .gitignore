@@ -14,6 +14,7 @@ docker-compose-dev.yml
 /src/db/seed-dev.ts
 # testing
 /coverage
+README.md
 
 # next.js
 /.next/
