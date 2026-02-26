@@ -1,4 +1,4 @@
-import { discoverNewCategoriesAction } from '../actions/discovery.actions';
+// import { discoverNewCategoriesAction } from '../actions/discovery.actions';
 import { refreshExistingContentAction } from '../actions/maintenance.actions';
 
 async function run() {
@@ -7,7 +7,7 @@ async function run() {
   );
 
   // Opção 1: Discovery Total
-  await discoverNewCategoriesAction();
+  // await discoverNewCategoriesAction();
 
   // Opção 2: Refresh de Conteúdo (Ex: 20 categorias de uma vez)
   await refreshExistingContentAction(

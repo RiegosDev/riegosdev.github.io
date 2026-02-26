@@ -13,7 +13,7 @@ export async function refreshExistingContentAction(
   const categories =
     await prisma.category.findMany({
       take: limit,
-      orderBy: { id: 'asc' },
+      orderBy: { updatedAt: 'asc' },
     });
 
   for (const cat of categories) {
