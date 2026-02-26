@@ -20,7 +20,8 @@
     "dev:fast": "pnpm docker:up-dev && pnpm db:generate && pnpm prisma db push && pnpm db:seed:dev && pnpm dev",
     "seed:hardcore": "tsx -e \"import { discoverNewCategoriesAction } from './src/actions/discovery.actions'; discoverNewCategoriesAction().then(() => console.log('✅ Discovery Finalizado'))\"",
     "seed:refresh": "tsx -e \"import { refreshExistingContentAction } from './src/actions/maintenance.actions'; refreshExistingContentAction(20).then(() => console.log('✅ Refresh de 20 cats Finalizado'))\"",
-    "db:sync": "prisma db push"
+    "db:sync": "prisma db push",
+    "db:cleanup": "tsx -e \"import { cleanBrokenVideosAction } from './src/actions/maintenance.actions'; cleanBrokenVideosAction(100).then(res => console.log('✅ Limpeza concluída:', res))\""
   },
   "dependencies": {
     "@google/genai": "^1.40.0",
