@@ -17,7 +17,10 @@
     "db:seed:dev": "npx tsx src/db/seed-dev.ts",
     "db:reset": "pnpm prisma migrate reset --force && pnpm prisma db seed",
     "dx": "pnpm docker:up && pnpm db:generate && pnpm db:migrate && pnpm db:reset && pnpm dev",
-    "dev:fast": "pnpm docker:up-dev && pnpm db:generate && pnpm prisma db push && pnpm db:seed:dev && pnpm dev"
+    "dev:fast": "pnpm docker:up-dev && pnpm db:generate && pnpm prisma db push && pnpm db:seed:dev && pnpm dev",
+    "seed:hardcore": "tsx -e \"import { discoverNewCategoriesAction } from './src/actions/discovery.actions'; discoverNewCategoriesAction().then(() => console.log('✅ Discovery Finalizado'))\"",
+    "seed:refresh": "tsx -e \"import { refreshExistingContentAction } from './src/actions/maintenance.actions'; refreshExistingContentAction(20).then(() => console.log('✅ Refresh de 20 cats Finalizado'))\"",
+    "db:sync": "prisma db push"
   },
   "dependencies": {
     "@google/genai": "^1.40.0",
