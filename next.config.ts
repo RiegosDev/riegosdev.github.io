@@ -8,15 +8,22 @@ const nextConfig: NextConfig = {
     'puppeteer-extra-plugin-stealth',
   ],
   images: {
-    domains: [
-      'static-ca-cdn.eporner.com',
-      'thumbs.externulls.com', // DOMÍNIO DO BEEG
-      'picsum.photos',
-    ],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'picsum.photos',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          'static-ca-cdn.eporner.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname:
+          'thumbs.externulls.com', // DOMÍNIO DO BEEG
         pathname: '/**',
       },
       {
