@@ -13,7 +13,7 @@ export async function crawlCategoryAction(
   targetCategorySlug: string,
 ) {
   console.log(
-    `🚀 [MOTOR] Capturando conteúdo para: ${categorySlug.toUpperCase()}`,
+    `🚀 [MOTOR] Capturando: ${categorySlug.toUpperCase()}`,
   );
 
   const browser =
@@ -39,7 +39,7 @@ export async function crawlCategoryAction(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
     );
 
-    // 🚀 RESTAURADO: Cookies de Verificação de Idade
+    // ✅ RESTAURADO: Cookies de verificação de idade (Pulo do gato)
     const cookies = [
       {
         name: 'age_verified',
@@ -54,7 +54,7 @@ export async function crawlCategoryAction(
     ];
     await page.setCookie(...cookies);
 
-    // Atualiza a fila de manutenção
+    // ✅ ATUALIZAÇÃO: Marca a categoria como processada na fila [cite: 2026-02-16]
     await prisma.category.update({
       where: { slug: categorySlug },
       data: { updatedAt: new Date() },
@@ -73,13 +73,30 @@ export async function crawlCategoryAction(
         continue;
 
       try {
-        const pageUrl = `${siteConfig.baseUrl}${siteConfig.categoryPath}/${targetCategorySlug}`;
+        // ✅ CORREÇÃO DE URL: Restaurando a limpeza de barras do código antigo
+        const safeBase =
+          siteConfig.baseUrl.endsWith(
+            '/',
+          )
+            ? siteConfig.baseUrl
+            : `${siteConfig.baseUrl}/`;
+        const cleanPath =
+          siteConfig.categoryPath.replace(
+            /^\/|\/$/g,
+            '',
+          );
+        const pageUrl = `${safeBase}${cleanPath}/${targetCategorySlug}`;
+
+        console.log(
+          `🔎 [${siteName}] Acessando: ${pageUrl}`,
+        );
+
         await page.goto(pageUrl, {
           waitUntil: 'load',
           timeout: 60000,
         });
 
-        // 🚀 RESTAURADO: Limpeza de Overlays e Cliques Automáticos
+        // ✅ RESTAURADO: Clique em botões de confirmação e limpeza de overlay
         await page.evaluate(() => {
           const keywords = [
             'Sim',
@@ -118,9 +135,10 @@ export async function crawlCategoryAction(
 
         await new Promise((r) =>
           setTimeout(r, 3000),
-        ); // Tempo extra para carregar os thumbs
+        );
 
-        const videos =
+        // ✅ CORREÇÃO DE EXTRAÇÃO: Suporte a Lazy Load e atributos do código antigo
+        const extractedVideos =
           await page.evaluate(
             (config) => {
               const items = Array.from(
@@ -136,15 +154,31 @@ export async function crawlCategoryAction(
                       config.selectors
                         .thumbnail,
                     );
+                  const titleEl =
+                    item.querySelector(
+                      config.selectors
+                        .title,
+                    );
+
+                  // Lógica de Thumbnail Robusta da versão antiga
+                  const finalThumb =
+                    thumbEl?.getAttribute(
+                      'data-src',
+                    ) ||
+                    thumbEl?.getAttribute(
+                      'data-lazy',
+                    ) ||
+                    thumbEl?.getAttribute(
+                      'src',
+                    ) ||
+                    '';
+
                   return {
                     title:
-                      item
-                        .querySelector(
-                          config
-                            .selectors
-                            .title,
-                        )
-                        ?.textContent?.trim() ||
+                      titleEl?.textContent?.trim() ||
+                      titleEl?.getAttribute(
+                        'alt',
+                      ) ||
                       '',
                     url:
                       (
@@ -155,13 +189,7 @@ export async function crawlCategoryAction(
                         ) as HTMLAnchorElement
                       )?.href || '',
                     thumbnail:
-                      thumbEl?.getAttribute(
-                        'data-src',
-                      ) ||
-                      thumbEl?.getAttribute(
-                        'src',
-                      ) ||
-                      '',
+                      finalThumb,
                     duration:
                       item
                         .querySelector(
@@ -177,31 +205,36 @@ export async function crawlCategoryAction(
                   (v) =>
                     v.url &&
                     v.title &&
-                    v.thumbnail,
+                    v.thumbnail &&
+                    v.thumbnail !== '',
                 );
             },
             siteConfig,
           );
 
-        if (videos.length > 0) {
+        if (
+          extractedVideos.length > 0
+        ) {
           console.log(
-            `✅ [${siteName}] ${videos.length} vídeos novos.`,
+            `✅ [${siteName}] Inserindo ${extractedVideos.length} vídeos.`,
           );
-          for (const v of videos) {
-            const vSlug = v.title
+          for (const v of extractedVideos) {
+            const videoSlug = v.title
               .toLowerCase()
               .replace(/ /g, '-')
               .replace(/[^\w-]+/g, '')
               .slice(0, 150);
             await prisma.video.upsert({
-              where: { slug: vSlug },
+              where: {
+                slug: videoSlug,
+              },
               update: {
                 thumbnail: v.thumbnail,
                 duration: v.duration,
               },
               create: {
                 title: v.title,
-                slug: vSlug,
+                slug: videoSlug,
                 thumbnail: v.thumbnail,
                 externalUrl: v.url,
                 duration: v.duration,
@@ -221,20 +254,20 @@ export async function crawlCategoryAction(
           }
         } else {
           console.warn(
-            `⚠️ [${siteName}] Nenhum vídeo extraído.`,
+            `⚠️ [${siteName}] Nenhum vídeo extraído. Verificando DOM...`,
           );
         }
-      } catch (e) {
+      } catch (siteError) {
         console.error(
           `❌ [${siteName}] Erro:`,
-          e,
+          siteError,
         );
       }
     }
   } finally {
     await browser.close();
     console.log(
-      `🏁 [MOTOR] Finalizado: ${categorySlug}\n`,
+      `🏁 [MOTOR] Ciclo finalizado para: ${categorySlug}\n`,
     );
   }
 }
