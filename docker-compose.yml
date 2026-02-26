@@ -49,6 +49,8 @@ services:
       - N8N_PORT=5678
       - NODE_ENV=production
       - WEBHOOK_URL=https://n8n.dotf4p.com/ # Quando você configurar o subdomínio na Cloudflare
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_TRUST_PROXY=true
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
