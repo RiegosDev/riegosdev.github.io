@@ -51,6 +51,7 @@ services:
       - WEBHOOK_URL=https://n8n.dotf4p.com/ # Quando você configurar o subdomínio na Cloudflare
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
       - N8N_TRUST_PROXY=true
+      - EXECUTIONS_DATA_PRUNE=true # Bônus: evita que os logs de execução entupam seu disco
     volumes:
       - n8n_data:/home/node/.n8n
     networks:
