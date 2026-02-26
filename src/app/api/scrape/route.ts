@@ -4,7 +4,10 @@ import {
 } from 'next/server';
 import { discoverNewCategoriesAction } from '@/actions/discovery.actions';
 import { crawlCategoryAction } from '@/actions/scraper.actions';
-import { refreshExistingContentAction } from '@/actions/maintenance.actions';
+import {
+  refreshExistingContentAction,
+  cleanBrokenVideosAction,
+} from '@/actions/maintenance.actions';
 
 export const dynamic = 'force-dynamic';
 export const maxDuration = 300;
@@ -12,7 +15,7 @@ export const maxDuration = 300;
 export async function POST(
   request: NextRequest,
 ) {
-  const startTime = Date.now(); // ⏱️ Agora será usado em todos os logs [cite: 2026-02-16]
+  const startTime = Date.now();
 
   try {
     const authHeader =
@@ -52,8 +55,6 @@ export async function POST(
       console.log(
         `✅ [JOB] Manutenção finalizada em ${Date.now() - startTime}ms`,
       );
-
-      // Removemos o 'success: true' daqui pois ele já vem desestruturado do 'result' [cite: 2026-02-16]
       return NextResponse.json({
         ...result,
         message:
@@ -71,7 +72,6 @@ export async function POST(
       console.log(
         `✅ [JOB] Discovery finalizado em ${Date.now() - startTime}ms`,
       );
-
       return NextResponse.json({
         success: true,
         message:
@@ -100,10 +100,29 @@ export async function POST(
       console.log(
         `✅ [JOB] Scrape focado finalizado em ${Date.now() - startTime}ms`,
       );
-
       return NextResponse.json({
         success: true,
         message: `Categoria ${categorySlug} atualizada.`,
+      });
+    }
+
+    // 🗑️ COMANDO 4: CLEANUP (Verifica e remove vídeos offline/404)
+    if (command === 'CLEANUP') {
+      console.log(
+        `🧹 [JOB] Iniciando limpeza de ${limit || 100} vídeos...`,
+      );
+      const result =
+        await cleanBrokenVideosAction(
+          limit || 100,
+        );
+
+      console.log(
+        `✅ [JOB] Limpeza finalizada em ${Date.now() - startTime}ms`,
+      );
+      return NextResponse.json({
+        ...result,
+        message:
+          'Limpeza de vídeos quebrados concluída.',
       });
     }
 
