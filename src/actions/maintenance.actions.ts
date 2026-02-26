@@ -53,20 +53,27 @@ export async function cleanBrokenVideosAction(
     });
 
   let removedCount = 0;
+  let current = 1;
 
   for (const video of videos) {
-    if (!video.externalUrl) continue;
+    if (!video.externalUrl) {
+      current++;
+      continue;
+    }
 
-    // 🚀 Lógica de Timeout para o Fetch nativo
+    // 🚀 LOG DE PROGRESSO: Para você saber que não travou!
+    console.log(
+      `⏳ [${current}/${videos.length}] Checando: ${video.slug.slice(0, 30)}...`,
+    );
+
     const controller =
       new AbortController();
     const timeoutId = setTimeout(
       () => controller.abort(),
       5000,
-    ); // 5 segundos
+    );
 
     try {
-      // Passamos o 'signal' do controller em vez do 'timeout'
       const response = await fetch(
         video.externalUrl,
         {
@@ -75,24 +82,33 @@ export async function cleanBrokenVideosAction(
         },
       );
 
-      if (response.status === 404) {
+      // Alguns sites adultos retornam 410 Gone quando o vídeo é deletado
+      if (
+        response.status === 404 ||
+        response.status === 410
+      ) {
         console.log(
-          `🗑️ [REMOVING] Vídeo offline (404): ${video.slug}`,
+          `🗑️ [REMOVING] Vídeo offline (${response.status}): ${video.slug}`,
         );
         await prisma.video.delete({
           where: { id: video.id },
         });
         removedCount++;
+      } else {
+        // 🚀 LOG DE SUCESSO SILENCIOSO: Mostra que passou liso
+        console.log(
+          `✅ [OK] Status: ${response.status}`,
+        );
       }
     } catch {
-      // 🚀 Sem o (e), o ESLint fica feliz. Cai aqui se der timeout ou a rede oscilar.
       console.warn(
-        `⚠️ Erro/Timeout ao checar ${video.slug}, pulando...`,
+        `⚠️ [TIMEOUT] Site não respondeu a tempo, pulando...`,
       );
     } finally {
-      // Limpa o timer da memória para a VPS não chorar
       clearTimeout(timeoutId);
     }
+
+    current++;
   }
 
   return {
