@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+// 🚀 Removido o import do Link do next/link
 
 const prisma = new PrismaClient();
 
@@ -26,7 +26,7 @@ export async function generateMetadata({
     };
 
   return {
-    title: `${category.name} - Vídeos Gratuitos e em Alta`, // 🚀 Vai renderizar: "Amador - Vídeos Gratuitos... | DotF4p.com"
+    title: `${category.name} - Vídeos Gratuitos e em Alta`,
     description: `Assista aos melhores vídeos da categoria ${category.name} em alta qualidade no DotF4p.com.`,
   };
 }
@@ -81,9 +81,13 @@ export default async function CategoryPage({
         {category.videos.map((item) => {
           const vid = item.video;
           return (
-            // O Link aponta direto pra rota /out que já tem o RedirectTimer!
-            <Link
-              href={`/out/${vid.slug}`}
+            // 🚀 REFACTOR: Tag <a> nativa apontando para o dinheiro (CPM)!
+            <a
+              href={
+                vid.externalUrl || '#'
+              }
+              target='_blank'
+              rel='noopener noreferrer nofollow'
               key={vid.id}
               className='group flex flex-col bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-pink-500 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] transition-all'>
               <div className='relative aspect-video bg-zinc-950'>
@@ -103,7 +107,7 @@ export default async function CategoryPage({
                   {vid.title}
                 </h3>
               </div>
-            </Link>
+            </a>
           );
         })}
       </div>
