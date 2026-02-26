@@ -28,11 +28,12 @@ model Video {
 }
 
 model Category {
-  id     String          @id @default(cuid())
-  name   String          @unique
-  slug   String          @unique
-  icon   String?
-  videos VideoCategory[]
+  id        String          @id @default(cuid())
+  name      String          @unique
+  slug      String          @unique
+  icon      String?
+  updatedAt DateTime        @default(now()) @updatedAt
+  videos    VideoCategory[]
 }
 
 model VideoCategory {

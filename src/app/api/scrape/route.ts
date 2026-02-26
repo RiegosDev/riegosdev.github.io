@@ -1,19 +1,19 @@
-// src/app/api/scrape/route.ts
 import {
   NextRequest,
   NextResponse,
 } from 'next/server';
 import { discoverNewCategoriesAction } from '@/actions/discovery.actions';
 import { crawlCategoryAction } from '@/actions/scraper.actions';
+import { refreshExistingContentAction } from '@/actions/maintenance.actions';
 
 export const dynamic = 'force-dynamic';
-// 🚀 Aumentamos o tempo limite de execução do Next.js (Vercel/Docker)
-export const maxDuration = 300; // 5 minutos (limite padrão do plano Pro, ajuste se necessário)
+export const maxDuration = 300;
 
 export async function POST(
   request: NextRequest,
 ) {
-  const startTime = Date.now();
+  const startTime = Date.now(); // ⏱️ Agora será usado em todos os logs [cite: 2026-02-16]
+
   try {
     const authHeader =
       request.headers.get(
@@ -34,19 +34,44 @@ export async function POST(
 
     const {
       command,
+      limit,
       categorySlug,
       targetUrl,
     } = await request.json();
 
+    // 🏎️ COMANDO 1: MANUTENÇÃO (Atualiza o conteúdo existente)
+    if (command === 'MAINTENANCE') {
+      console.log(
+        `🧹 [JOB] Iniciando manutenção de ${limit || 5} categorias...`,
+      );
+      const result =
+        await refreshExistingContentAction(
+          limit || 5,
+        );
+
+      console.log(
+        `✅ [JOB] Manutenção finalizada em ${Date.now() - startTime}ms`,
+      );
+
+      // Removemos o 'success: true' daqui pois ele já vem desestruturado do 'result' [cite: 2026-02-16]
+      return NextResponse.json({
+        ...result,
+        message:
+          'Manutenção concluída.',
+      });
+    }
+
+    // 🛰️ COMANDO 2: DISCOVERY (Busca novas categorias)
     if (command === 'DISCOVERY') {
       console.log(
-        '🤖 [API] 🚀 [JOB] Iniciando Discovery Real...',
+        '🤖 [JOB] Iniciando Discovery de novas categorias...',
       );
-      // 🚀 MUDANÇA: Agora usamos AWAIT para o processo não ser morto pelo Docker
       await discoverNewCategoriesAction();
+
       console.log(
         `✅ [JOB] Discovery finalizado em ${Date.now() - startTime}ms`,
       );
+
       return NextResponse.json({
         success: true,
         message:
@@ -54,6 +79,7 @@ export async function POST(
       });
     }
 
+    // 🏗️ COMANDO 3: SCRAPE (Focado em uma única categoria)
     if (command === 'SCRAPE') {
       if (!categorySlug || !targetUrl) {
         return NextResponse.json(
@@ -64,18 +90,20 @@ export async function POST(
         );
       }
       console.log(
-        `🤖 [API] Raspagem iniciada: ${categorySlug} (AGUARDANDO)`,
+        `🚀 [JOB] Raspagem focada: ${categorySlug}`,
       );
-
-      // 🚀 MUDANÇA: Esperamos a raspagem terminar antes de responder ao n8n
       await crawlCategoryAction(
         categorySlug,
         targetUrl,
       );
 
+      console.log(
+        `✅ [JOB] Scrape focado finalizado em ${Date.now() - startTime}ms`,
+      );
+
       return NextResponse.json({
         success: true,
-        message: `Raspagem da categoria ${categorySlug} concluída.`,
+        message: `Categoria ${categorySlug} atualizada.`,
       });
     }
 
@@ -86,7 +114,7 @@ export async function POST(
     // eslint-disable-next-line
   } catch (error: any) {
     console.error(
-      '❌ [API] Erro na rota:',
+      `❌ [API] Erro após ${Date.now() - startTime}ms:`,
       error.message,
     );
     return NextResponse.json(

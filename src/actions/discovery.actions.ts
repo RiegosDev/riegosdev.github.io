@@ -2,10 +2,9 @@
 'use server';
 
 import puppeteer from 'puppeteer-extra';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma'; // 🚀 Singleton centralizado
 import { SCRAPER_DICTIONARY } from '../utils/scraper.config';
-
-const prisma = new PrismaClient();
+import { crawlCategoryAction } from './scraper.actions';
 
 export async function discoverNewCategoriesAction() {
   const browser =
@@ -36,93 +35,98 @@ export async function discoverNewCategoriesAction() {
     });
 
     const discoveredSlugs =
-      await page.evaluate(
-        (config) => {
-          const links = Array.from(
-            document.querySelectorAll(
-              'a',
-            ),
-          );
-          const validSlugs: string[] =
-            [];
+      await page.evaluate((config) => {
+        const links = Array.from(
+          document.querySelectorAll(
+            'a',
+          ),
+        );
+        const validSlugs: string[] = [];
 
-          links.forEach((a) => {
-            const href =
-              a.getAttribute('href') ||
-              '';
+        links.forEach((a) => {
+          const href =
+            a.getAttribute('href') ||
+            '';
+          const isCategoryLink =
+            config.linkIncludes.some(
+              (inc) =>
+                href.includes(inc),
+            );
+          const isBlacklisted =
+            config.linkExcludes.some(
+              (exc) =>
+                href.includes(exc),
+            );
 
-            // 🚀 Agora 'includes' existe de verdade (vem do config.linkIncludes)
-            const isCategoryLink =
-              config.linkIncludes.some(
-                (inc) =>
-                  href.includes(inc),
-              );
-
-            // 🛡️ A BARREIRA: Se tiver qualquer palavra da blacklist, ignora na hora!
-            const isBlacklisted =
-              config.linkExcludes.some(
-                (exc) =>
-                  href.includes(exc),
-              );
-
+          if (
+            isCategoryLink &&
+            !isBlacklisted &&
+            !href.includes('hd-porn')
+          ) {
+            const parts = href
+              .split('/')
+              .filter(Boolean);
+            const slug = parts.pop();
             if (
-              isCategoryLink &&
-              !isBlacklisted &&
-              !href.includes('hd-porn')
+              slug &&
+              slug.length > 2 &&
+              slug.length < 30
             ) {
-              const parts = href
-                .split('/')
-                .filter(Boolean);
-              const slug = parts.pop();
-              if (
-                slug &&
-                typeof slug ===
-                  'string' &&
-                slug.length > 2 &&
-                slug.length < 30
-              ) {
-                validSlugs.push(slug);
-              }
+              validSlugs.push(slug);
             }
-          });
-          return validSlugs;
-        },
-        {
-          linkIncludes:
-            config.linkIncludes,
-          linkExcludes:
-            config.linkExcludes,
-        }, // 🚀 Passando o config completo
-      );
+          }
+        });
+        return validSlugs;
+      }, config);
 
     console.log(
-      `🔎 Descobertas ${discoveredSlugs.length} categorias potenciais.`,
+      `🔎 [DISCOVERY] Processando ${discoveredSlugs.length} potenciais categorias...`,
     );
 
     for (const slug of Array.from(
       new Set(discoveredSlugs),
     )) {
-      await prisma.category.upsert({
-        where: { slug },
-        update: {},
-        create: {
+      // Upsert: se não existir cria, se existir não faz nada, mas retorna o objeto
+      const category =
+        await prisma.category.upsert({
+          where: { slug },
+          update: {},
+          create: {
+            slug,
+            name:
+              slug
+                .charAt(0)
+                .toUpperCase() +
+              slug
+                .slice(1)
+                .replace(/-/g, ' '),
+          },
+          include: {
+            _count: {
+              select: { videos: true },
+            },
+          },
+        });
+
+      // 🚀 Lógica inteligente: Se a categoria for nova ou estiver com 0 vídeos, popula agora!
+      if (
+        category._count.videos === 0
+      ) {
+        console.log(
+          `🆕 [DISCOVERY] Categoria vazia ou nova: ${slug}. Populando...`,
+        );
+        await crawlCategoryAction(
           slug,
-          name:
-            slug
-              .charAt(0)
-              .toUpperCase() +
-            slug
-              .slice(1)
-              .replace(/-/g, ' '),
-        },
-      });
+          slug,
+        );
+      }
     }
 
     return discoveredSlugs;
     // eslint-disable-next-line
   } catch (error: any) {
     console.error(
-      '❌ [DISCOVERY] Erro na mineração:',
+      '❌ [DISCOVERY] Erro Crítico:',
       error.message,
     );
     throw error;
