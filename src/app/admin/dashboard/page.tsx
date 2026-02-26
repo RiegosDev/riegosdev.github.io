@@ -76,6 +76,10 @@ export default async function DashboardPage() {
                     lastUpdate.createdAt,
                   ).toLocaleString(
                     'pt-BR',
+                    {
+                      timeZone:
+                        'America/Sao_Paulo',
+                    },
                   )
                 : 'Aguardando Robô...'}
             </div>

@@ -56,5 +56,7 @@
   "WillLuke.nextjs.hasPrompted": true,
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
-  }
+  },
+  "tailwindCSS.hovers": false,
+  "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
 }

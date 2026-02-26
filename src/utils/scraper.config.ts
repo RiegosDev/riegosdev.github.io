@@ -1,4 +1,4 @@
-import { ScraperDictionary } from '@/repositories/types';
+import { ScraperDictionary } from '@/models';
 
 const epornerBaseSelectors = {
   container:

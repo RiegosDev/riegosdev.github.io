@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { VideoItem } from '@/models';
 import { Play } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import clsx from 'clsx';
+// 🚀 Removido o import do Link do Next.js
 
 interface VideoCardProps {
   video: VideoItem;
@@ -17,11 +17,15 @@ export default function VideoCard({
   const [isHovered, setIsHovered] =
     useState(false);
 
+  // Fallback de segurança, caso algum vídeo legado não tenha URL externa
+  const targetLink =
+    video.externalUrl || '#';
+
   return (
-    <Link
-      href={`/out/${video.slug}`}
+    <a
+      href={targetLink}
       target='_blank'
-      rel='noopener noreferrer'
+      rel='noopener noreferrer nofollow' // 🚀 nofollow adicionado para blindar seu SEO
       onMouseEnter={() =>
         setIsHovered(true)
       }
@@ -61,7 +65,7 @@ export default function VideoCard({
           </div>
         </div>
 
-        {/* 🚀 Badge de tempo com z-10 nativo */}
+        {/* Badge de tempo */}
         <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-10'>
           {video.duration}
         </div>
@@ -84,6 +88,6 @@ export default function VideoCard({
           </span>
         </div>
       </div>
-    </Link>
+    </a>
   );
 }

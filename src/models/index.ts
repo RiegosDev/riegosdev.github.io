@@ -1,8 +1,6 @@
 // src/models/index.ts
+import React from 'react';
 
-/**
- * Interface para Categorias
- */
 export interface Category {
   id: string;
   name: string;
@@ -10,10 +8,6 @@ export interface Category {
   icon?: React.ReactNode;
 }
 
-/**
- * Interface Principal de Vídeo
- * Atualizada para suportar a relação plural do Prisma (Muitos-para-Muitos)
- */
 export interface VideoItem {
   id: string;
   title: string;
@@ -23,34 +17,49 @@ export interface VideoItem {
   views: string;
   source: string;
   publishedAt: string;
-  externalUrl?: string;
+  externalUrl?: string; // 🚀 Sempre esteve aqui, agora vai reinar absoluto!
   isAiGenerated?: boolean;
   width?: number;
   height?: number;
-
-  /**
-   * Relação de Categorias
-   * Substitui o antigo campo 'category: string' para permitir
-   * que um vídeo pertença a múltiplas categorias (ex: Tech + Recommended)
-   */
   categories?: {
     categoryId: string;
     category: Category;
   }[];
 }
 
-/**
- * Interface para itens de navegação
- */
 export interface NavItem {
   label: string;
   href: string;
 }
 
-/**
- * Modos de visualização para o Grid de vídeos
- */
 export enum ViewMode {
   Grid = 'GRID',
   List = 'LIST',
 }
+
+// ============================================================================
+// 🚀 TIPAGENS DO MOTOR DE SCRAPING (Migradas do antigo types.ts)
+// ============================================================================
+export interface ScraperSelectors {
+  container: string;
+  title: string;
+  link: string;
+  thumbnail: string;
+  duration: string;
+}
+
+export interface ScraperSettings {
+  baseUrl: string;
+  categoryPath: string;
+  linkIncludes: string[];
+  linkExcludes: string[];
+  selectors: ScraperSelectors;
+  titleSelectors: string[];
+  thumbSelectors: string[];
+  durationSelectors: string[];
+}
+
+export type ScraperDictionary = Record<
+  string,
+  ScraperSettings
+>;

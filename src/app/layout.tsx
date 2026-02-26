@@ -5,8 +5,14 @@ import Header from '@/components/Header';
 import QuickCategoriesNav from '@/components/QuickCategoriesNav';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
 import { AgeGate } from '@/components/AgeGate';
+import type { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
+  // 🚀 FUNDAMENTAL: Define a URL base para o Next.js montar os links absolutos das imagens
+  metadataBase: new URL(
+    'https://dotf4p.com',
+  ),
+
   title: {
     default:
       'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
@@ -20,6 +26,29 @@ export const metadata = {
     'hub adulto',
     'dotf4p',
   ],
+
+  // 🌐 OPEN GRAPH (WhatsApp, Telegram, Facebook, LinkedIn)
+  openGraph: {
+    title:
+      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
+    description:
+      'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+    url: 'https://dotf4p.com',
+    siteName: 'DotF4p',
+    locale: 'pt_BR',
+    type: 'website',
+    // O Next.js já vai puxar o opengraph-image.png da raiz do /src/app automaticamente,
+    // mas declarar o OG aqui garante que o WhatsApp leia o título e a descrição certos.
+  },
+
+  // 🐦 TWITTER / X (Também lido por alguns agregadores e o Discord)
+  twitter: {
+    card: 'summary_large_image', // Exige que a imagem seja o card grande (1200x630)
+    title:
+      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
+    description:
+      'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+  },
 };
 
 export default async function RootLayout({
