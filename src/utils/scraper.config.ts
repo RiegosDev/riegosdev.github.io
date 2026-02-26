@@ -1,5 +1,14 @@
 import { ScraperDictionary } from '@/repositories/types';
 
+const epornerBaseSelectors = {
+  container:
+    '.mbimg, .vbox, .post-container',
+  title: '.mbcontent a img',
+  link: '.mbcontent a',
+  thumbnail: '.mbcontent img',
+  duration: '.mvhdico span',
+};
+
 // Mapeamento dos domínios. O motor vai testar os seletores na ordem do array!
 export const SCRAPER_DICTIONARY: ScraperDictionary =
   {
@@ -20,14 +29,34 @@ export const SCRAPER_DICTIONARY: ScraperDictionary =
         'ped',
         'toddler',
       ],
-      selectors: {
-        container:
-          '.mbimg, .vbox, .post-container', // .mbimg é o que você achou agora!
-        title: '.mbcontent a img', // Pegamos o alt da imagem se o texto falhar
-        link: '.mbcontent a',
-        thumbnail: '.mbcontent img',
-        duration: '.mvhdico span',
-      },
+      selectors: epornerBaseSelectors,
+      titleSelectors: [
+        'a[href*="/video-"]',
+      ],
+      thumbSelectors: [
+        'img.post-thumbnail',
+      ],
+      durationSelectors: [
+        '.m_duration',
+      ],
+    },
+    // 🚀 O PULO DO GATO: Adicionamos as TAGS como uma fonte nova
+    'eporner.com-tags': {
+      baseUrl:
+        'https://www.eporner.com',
+      categoryPath: '/tag/',
+      linkIncludes: ['/tag/'],
+      linkExcludes: [
+        'child',
+        'underage',
+        'kid',
+        'kids',
+        'illegal',
+        'rape',
+        'ped',
+        'toddler',
+      ],
+      selectors: epornerBaseSelectors,
       titleSelectors: [
         'a[href*="/video-"]',
       ],

@@ -42,7 +42,7 @@ export default async function Page({
     );
 
     const currentCategoryName =
-      categoryQueries.getCategoryName(
+      await categoryQueries.getCategoryName(
         activeCategory || '',
         searchQuery,
       );
