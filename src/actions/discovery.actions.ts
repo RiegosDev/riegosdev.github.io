@@ -86,7 +86,6 @@ export async function discoverNewCategoriesAction() {
     for (const slug of Array.from(
       new Set(discoveredSlugs),
     )) {
-      // Upsert: se não existir cria, se existir não faz nada, mas retorna o objeto
       const category =
         await prisma.category.upsert({
           where: { slug },
@@ -108,12 +107,12 @@ export async function discoverNewCategoriesAction() {
           },
         });
 
-      // 🚀 Lógica inteligente: Se a categoria for nova ou estiver com 0 vídeos, popula agora!
+      // 🚀 Se for nova ou estiver zerada, já faz o primeiro scrape
       if (
         category._count.videos === 0
       ) {
         console.log(
-          `🆕 [DISCOVERY] Categoria vazia ou nova: ${slug}. Populando...`,
+          `🆕 [DISCOVERY] Populando nova categoria: ${slug}`,
         );
         await crawlCategoryAction(
           slug,
