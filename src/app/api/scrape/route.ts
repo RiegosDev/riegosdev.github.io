@@ -6,11 +6,13 @@ import {
 import { discoverNewCategoriesAction } from '@/actions/discovery.actions';
 import { crawlCategoryAction } from '@/actions/scraper.actions';
 
+// 🚀 Aumentamos o tempo limite de execução do Next.js (Vercel/Docker)
+export const maxDuration = 300; // 5 minutos (limite padrão do plano Pro, ajuste se necessário)
+
 export async function POST(
   request: NextRequest,
 ) {
   try {
-    // 1. SEGURANÇA ÚNICA E SÓLIDA
     const authHeader =
       request.headers.get(
         'x-api-secret',
@@ -22,38 +24,29 @@ export async function POST(
       !secret ||
       authHeader !== secret
     ) {
-      console.warn(
-        '🚨 [API] Bloqueio: Crachá inválido ou ausente.',
-      );
       return NextResponse.json(
         { error: 'Acesso Negado.' },
         { status: 401 },
       );
     }
 
-    // 2. PARSE DO JSON (Garante que o n8n está mandando RAW JSON)
     const {
       command,
       categorySlug,
       targetUrl,
     } = await request.json();
 
-    // 3. ROTEAMENTO
     if (command === 'DISCOVERY') {
       console.log(
-        '🤖 [API] Iniciando mapeamento de categorias em BACKGROUND...',
+        '🤖 [API] Iniciando mapeamento de categorias... (AGUARDANDO)',
       );
-      discoverNewCategoriesAction().catch(
-        (e) =>
-          console.error(
-            'Erro no discovery bg:',
-            e,
-          ),
-      );
+      // 🚀 MUDANÇA: Agora usamos AWAIT para o processo não ser morto pelo Docker
+      await discoverNewCategoriesAction();
+
       return NextResponse.json({
         success: true,
         message:
-          'Mapeamento iniciado em segundo plano.',
+          'Mapeamento de categorias concluído com sucesso.',
       });
     }
 
@@ -67,20 +60,18 @@ export async function POST(
         );
       }
       console.log(
-        `🤖 [API] Raspagem iniciada em BACKGROUND: ${categorySlug}`,
+        `🤖 [API] Raspagem iniciada: ${categorySlug} (AGUARDANDO)`,
       );
-      crawlCategoryAction(
+
+      // 🚀 MUDANÇA: Esperamos a raspagem terminar antes de responder ao n8n
+      await crawlCategoryAction(
         categorySlug,
         targetUrl,
-      ).catch((e) =>
-        console.error(
-          'Erro no scrape bg:',
-          e,
-        ),
       );
+
       return NextResponse.json({
         success: true,
-        message: `Raspagem da categoria ${categorySlug} iniciada em background.`,
+        message: `Raspagem da categoria ${categorySlug} concluída.`,
       });
     }
 
@@ -95,7 +86,10 @@ export async function POST(
       error.message,
     );
     return NextResponse.json(
-      { error: 'Erro interno.' },
+      {
+        error: 'Erro interno.',
+        details: error.message,
+      },
       { status: 500 },
     );
   }
