@@ -125,18 +125,6 @@ export default async function DashboardPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className='bg-dark-900 border-white/5'>
-          <CardHeader>
-            <CardTitle className='text-sm font-medium text-slate-400'>
-              Vídeos Minerados
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='text-4xl font-black text-white'>
-              {totalVideos}
-            </div>
-          </CardContent>
-        </Card>
 
         {/* 🚀 Card Novo: Monitor de Cliques */}
         <Card className='bg-dark-900 border-white/5'>
@@ -181,41 +169,6 @@ export default async function DashboardPage() {
           <CardContent>
             <div className='text-4xl font-black text-white'>
               {totalVideos}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 🚀 Card Novo: Monitor de Cliques */}
-        <Card className='bg-dark-900 border-rose-500/20'>
-          <CardHeader className='flex flex-row items-center justify-between pb-2'>
-            <CardTitle className='text-sm font-medium text-slate-400'>
-              Cliques (Live)
-            </CardTitle>
-            <MousePointerClick className='w-4 h-4 text-rose-500' />
-          </CardHeader>
-          <CardContent>
-            <div className='text-xs space-y-1 font-mono text-slate-400'>
-              {lastClicks.map(
-                (click, i) => (
-                  <p
-                    key={i}
-                    className='truncate border-b border-white/5 pb-1'>
-                    {click
-                      .split(',')[0]
-                      .replace(
-                        /"/g,
-                        '',
-                      )}{' '}
-                    -{' '}
-                    {click
-                      .split(',')[2]
-                      ?.replace(
-                        /"/g,
-                        '',
-                      )}
-                  </p>
-                ),
-              )}
             </div>
           </CardContent>
         </Card>
