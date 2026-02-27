@@ -27,11 +27,8 @@ export default function VideoCard({
     // Dá um tempinho de 200ms para o navegador focar na aba do vídeo novo que abriu
     setTimeout(() => {
       // Redireciona a aba original para o Direct Link da Adsterra (o primeiro do array)
-      window.open(
-        CPM_REPOSITORY.globalScripts[0]
-          .src,
-        '_blank',
-      );
+      window.location.href =
+        CPM_REPOSITORY.globalScripts[0].src;
     }, 200);
   };
 
