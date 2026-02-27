@@ -11,7 +11,7 @@ export const CPM_REPOSITORY = {
     },
     {
       id: 'hill-tops',
-      src: 'https://shameful-fix.com/bF3iV.0bPJ3zp-vSbnmaVLJHZnD/0/2_OcDpIL2nNsDCIF1YLWTTY/4/MpjdYg0qMcjvku',
+      src: 'https://shameful-fix.com/hkuMDz',
     },
   ],
 
