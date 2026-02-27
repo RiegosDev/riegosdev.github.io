@@ -7,6 +7,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import LogoutButton from '@/components/Admin/LogoutButton';
+import {
+  Download,
+  MousePointerClick,
+} from 'lucide-react'; // 🚀 Ícones novos
+import fs from 'fs/promises';
+import path from 'path';
 export const dynamic = 'force-dynamic'; // Isso impede o erro de prerender no build
 
 const prisma = new PrismaClient();
@@ -23,6 +29,30 @@ export default async function DashboardPage() {
     await prisma.video.findFirst({
       orderBy: { createdAt: 'desc' },
     });
+  // 🚀 Lógica Sênior: Lendo o CSV direto do disco para o Dashboard
+  let lastClicks: string[] = [];
+  try {
+    const logPath = path.join(
+      process.cwd(),
+      'logs',
+      'cliques.csv',
+    );
+    const fileContent =
+      await fs.readFile(
+        logPath,
+        'utf8',
+      );
+    // Pega as últimas 5 linhas e inverte para mostrar o mais recente no topo
+    lastClicks = fileContent
+      .trim()
+      .split('\n')
+      .slice(-5)
+      .reverse();
+  } catch {
+    lastClicks = [
+      'Aguardando primeiros cliques...',
+    ];
+  }
 
   return (
     <div className='p-8 space-y-6 bg-slate-900 min-h-screen text-white'>
@@ -30,7 +60,17 @@ export default async function DashboardPage() {
         <h1 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
           Painel de Controle
         </h1>
-        <LogoutButton />
+        <div className='flex gap-3'>
+          {/* 🚀 Botão de Download Direto */}
+          <a
+            href='/api/track-click'
+            download
+            className='flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-colors'>
+            <Download className='w-4 h-4' />{' '}
+            Exportar CSV
+          </a>
+          <LogoutButton />
+        </div>
       </div>
 
       <div className='grid gap-4 md:grid-cols-3'>
@@ -82,6 +122,100 @@ export default async function DashboardPage() {
                     },
                   )
                 : 'Aguardando Robô...'}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className='bg-dark-900 border-white/5'>
+          <CardHeader>
+            <CardTitle className='text-sm font-medium text-slate-400'>
+              Vídeos Minerados
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='text-4xl font-black text-white'>
+              {totalVideos}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 🚀 Card Novo: Monitor de Cliques */}
+        <Card className='bg-dark-900 border-white/5'>
+          <CardHeader className='flex flex-row items-center justify-between pb-2'>
+            <CardTitle className='text-sm font-medium text-slate-400'>
+              Cliques (Live)
+            </CardTitle>
+            <MousePointerClick className='w-4 h-4 text-rose-500' />
+          </CardHeader>
+          <CardContent>
+            <div className='text-xs space-y-1 font-mono text-slate-400'>
+              {lastClicks.map(
+                (click, i) => (
+                  <p
+                    key={i}
+                    className='truncate border-b border-white/5 pb-1'>
+                    {click
+                      .split(',')[0]
+                      .replace(
+                        /"/g,
+                        '',
+                      )}{' '}
+                    -{' '}
+                    {click
+                      .split(',')[2]
+                      ?.replace(
+                        /"/g,
+                        '',
+                      )}
+                  </p>
+                ),
+              )}
+            </div>
+          </CardContent>
+        </Card>
+        <Card className='bg-dark-900 border-white/5'>
+          <CardHeader>
+            <CardTitle className='text-sm font-medium text-slate-400'>
+              Vídeos Minerados
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='text-4xl font-black text-white'>
+              {totalVideos}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* 🚀 Card Novo: Monitor de Cliques */}
+        <Card className='bg-dark-900 border-rose-500/20'>
+          <CardHeader className='flex flex-row items-center justify-between pb-2'>
+            <CardTitle className='text-sm font-medium text-slate-400'>
+              Cliques (Live)
+            </CardTitle>
+            <MousePointerClick className='w-4 h-4 text-rose-500' />
+          </CardHeader>
+          <CardContent>
+            <div className='text-xs space-y-1 font-mono text-slate-400'>
+              {lastClicks.map(
+                (click, i) => (
+                  <p
+                    key={i}
+                    className='truncate border-b border-white/5 pb-1'>
+                    {click
+                      .split(',')[0]
+                      .replace(
+                        /"/g,
+                        '',
+                      )}{' '}
+                    -{' '}
+                    {click
+                      .split(',')[2]
+                      ?.replace(
+                        /"/g,
+                        '',
+                      )}
+                  </p>
+                ),
+              )}
             </div>
           </CardContent>
         </Card>

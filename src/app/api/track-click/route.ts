@@ -63,3 +63,33 @@ export async function POST(
     );
   }
 }
+export async function GET() {
+  try {
+    const filePath = path.join(
+      process.cwd(),
+      'logs',
+      'cliques.csv',
+    );
+    const fileBuffer =
+      await fs.readFile(filePath);
+
+    return new NextResponse(
+      fileBuffer,
+      {
+        headers: {
+          'Content-Type': 'text/csv',
+          'Content-Disposition':
+            'attachment; filename="dotf4p_cliques.csv"',
+        },
+      },
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        error:
+          'Log ainda não gerado ou vazio.',
+      },
+      { status: 404 },
+    );
+  }
+}

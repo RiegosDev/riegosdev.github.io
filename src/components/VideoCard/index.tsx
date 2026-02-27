@@ -22,20 +22,44 @@ export default function VideoCard({
   const targetLink =
     video.externalUrl || '#';
 
+  const handleTrackClick = () => {
+    fetch('/api/track-click', {
+      method: 'POST',
+      headers: {
+        'Content-Type':
+          'application/json',
+      },
+      body: JSON.stringify({
+        videoId: video.id,
+        title: video.title,
+        url: video.externalUrl,
+        source: video.source, // Ex: xhamster, eporner
+      }),
+      // 🚀 TÁTICA NINJA: keepalive garante que a requisição não seja cancelada
+      // mesmo se o navegador tentar pausar a aba original!
+      keepalive: true,
+    }).catch(() => {}); // Catch vazio pra não quebrar nada se a rede oscilar
+  };
+
   // 🚀 O BOTE DUPLO DO TRAFFIC BROKER
   const handleVideoClick = () => {
     // Dá um tempinho de 200ms para o navegador focar na aba do vídeo novo que abriu
     setTimeout(() => {
       // Redireciona a aba original para o Direct Link da Adsterra (o primeiro do array)
-      window.location.href =
-        CPM_REPOSITORY.globalScripts[0].src;
+      //   window.location.href =
+      //     CPM_REPOSITORY.globalScripts[0].src;
+      // }, 200);
+      window.open(
+        CPM_REPOSITORY.globalScripts[0]
+          .src,
+        '_blank',
+      );
     }, 200);
-    //   window.open(
-    //     CPM_REPOSITORY.globalScripts[0]
-    //       .src,
-    //     '_blank',
-    //   );
-    // }, 200);
+  };
+
+  const onCardClick = () => {
+    handleVideoClick();
+    handleTrackClick();
   };
 
   return (
@@ -43,7 +67,7 @@ export default function VideoCard({
       href={targetLink}
       target='_blank'
       rel='noopener noreferrer nofollow'
-      onClick={handleVideoClick} // 🚀 Gatilho da monetização ativado!
+      onClick={onCardClick} // 🚀 Gatilho da monetização ativado!
       onMouseEnter={() =>
         setIsHovered(true)
       }
