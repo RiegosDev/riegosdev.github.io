@@ -57,8 +57,18 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const videoCount =
-    await prisma.video.count();
+  // 🚀 Tática de Sênior: Protege o build do Docker!
+  let videoCount = 0;
+  try {
+    videoCount =
+      await prisma.video.count();
+  } catch (error) {
+    console.warn(
+      `⚠️ Build phase: Banco de dados inacessível no momento. Ignorando contagem inicial. ${error}`,
+    );
+  }
+
+  // A action getCategoriesWithStatsAction já tem try/catch internamente, então não quebra o build!
   const allCategories =
     await getCategoriesWithStatsAction();
 
