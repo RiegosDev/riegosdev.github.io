@@ -27,11 +27,14 @@ interface HeaderProps {
     slug: string;
     count: number;
   }[];
+  // 🚀 REFACTOR: Agora é só um número direto e reto!
+  totalVideoCount: number;
 }
 
 const Header: React.FC<HeaderProps> = ({
   quickNav,
   categories,
+  totalVideoCount, // 🚀 Desestruturando o número mágico
 }) => {
   const { isDarkMode, toggleTheme } =
     useNavigation();
@@ -50,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({
     setIsMobileCatDropdownOpen,
   ] = useState(false);
 
-  // 🚀 Trazendo de volta os estados do Desktop
+  // Estados do Desktop
   const [
     isCategoriesOpen,
     setIsCategoriesOpen,
@@ -84,7 +87,6 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      {/* O HEADER VISUAL FICA AQUI */}
       <header className='w-full bg-white/95 dark:bg-dark-950/95 backdrop-blur-md border-b border-gray-100 dark:border-white/5 shadow-xs relative z-50'>
         <div className='container mx-auto px-4'>
           <div className='flex items-center justify-between h-16 md:h-20 gap-4'>
@@ -155,13 +157,12 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* 🚀 NOVA BARRA INFERIOR DESKTOP (Categorias + QuickNav com recuo) */}
+        {/* BARRA INFERIOR DESKTOP */}
         {quickNav && (
           <div className='border-t border-gray-100 dark:border-white/5 hidden md:block'>
-            {/* md:px-8 e lg:px-12 dão aquele recuo maior na esquerda que você pediu */}
             <div className='container mx-auto px-4 md:px-8 lg:px-12'>
               <div className='flex items-center h-12'>
-                {/* 🚀 BOTÃO DE CATEGORIAS DESKTOP */}
+                {/* BOTÃO DE CATEGORIAS DESKTOP */}
                 <div
                   className='flex items-center h-full relative'
                   ref={categoriesRef}>
@@ -187,10 +188,9 @@ const Header: React.FC<HeaderProps> = ({
                     />
                   </button>
 
-                  {/* 🚀 SEPARADOR VISUAL | */}
                   <div className='h-5 w-[2px] bg-zinc-200 dark:bg-white/10 mr-4 rounded-full' />
 
-                  {/* 🚀 DROPDOWN DESKTOP */}
+                  {/* DROPDOWN DESKTOP */}
                   {isCategoriesOpen && (
                     <div className='absolute top-full left-0 mt-0 w-[600px] bg-white dark:bg-dark-900 shadow-2xl border border-gray-100 dark:border-white/10 rounded-b-xl p-6 z-[120] animate-in fade-in slide-in-from-top-2'>
                       <div className='grid grid-cols-4 gap-4 max-h-[400px] overflow-y-auto custom-scrollbar'>
@@ -201,13 +201,23 @@ const Header: React.FC<HeaderProps> = ({
                               false,
                             )
                           }
-                          className='col-span-4 text-[10px] font-black text-rose-500 border-b border-gray-100 dark:border-white/5 pb-2 mb-2 hover:underline'>
-                          VER TODAS AS
-                          CATEGORIAS (
-                          {
-                            categories.length
-                          }
-                          ) →
+                          className='col-span-4 flex items-center justify-between text-[10px] font-black text-rose-500 border-b border-gray-100 dark:border-white/5 pb-2 mb-2 hover:opacity-80 transition-opacity'>
+                          <span>
+                            VER TODAS AS
+                            CATEGORIAS (
+                            {
+                              categories.length
+                            }
+                            )
+                          </span>
+                          {/* 🚀 Contador Desktop aqui! */}
+                          <span className='bg-rose-500/10 px-2 py-1 rounded text-rose-500'>
+                            +{' '}
+                            {
+                              totalVideoCount
+                            }{' '}
+                            VÍDEOS →
+                          </span>
                         </Link>
                         {categories.map(
                           (c) => (
@@ -236,7 +246,6 @@ const Header: React.FC<HeaderProps> = ({
                   )}
                 </div>
 
-                {/* 🚀 O RESTO DA QUICK NAV (4k, 60fps, etc) */}
                 <div className='flex-1 overflow-hidden flex items-center h-full'>
                   {quickNav}
                 </div>
@@ -245,7 +254,6 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
-        {/* Exibe o quickNav puro no Mobile caso precise */}
         {quickNav && (
           <div className='border-t border-gray-100 dark:border-white/5 md:hidden'>
             {quickNav}
@@ -253,8 +261,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
       </header>
 
-      {/* MAGIA SÊNIOR: OS MENUS FICAM DE FORA DO <header> PARA FUGIR DO BACKDROP-BLUR */}
-
+      {/* MOBILE SEARCH */}
       {isMobileSearchOpen && (
         <div className='md:hidden fixed inset-0 bg-white dark:bg-dark-950 z-[100] p-4 flex items-center animate-in fade-in zoom-in-95 duration-200'>
           <SearchBar
@@ -268,6 +275,7 @@ const Header: React.FC<HeaderProps> = ({
         </div>
       )}
 
+      {/* MOBILE MENU */}
       {isMobileMenuOpen && (
         <div className='md:hidden fixed inset-x-0 top-[64px] bottom-0 bg-white dark:bg-dark-950 z-[100] overflow-y-auto animate-in fade-in slide-in-from-top-4 duration-200'>
           <div className='flex flex-col p-4 space-y-4'>
@@ -313,10 +321,23 @@ const Header: React.FC<HeaderProps> = ({
                         false,
                       )
                     }
-                    className='p-4 border-t border-zinc-100 dark:border-white/5 text-sm font-black text-rose-500 uppercase flex items-center justify-between bg-rose-50 dark:bg-rose-500/10'>
-                    Ver todas (
-                    {categories.length}){' '}
-                    <ChevronRight className='w-4 h-4' />
+                    className='p-4 border-t border-zinc-100 dark:border-white/5 text-sm font-black text-rose-500 uppercase flex flex-col gap-1 bg-rose-50 dark:bg-rose-500/10'>
+                    <div className='flex items-center justify-between'>
+                      <span>
+                        Ver todas (
+                        {
+                          categories.length
+                        }
+                        )
+                      </span>
+                      <ChevronRight className='w-4 h-4' />
+                    </div>
+                    {/* 🚀 Contador Mobile aqui! */}
+                    <span className='text-[10px] text-rose-400 tracking-wider'>
+                      +{' '}
+                      {totalVideoCount}{' '}
+                      VÍDEOS DISPONÍVEIS
+                    </span>
                   </Link>
                 </div>
               )}

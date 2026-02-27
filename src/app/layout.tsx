@@ -6,6 +6,7 @@ import QuickCategoriesNav from '@/components/QuickCategoriesNav';
 import { getCategoriesWithStatsAction } from '@/actions/category.actions';
 import { AgeGate } from '@/components/AgeGate';
 import type { Metadata } from 'next';
+import { prisma } from '@/lib/prisma';
 
 export const metadata: Metadata = {
   // 🚀 FUNDAMENTAL: Define a URL base para o Next.js montar os links absolutos das imagens
@@ -56,6 +57,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const videoCount =
+    await prisma.video.count();
   const allCategories =
     await getCategoriesWithStatsAction();
 
@@ -76,6 +79,9 @@ export default async function RootLayout({
                 }
                 quickNav={
                   <QuickCategoriesNav />
+                }
+                totalVideoCount={
+                  videoCount
                 }
               />
             </div>
