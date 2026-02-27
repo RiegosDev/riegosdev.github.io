@@ -5,7 +5,8 @@ import { VideoItem } from '@/models';
 import { Play } from 'lucide-react';
 import Image from 'next/image';
 import clsx from 'clsx';
-// 🚀 Removido o import do Link do Next.js
+// 🚀 Importando a sua mina de ouro!
+import { CPM_REPOSITORY } from '@/repositories/cpm.repository';
 
 interface VideoCardProps {
   video: VideoItem;
@@ -17,15 +18,26 @@ export default function VideoCard({
   const [isHovered, setIsHovered] =
     useState(false);
 
-  // Fallback de segurança, caso algum vídeo legado não tenha URL externa
+  // Fallback de segurança
   const targetLink =
     video.externalUrl || '#';
+
+  // 🚀 O BOTE DUPLO DO TRAFFIC BROKER
+  const handleVideoClick = () => {
+    // Dá um tempinho de 200ms para o navegador focar na aba do vídeo novo que abriu
+    setTimeout(() => {
+      // Redireciona a aba original para o Direct Link da Adsterra (o primeiro do array)
+      window.location.href =
+        CPM_REPOSITORY.globalScripts[0].src;
+    }, 200);
+  };
 
   return (
     <a
       href={targetLink}
       target='_blank'
-      rel='noopener noreferrer nofollow' // 🚀 nofollow adicionado para blindar seu SEO
+      rel='noopener noreferrer nofollow'
+      onClick={handleVideoClick} // 🚀 Gatilho da monetização ativado!
       onMouseEnter={() =>
         setIsHovered(true)
       }

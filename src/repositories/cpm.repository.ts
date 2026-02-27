@@ -3,7 +3,7 @@ export const CPM_REPOSITORY = {
   globalScripts: [
     {
       id: 'adsterra-pop',
-      src: 'https://pl28794499.effectivegatecpm.com/3d/4b/df/3d4bdf99a30f17ce3f09f85b4e7868f1.js',
+      src: 'https://www.effectivegatecpm.com/nagb8uy8u?key=e9ac058809eb46dfee35d761207aff98',
     },
     {
       id: 'juicyads-pop',
@@ -11,7 +11,7 @@ export const CPM_REPOSITORY = {
     },
     {
       id: 'hill-tops',
-      src: 'https://shameful-fix.com/bO3OVl0JP.3Yptv/bCm/VAJUZqDO0O2zOVD/Ij2/NXDUIP1yLFT-Y/4NMOjcY/0CMOjBkl',
+      src: 'https://shameful-fix.com/bF3iV.0bPJ3zp-vSbnmaVLJHZnD/0/2_OcDpIL2nNsDCIF1YLWTTY/4/MpjdYg0qMcjvku',
     },
   ],
 

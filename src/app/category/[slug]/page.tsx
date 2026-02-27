@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
+import VideoCard from '@/components/VideoCard';
+import { VideoItem } from '@/models'; // 🚀 Importamos o Model para tipar certinho
 
 const prisma = new PrismaClient();
 
@@ -70,37 +72,27 @@ export default async function CategoryPage({
         </p>
       </header>
 
-      {/* 🚀 REFACTOR: Classes Tailwind perfeitamente alinhadas com o VideoGrid da Home! */}
       <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4'>
         {category.videos.map((item) => {
           const vid = item.video;
-          return (
-            <a
-              href={
-                vid.externalUrl || '#'
-              }
-              target='_blank'
-              rel='noopener noreferrer nofollow'
-              key={vid.id}
-              className='group flex flex-col bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-pink-500 hover:shadow-[0_0_15px_rgba(219,39,119,0.3)] transition-all'>
-              <div className='relative aspect-video bg-zinc-950'>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={vid.thumbnail}
-                  alt={vid.title}
-                  className='object-cover w-full h-full group-hover:opacity-70 transition-opacity'
-                />
-                <div className='absolute bottom-2 right-2 bg-black/90 px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-300 z-10'>
-                  {vid.duration}
-                </div>
-              </div>
 
-              <div className='flex flex-col px-1 py-2'>
-                <h3 className='text-sm font-semibold text-zinc-200 line-clamp-2 leading-tight group-hover:text-pink-400 transition-colors'>
-                  {vid.title}
-                </h3>
-              </div>
-            </a>
+          // 🚀 O MAPEMENTO SÊNIOR: Ajusta a diferença entre Prisma e Front-end
+          const mappedVideo: VideoItem =
+            {
+              ...vid,
+              publishedAt: String(
+                vid.publishedAt,
+              ), // Resolve o erro do Date -> String
+              externalUrl:
+                vid.externalUrl ||
+                undefined, // Resolve o erro de null -> undefined
+            };
+
+          return (
+            <VideoCard
+              key={mappedVideo.id}
+              video={mappedVideo}
+            />
           );
         })}
       </div>
