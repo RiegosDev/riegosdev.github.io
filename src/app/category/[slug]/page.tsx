@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
 import { notFound } from 'next/navigation';
-// 🚀 Removido o import do Link do next/link
 
 const prisma = new PrismaClient();
 
@@ -8,7 +7,6 @@ interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }
 
-// 🚀 1. SEO SÊNIOR: Gera as meta tags dinâmicas para o Google ler!
 export async function generateMetadata({
   params,
 }: CategoryPageProps) {
@@ -31,14 +29,12 @@ export async function generateMetadata({
   };
 }
 
-// 🚀 2. SERVER FIRST: Renderiza o HTML pronto direto do servidor
 export default async function CategoryPage({
   params,
 }: CategoryPageProps) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
 
-  // Busca a categoria e os vídeos associados a ela pela tabela pivô
   const category =
     await prisma.category.findUnique({
       where: { slug },
@@ -50,21 +46,19 @@ export default async function CategoryPage({
           orderBy: {
             video: {
               publishedAt: 'desc',
-            }, // Traz os mais recentes primeiro
+            },
           },
-          take: 40, // Paginação inicial marota pra não pesar
+          take: 40,
         },
       },
     });
 
-  // Type Guard de elite
   if (!category) {
     return notFound();
   }
 
   return (
     <div className='min-h-screen bg-zinc-950 text-white p-4 md:p-8'>
-      {/* HEADER DA CATEGORIA */}
       <header className='mb-8 border-b border-zinc-800 pb-4'>
         <h1 className='text-3xl md:text-4xl font-black text-pink-500 uppercase tracking-wider'>
           {category.name}
@@ -76,12 +70,11 @@ export default async function CategoryPage({
         </p>
       </header>
 
-      {/* GRID DE VÍDEOS */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+      {/* 🚀 REFACTOR: Classes Tailwind perfeitamente alinhadas com o VideoGrid da Home! */}
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4'>
         {category.videos.map((item) => {
           const vid = item.video;
           return (
-            // 🚀 REFACTOR: Tag <a> nativa apontando para o dinheiro (CPM)!
             <a
               href={
                 vid.externalUrl || '#'
@@ -97,13 +90,13 @@ export default async function CategoryPage({
                   alt={vid.title}
                   className='object-cover w-full h-full group-hover:opacity-70 transition-opacity'
                 />
-                <div className='absolute bottom-2 right-2 bg-black/90 px-2 py-1 text-xs font-bold rounded text-zinc-300'>
+                <div className='absolute bottom-2 right-2 bg-black/90 px-1.5 py-0.5 text-[10px] font-bold rounded text-zinc-300 z-10'>
                   {vid.duration}
                 </div>
               </div>
 
-              <div className='p-4'>
-                <h3 className='text-sm font-semibold text-zinc-200 line-clamp-2 group-hover:text-pink-400 transition-colors'>
+              <div className='flex flex-col px-1 py-2'>
+                <h3 className='text-sm font-semibold text-zinc-200 line-clamp-2 leading-tight group-hover:text-pink-400 transition-colors'>
                   {vid.title}
                 </h3>
               </div>
@@ -112,7 +105,6 @@ export default async function CategoryPage({
         })}
       </div>
 
-      {/* ESPAÇO PARA PAGINAÇÃO NO FUTURO */}
       {category.videos.length ===
         40 && (
         <div className='mt-12 flex justify-center'>
