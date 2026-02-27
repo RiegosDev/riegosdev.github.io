@@ -8,3 +8,9 @@ adsterra.com, 5629221, DIRECT
 
 # HillTopAds
 hilltopads.com, 362000, DIRECT
+
+# Traffic Stars
+tsyndicate.com, 304204, DIRECT
+
+# Ez Mob
+ezmob.com, 304204, DIRECT

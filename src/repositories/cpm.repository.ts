@@ -6,8 +6,8 @@ export const CPM_REPOSITORY = {
       src: 'https://www.effectivegatecpm.com/nagb8uy8u?key=e9ac058809eb46dfee35d761207aff98',
     },
     {
-      id: 'juicyads-pop',
-      src: 'https://js.juicyads.com/jp.php?c=446413z2u264u4r2p294x2d474&u=https%3A%2F%2Fwww.juicyads.rocks',
+      id: 'ez-mob',
+      src: 'https://xml.qualiclicks.com/redirect?feed=1147968&auth=O77N&url=https://dotf4p.com&subid=&query=Adult Content,Conteúdo Adulto,Videos Grátis,Free Videos,Sex',
     },
     {
       id: 'hill-tops',
