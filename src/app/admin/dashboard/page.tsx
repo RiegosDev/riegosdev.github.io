@@ -119,23 +119,29 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className='text-xs space-y-1 font-mono text-slate-400'>
-              {lastClicks.map((click, i) => {
-                // Previne erros se a linha for a string de fallback
-                if (click === 'Aguardando primeiros cliques...') {
-                  return <p key={i}>{click}</p>;
+               {lastClicks.map((click, i) => {
+                if (click === 'Aguardando primeiros  cliques...') {
+                return <p key={i}>{click}</p>;
                 }
-                
-                // Quebra a linha e mapeia: [0] Timestamp, [1] Data, [2] ID, [3] Título
-                const parts = click.split(',');
-                const date = parts[1]?.replace(/"/g, '') || '';
-                const title = parts[3]?.replace(/"/g, '') || 'Sem título';
+  
+  // 🚀 O pulo do gato: cortamos exatamente no limite das aspas!
+                const parts = click.split('","');
+  
+  // parts[0] = "1740845312000  (Timestamp quebrado na aspa inicial)
+  // parts[1] = 01/03/2026, 14:01:28  <-- 🚀 DATA E HORA PERFEITAS!
+  // parts[2] = cmm7vuqy... (ID)
+  // parts[3] = Título Gostosão do Vídeo
+  
+  const dateAndTime = parts[1] || '';
+  const title = parts[3] || 'Sem título';
 
-                return (
-                  <p key={i} className='truncate border-b border-white/5 pb-1'>
-                    {date} - {title}
-                  </p>
-                );
-              })}
+  return (
+    <p key={i} className='truncate border-b border-white/5 pb-1'>
+      {dateAndTime} - {title}
+    </p>
+  );
+})}
+              
             </div>
           </CardContent>
         </Card>
