@@ -38,6 +38,15 @@ export const metadata: Metadata = {
     siteName: 'DotF4p',
     locale: 'pt_BR',
     type: 'website',
+    images: [
+      {
+        url: 'https://dotf4p.com/opengraph-image.png',
+        width: 1200, // Ajuste para a dimensão exata da sua imagem, recomendo muito 1200x630
+        height: 630,
+        alt: 'DotF4p - Hub de Conteúdo',
+        type: 'image/png',
+      },
+    ],
     // O Next.js já vai puxar o opengraph-image.png da raiz do /src/app automaticamente,
     // mas declarar o OG aqui garante que o WhatsApp leia o título e a descrição certos.
   },

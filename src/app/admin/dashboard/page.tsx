@@ -10,38 +10,28 @@ import LogoutButton from '@/components/Admin/LogoutButton';
 import {
   Download,
   MousePointerClick,
-} from 'lucide-react'; // 🚀 Ícones novos
+} from 'lucide-react';
 import fs from 'fs/promises';
 import path from 'path';
-export const dynamic = 'force-dynamic'; // Isso impede o erro de prerender no build
+
+export const dynamic = 'force-dynamic';
 
 const prisma = new PrismaClient();
 
 export default async function DashboardPage() {
   // Queries rápidas para o Dashboard
-  const totalVideos =
-    await prisma.video.count();
+  const totalVideos = await prisma.video.count();
+  const totalCategories = await prisma.category.count();
+  const lastUpdate = await prisma.video.findFirst({
+    orderBy: { createdAt: 'desc' },
+  });
 
-  const totalCategories =
-    await prisma.category.count();
-
-  const lastUpdate =
-    await prisma.video.findFirst({
-      orderBy: { createdAt: 'desc' },
-    });
   // 🚀 Lógica Sênior: Lendo o CSV direto do disco para o Dashboard
   let lastClicks: string[] = [];
   try {
-    const logPath = path.join(
-      process.cwd(),
-      'logs',
-      'cliques.csv',
-    );
-    const fileContent =
-      await fs.readFile(
-        logPath,
-        'utf8',
-      );
+    const logPath = path.join(process.cwd(), 'logs', 'cliques.csv');
+    const fileContent = await fs.readFile(logPath, 'utf8');
+    
     // Pega as últimas 5 linhas e inverte para mostrar o mais recente no topo
     lastClicks = fileContent
       .trim()
@@ -49,9 +39,7 @@ export default async function DashboardPage() {
       .slice(-5)
       .reverse();
   } catch {
-    lastClicks = [
-      'Aguardando primeiros cliques...',
-    ];
+    lastClicks = ['Aguardando primeiros cliques...'];
   }
 
   return (
@@ -66,14 +54,15 @@ export default async function DashboardPage() {
             href='/api/track-click'
             download
             className='flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-colors'>
-            <Download className='w-4 h-4' />{' '}
+            <Download className='w-4 h-4' />
             Exportar CSV
           </a>
           <LogoutButton />
         </div>
       </div>
 
-      <div className='grid gap-4 md:grid-cols-3'>
+      {/* 🚀 Grid ajustado para 4 colunas em telas grandes, 2 em médias, 1 no celular */}
+      <div className='grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4'>
         {/* Card 1: Total de Vídeos */}
         <Card className='bg-dark-900 border-white/5'>
           <CardHeader>
@@ -112,21 +101,15 @@ export default async function DashboardPage() {
           <CardContent>
             <div className='text-sm text-gray-400 font-medium'>
               {lastUpdate?.createdAt
-                ? new Date(
-                    lastUpdate.createdAt,
-                  ).toLocaleString(
-                    'pt-BR',
-                    {
-                      timeZone:
-                        'America/Sao_Paulo',
-                    },
-                  )
+                ? new Date(lastUpdate.createdAt).toLocaleString('pt-BR', {
+                    timeZone: 'America/Sao_Paulo',
+                  })
                 : 'Aguardando Robô...'}
             </div>
           </CardContent>
         </Card>
 
-        {/* 🚀 Card Novo: Monitor de Cliques */}
+        {/* 🚀 Card 4: Monitor de Cliques (Refatorado) */}
         <Card className='bg-dark-900 border-white/5'>
           <CardHeader className='flex flex-row items-center justify-between pb-2'>
             <CardTitle className='text-sm font-medium text-slate-400'>
@@ -136,39 +119,23 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <div className='text-xs space-y-1 font-mono text-slate-400'>
-              {lastClicks.map(
-                (click, i) => (
-                  <p
-                    key={i}
-                    className='truncate border-b border-white/5 pb-1'>
-                    {click
-                      .split(',')[0]
-                      .replace(
-                        /"/g,
-                        '',
-                      )}{' '}
-                    -{' '}
-                    {click
-                      .split(',')[2]
-                      ?.replace(
-                        /"/g,
-                        '',
-                      )}
+              {lastClicks.map((click, i) => {
+                // Previne erros se a linha for a string de fallback
+                if (click === 'Aguardando primeiros cliques...') {
+                  return <p key={i}>{click}</p>;
+                }
+                
+                // Quebra a linha e mapeia: [0] Timestamp, [1] Data, [2] ID, [3] Título
+                const parts = click.split(',');
+                const date = parts[1]?.replace(/"/g, '') || '';
+                const title = parts[3]?.replace(/"/g, '') || 'Sem título';
+
+                return (
+                  <p key={i} className='truncate border-b border-white/5 pb-1'>
+                    {date} - {title}
                   </p>
-                ),
-              )}
-            </div>
-          </CardContent>
-        </Card>
-        <Card className='bg-dark-900 border-white/5'>
-          <CardHeader>
-            <CardTitle className='text-sm font-medium text-slate-400'>
-              Vídeos Minerados
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className='text-4xl font-black text-white'>
-              {totalVideos}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
@@ -180,21 +147,11 @@ export default async function DashboardPage() {
           Motor Autônomo Ativo 🚀
         </h3>
         <p className='text-slate-300'>
-          A importação manual foi
-          desativada. O conteúdo deste
-          painel é alimentado
-          automaticamente pelo
-          <strong>
-            {' '}
-            Discovery Mode
-          </strong>{' '}
-          e pelo{' '}
-          <strong>
-            n8n Crawler
-          </strong>{' '}
-          rodando em background na VPS.
+          A importação manual foi desativada. O conteúdo deste painel é alimentado automaticamente pelo
+          <strong> Discovery Mode</strong> e pelo <strong>n8n Crawler</strong> rodando em background na VPS.
         </p>
       </div>
     </div>
   );
 }
+
