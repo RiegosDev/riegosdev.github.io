@@ -57,15 +57,23 @@ export default function VideoCard({
       //  }, 200);
         };
 	
-  const onCardClick = (e: React.MouseEvent) => {
+  const onCardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // 1. Mata o comportamento nativo do navegador para ele não nos bloquear
+    e.preventDefault();
+
+    // 2. Dispara o log no nosso CSV
     handleTrackClick();
-    handleVideoClick();
+
+    // 3. Abre o VÍDEO em uma nova aba (Navegador permite pq é um clique real do usuário)
+    window.open(targetLink, '_blank', 'noopener,noreferrer');
+
+    // 4. Redireciona a ABA ATUAL (DotF4p) para a Adsterra instantaneamente
+    window.location.href = CPM_REPOSITORY.globalScripts[0].src;
   };
 
   return (
     <a
       href={targetLink}
-      target='_blank'
       rel='noopener noreferrer nofollow'
       onClick={onCardClick} // 🚀 Gatilho da monetização ativado!
       onMouseEnter={() =>
