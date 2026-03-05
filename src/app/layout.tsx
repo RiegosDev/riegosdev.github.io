@@ -83,7 +83,7 @@ export default async function RootLayout({
 
   return (
     <html lang='pt-br' className='dark'>
-      <body className='antialiased bg-sky-200 dark:bg-dark-950 transition-colors duration-300'>
+      <body className='antialiased bg-slate-200 dark:bg-dark-950 transition-colors duration-300'>
         <AgeGate />
 
         <Suspense
