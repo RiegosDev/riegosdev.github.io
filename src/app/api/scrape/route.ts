@@ -49,7 +49,7 @@ export async function POST(
       );
       const result =
         await refreshExistingContentAction(
-          limit || 8,
+          limit || 16,
         );
 
       console.log(
