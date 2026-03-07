@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     'https://dotf4p.com',
   ),
+  applicationName: 'DotF4p',
 
   title: {
     default:
@@ -58,6 +59,10 @@ export const metadata: Metadata = {
       'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
     description:
       'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+  },
+  other: {
+    rating:
+      'RTA-5042-1996-1400-1577-RTA',
   },
 };
 
