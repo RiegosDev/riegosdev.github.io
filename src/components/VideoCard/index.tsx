@@ -17,8 +17,6 @@ export default function VideoCard({
 }: VideoCardProps) {
   const [isHovered, setIsHovered] =
     useState(false);
-
-  // Fallback de segurança
   const targetLink =
     video.externalUrl || '#';
 
@@ -33,49 +31,39 @@ export default function VideoCard({
         videoId: video.id,
         title: video.title,
         url: video.externalUrl,
-        source: video.source, // Ex: xhamster, eporner
+        source: video.source,
       }),
-      // 🚀 TÁTICA NINJA: keepalive garante que a requisição não seja cancelada
-      // mesmo se o navegador tentar pausar a aba original!
+      // 🚀 TÁTICA NINJA: keepalive garante que a requisição chegue na VPS
       keepalive: true,
-    }).catch(() => {}); // Catch vazio pra não quebrar nada se a rede oscilar
+    }).catch(() => {});
   };
 
-  // 🚀 O BOTE DUPLO DO TRAFFIC BROKER
-  const handleVideoClick = () => {
-    // Dá um tempinho de 200ms para o navegador focar na aba do vídeo novo que abriu
-    setTimeout(() => {
-      //  Redireciona a aba original para o Direct Link da Adsterra (o primeiro do array)
-         window.location.href =
-           CPM_REPOSITORY.globalScripts[0].src;
-       }, 200);
-      //  window.open(
-      //  CPM_REPOSITORY.globalScripts[0]
-      //    .src,
-      //  '_blank',
-      //  );
-      //  }, 200);
-        };
-	
-  const onCardClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const onCardClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+  ) => {
     // 1. Mata o comportamento nativo do navegador para ele não nos bloquear
     e.preventDefault();
 
     // 2. Dispara o log no nosso CSV
     handleTrackClick();
 
-    // 3. Abre o VÍDEO em uma nova aba (Navegador permite pq é um clique real do usuário)
-    window.open(targetLink, '_blank', 'noopener,noreferrer');
+    // 3. Abre o VÍDEO em uma nova aba (Navegador permite pq é um clique real)
+    window.open(
+      targetLink,
+      '_blank',
+      'noopener,noreferrer',
+    );
 
     // 4. Redireciona a ABA ATUAL (DotF4p) para a Adsterra instantaneamente
-    window.location.href = CPM_REPOSITORY.globalScripts[0].src;
+    window.location.href =
+      CPM_REPOSITORY.globalScripts[0].src;
   };
 
   return (
     <a
       href={targetLink}
       rel='noopener noreferrer nofollow'
-      onClick={onCardClick} // 🚀 Gatilho da monetização ativado!
+      onClick={onCardClick} // 🚀 Gatilho duplo ativado!
       onMouseEnter={() =>
         setIsHovered(true)
       }
@@ -115,7 +103,6 @@ export default function VideoCard({
           </div>
         </div>
 
-        {/* Badge de tempo */}
         <div className='absolute bottom-2 right-2 rounded bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white z-10'>
           {video.duration}
         </div>
