@@ -178,7 +178,7 @@ const Header: React.FC<HeaderProps> = ({
                         ? 'text-rose-500'
                         : 'text-zinc-600 dark:text-zinc-400 hover:text-rose-500',
                     )}>
-                    Categorias
+                    Categories
                     <ChevronDown
                       className={clsx(
                         'w-4 h-4 transition-transform',
@@ -203,8 +203,8 @@ const Header: React.FC<HeaderProps> = ({
                           }
                           className='col-span-4 flex items-center justify-between text-[10px] font-black text-rose-500 border-b border-gray-100 dark:border-white/5 pb-2 mb-2 hover:opacity-80 transition-opacity'>
                           <span>
-                            VER TODAS AS
-                            CATEGORIAS (
+                            VIEW ALL
+                            CATEGORIES (
                             {
                               categories.length
                             }
@@ -287,7 +287,7 @@ const Header: React.FC<HeaderProps> = ({
                   )
                 }
                 className='w-full flex items-center justify-between p-4 bg-zinc-50 dark:bg-white/5 font-black uppercase text-sm text-zinc-800 dark:text-zinc-200'>
-                Categorias
+                Categories
                 <ChevronDown
                   className={clsx(
                     'w-5 h-5 transition-transform duration-300',
@@ -324,7 +324,7 @@ const Header: React.FC<HeaderProps> = ({
                     className='p-4 border-t border-zinc-100 dark:border-white/5 text-sm font-black text-rose-500 uppercase flex flex-col gap-1 bg-rose-50 dark:bg-rose-500/10'>
                     <div className='flex items-center justify-between'>
                       <span>
-                        Ver todas (
+                        View All (
                         {
                           categories.length
                         }
@@ -336,7 +336,7 @@ const Header: React.FC<HeaderProps> = ({
                     <span className='text-[10px] text-rose-400 tracking-wider'>
                       +{' '}
                       {totalVideoCount}{' '}
-                      VÍDEOS DISPONÍVEIS
+                      AVAILABLE VIDEOS
                     </span>
                   </Link>
                 </div>
@@ -352,7 +352,7 @@ const Header: React.FC<HeaderProps> = ({
               }
               className='p-4 rounded-xl border border-zinc-200 dark:border-white/10 font-black uppercase text-sm text-zinc-800 dark:text-zinc-200 flex items-center gap-2 hover:bg-zinc-50 dark:hover:bg-white/5'>
               <LayoutGrid className='w-4 h-4 text-rose-500' />{' '}
-              Início
+              Home
             </Link>
           </div>
         </div>

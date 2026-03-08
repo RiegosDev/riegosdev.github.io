@@ -86,12 +86,11 @@ export default async function Page({
       <section>
         <div className='mb-8 border-b border-zinc-300 dark:border-white/10 pb-4'>
           <h1 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
-            Categorias Populares
+            Popular Categories
           </h1>
           <p className='text-zinc-500 dark:text-zinc-400 mt-2 text-sm md:text-base'>
-            Escolha o seu nicho favorito
-            e aproveite o melhor
-            conteúdo.
+            Choose your favorite niche
+            and enjoy the best content.
           </p>
         </div>
 
@@ -112,12 +111,12 @@ export default async function Page({
         <div className='mb-8 border-b border-zinc-300 dark:border-white/10 pb-4 flex justify-between items-end'>
           <div>
             <h2 className='text-3xl font-black tracking-tight text-rose-500 uppercase'>
-              Vídeos em Alta
+              Trending Videos
             </h2>
             <p className='text-zinc-500 dark:text-zinc-400 mt-2 text-sm md:text-base'>
-              Os conteúdos mais
-              assistidos e atualizados
-              do momento.
+              The most watched and
+              up-to-date content of the
+              moment.
             </p>
           </div>
         </div>

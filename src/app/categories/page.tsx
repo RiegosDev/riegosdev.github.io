@@ -6,10 +6,8 @@ import { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title:
-    'Todas as Categorias de Vídeos',
-  description:
-    'Explore nossa lista completa de categorias e encontre exatamente o que você procura no DotF4p.',
+  title: 'All Video Categories',
+  description: `Explore our full list of categories and find exactly what you're looking for on DotF4p.`,
 };
 
 export default async function CategoriesPage() {
@@ -51,7 +49,7 @@ export default async function CategoriesPage() {
       <div className='mb-6 border-b border-zinc-300 dark:border-white/10 pb-6'>
         <h1 className='text-3xl md:text-4xl font-black tracking-tight text-rose-500 uppercase flex items-center gap-3'>
           <LayoutGrid className='w-8 h-8' />
-          Todas as Categorias
+          All Categories
         </h1>
       </div>
 
@@ -99,7 +97,7 @@ export default async function CategoriesPage() {
                   </span>
                   <span className='text-[10px] font-bold text-zinc-400 mt-1 uppercase'>
                     {category.count}{' '}
-                    vídeos
+                    Videos
                   </span>
                 </Link>
               ))}

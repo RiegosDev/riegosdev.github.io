@@ -42,11 +42,11 @@ const VideoGrid: React.FC<
     return (
       <div className='flex h-96 w-full flex-col items-center justify-center text-gray-500 border-2 border-dashed border-black/5 dark:border-white/5 rounded-2xl bg-white/30 dark:bg-white/5'>
         <p className='text-xl font-semibold mb-2'>
-          Ops! Nada por aqui.
+          Oops! Nothing here.
         </p>
         <p className='text-sm'>
-          Tente buscar por outro termo
-          ou categoria.
+          Try searching for another
+          term. or category.
         </p>
       </div>
     );
@@ -57,8 +57,8 @@ const VideoGrid: React.FC<
       {isAiMode && (
         <div className='mb-4 text-sm text-purple-400 flex items-center gap-1'>
           <Zap className='w-4 h-4' />
-          Conteúdo gerado por IA pode
-          ser exibido.
+          AI-generated content can be
+          displayed.
         </div>
       )}
 
@@ -76,7 +76,7 @@ const VideoGrid: React.FC<
           <div className='mt-16 flex flex-col items-center justify-center gap-4 text-gray-400'>
             <div className='h-1 w-24 bg-gray-300 dark:bg-white/10 rounded-full' />
             <p className='text-xs uppercase tracking-widest'>
-              Fim dos resultados
+              End of results
             </p>
           </div>
         )}

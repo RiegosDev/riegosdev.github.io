@@ -87,7 +87,7 @@ const NavBar: React.FC = () => {
                 'flex items-center gap-1 whitespace-nowrap hover:text-rose-500 transition-colors py-2',
                 `${isCatOpen ? 'text-rose-500' : ''}`,
               )}>
-              Categorias{' '}
+              Categories{' '}
               <ChevronDown
                 className={`w-4 h-4 transition-transform ${isCatOpen ? 'rotate-180' : ''}`}
               />

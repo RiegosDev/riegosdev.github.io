@@ -17,34 +17,34 @@ export const metadata: Metadata = {
 
   title: {
     default:
-      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
+      'DotF4p.com - Your free hub for adult content!',
     template: '%s | DotF4p.com',
   },
   description:
-    'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+    'Watch the best trending videos and categories with top performance and privacy.',
   keywords: [
-    'vídeos gratuitos',
-    'conteúdo adulto',
-    'hub adulto',
+    'free videos',
+    'adult content',
+    'adult hub',
     'dotf4p',
   ],
 
   // 🌐 OPEN GRAPH (WhatsApp, Telegram, Facebook, LinkedIn)
   openGraph: {
     title:
-      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
+      'DotF4p.com - Your free hub for adult content!',
     description:
-      'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+      'Watch the best trending videos and categories with top performance and privacy.',
     url: 'https://dotf4p.com',
     siteName: 'DotF4p',
-    locale: 'pt_BR',
+    locale: 'en_US',
     type: 'website',
     images: [
       {
         url: 'https://dotf4p.com/opengraph-image.png',
         width: 1200, // Ajuste para a dimensão exata da sua imagem, recomendo muito 1200x630
         height: 630,
-        alt: 'DotF4p - Hub de Conteúdo',
+        alt: 'DotF4p - Adult content hub',
         type: 'image/png',
       },
     ],
@@ -56,13 +56,20 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image', // Exige que a imagem seja o card grande (1200x630)
     title:
-      'DotF4p.com - Seu Hub gratuito de Conteúdos Adultos!',
+      'DotF4p.com - Your free hub for adult content!',
     description:
-      'Acompanhe os melhores vídeos e categorias em alta com a melhor performance e privacidade.',
+      'Watch the best trending videos and categories with top performance and privacy.',
   },
   other: {
     rating:
       'RTA-5042-1996-1400-1577-RTA',
+  },
+  alternates: {
+    canonical: '/',
+    languages: {
+      en: '/', // Diz pro Google: "A raiz do site É em inglês"
+      'x-default': '/', // Diz pro Google: "Pro resto do mundo todo, caia aqui!"
+    },
   },
 };
 
@@ -87,7 +94,7 @@ export default async function RootLayout({
     await getCategoriesWithStatsAction();
 
   return (
-    <html lang='pt-br' className='dark'>
+    <html lang='en' className='dark'>
       <body className='antialiased bg-slate-200 dark:bg-dark-950 transition-colors duration-300'>
         <AgeGate />
 

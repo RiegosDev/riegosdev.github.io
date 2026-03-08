@@ -22,12 +22,12 @@ export async function generateMetadata({
 
   if (!category)
     return {
-      title: 'Categoria não encontrada',
+      title: 'Category not found',
     };
 
   return {
-    title: `${category.name} - Vídeos Gratuitos e em Alta`,
-    description: `Assista aos melhores vídeos da categoria ${category.name} em alta qualidade no DotF4p.com.`,
+    title: `${category.name} - Free and Trending Videos`,
+    description: `Watch the best videos in the category ${category.name} High quality at DotF4p.com.`,
   };
 }
 
@@ -66,8 +66,8 @@ export default async function CategoryPage({
           {category.name}
         </h1>
         <p className='text-zinc-400 mt-2 text-sm'>
-          Exibindo os vídeos mais
-          recentes para a categoria{' '}
+          Showing the most recent videos
+          for the category{' '}
           {category.name.toLowerCase()}.
         </p>
       </header>
@@ -101,7 +101,7 @@ export default async function CategoryPage({
         40 && (
         <div className='mt-12 flex justify-center'>
           <button className='px-8 py-3 bg-zinc-800 hover:bg-zinc-700 text-white font-bold rounded-lg transition-colors'>
-            Carregar Mais
+            Load more
           </button>
         </div>
       )}
