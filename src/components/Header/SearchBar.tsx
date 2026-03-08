@@ -76,7 +76,7 @@ export default function SearchBar({
         )}>
         <input
           type='text'
-          placeholder='Pesquisar vídeos...'
+          placeholder='Search Videos...'
           value={localQuery}
           onChange={(e) =>
             setLocalQuery(
