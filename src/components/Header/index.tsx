@@ -216,7 +216,7 @@ const Header: React.FC<HeaderProps> = ({
                             {
                               totalVideoCount
                             }{' '}
-                            VÍDEOS →
+                            VIDEOS →
                           </span>
                         </Link>
                         {categories.map(
