@@ -40,8 +40,12 @@ export default function Home() {
                 Gratuita
               </Link>
             </button>
-            <button className='glass-card hover:bg-white/10 text-white px-8 py-4 rounded-full font-bold transition'>
-              Ver como trabalhamos
+            <button className='bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-full font-bold transition shadow-[0_0_20px_rgba(16,185,129,0.4)]'>
+              <Link
+                href='/solucoes'
+                className='bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-full font-bold transition shadow-[0_0_20px_rgba(16,185,129,0.3)]'>
+                Ver como trabalhamos
+              </Link>
             </button>
           </div>
 
@@ -281,3 +285,4 @@ export default function Home() {
     </main>
   );
 }
+// Teste
