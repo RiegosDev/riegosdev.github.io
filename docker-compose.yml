@@ -1,92 +1,12 @@
-# docker-compose.yml
 version: '3.8'
-
 services:
-  db:
-    image: postgres:16-alpine
-    container_name: dotf4pvprod_db
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER:-dotf4pprod} #
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-teste124} #
-      POSTGRES_DB: ${POSTGRES_DB:-dotf4pvprod} #
-    expose:
-      - '5432'
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - dotf4p_net
-
   app:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: dotf4p_app
-    env_file:
-      - .env
-
+    container_name: riegos_app
     restart: always
-    depends_on:
-      - db
-    expose:
-      - '3000'
-    environment:
-      # A URL do banco agora aponta pro nome do container 'db' dentro da rede do Docker
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-dotf4pprod}:${POSTGRES_PASSWORD:-teste124}@db:5432/${POSTGRES_DB:-dotf4pvprod}?schema=public
-      - NODE_ENV=production
-      - N8N_API_SECRET=${N8N_API_SECRET:-G6OdPfQuabG6O8mtWr4h2Xb2}
-      # Adicione outras .env aqui (ex: NEXTAUTH_SECRET)
-    networks:
-      - dotf4p_net
-
-  n8n:
-    image: docker.n8n.io/n8nio/n8n
-    container_name: dotf4p_n8n
-    restart: always
-    expose:
-      - '5678'
-    environment:
-      - N8N_PORT=5678
-      - NODE_ENV=production
-      - WEBHOOK_URL=https://n8n.dotf4p.com/ # Quando você configurar o subdomínio na Cloudflare
-      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
-      - N8N_TRUST_PROXY=true
-      - EXECUTIONS_DATA_PRUNE=true # Bônus: evita que os logs de execução entupam seu disco
-    volumes:
-      - n8n_data:/home/node/.n8n
-    networks:
-      - dotf4p_net
-
-  nginx:
-    image: nginx:alpine
-    container_name: dotf4p_proxy
     ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./docker/certbot/conf:/etc/letsencrypt # Onde os certificados moram
-      - ./docker/certbot/www:/var/www/certbot # Para validação do domínio
-    depends_on:
-      - app
-      - n8n
-    networks:
-      - dotf4p_net
-
-  certbot:
-    image: certbot/certbot
-    container_name: dotf4p_certbot
-    volumes:
-      - ./docker/certbot/conf:/etc/letsencrypt
-      - ./docker/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'" # Auto-renovação [cite: 2026-02-16]
-    networks:
-      - dotf4p_net
-
-networks:
-  dotf4p_net:
-    driver: bridge
-
-volumes:
-  postgres_data:
-  n8n_data:
+      - '3001:3000' # <-- Expõe a 3001 na VPS e joga pra 3000 do contêiner
+    environment:
+      - NODE_ENV=production

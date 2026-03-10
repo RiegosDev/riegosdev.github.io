@@ -51,12 +51,6 @@
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prisma.pinToPrisma6": true,
-  "WillLuke.nextjs.addTypesOnSave": true,
-  "WillLuke.nextjs.hasPrompted": true,
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  },
   "tailwindCSS.hovers": false,
   "tailwindCSS.lint.suggestCanonicalClasses": "ignore"
 }
