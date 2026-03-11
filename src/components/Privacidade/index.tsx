@@ -4,7 +4,7 @@ import Footer from '../Footer';
 
 export default function Privacidade() {
   return (
-    <main className='relative min-h-screen text-foreground overflow-hidden font-sans antialiased bg-background'>
+    <main className='relative min-h-screen text-foreground overflow-hidden font-sans antialiased'>
       <div className='aurora-bg'></div>
       <div className='aurora-line'></div>
       <Header />

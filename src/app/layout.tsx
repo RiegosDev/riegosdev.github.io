@@ -68,7 +68,7 @@ export default function RootLayout({
       lang='pt-BR'
       className='scroll-smooth'
       suppressHydrationWarning>
-      <body className='antialiased bg-slate-900 text-slate-50 min-h-screen overflow-x-hidden selection:bg-emerald-500/30 transition-colors duration-300'>
+      <body className='antialiased bg-sky-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50 min-h-screen overflow-x-hidden selection:bg-emerald-500/30 transition-colors duration-300'>
         <ThemeProvider
           attribute='class'
           defaultTheme='dark'

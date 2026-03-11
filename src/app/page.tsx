@@ -1,4 +1,3 @@
-import React from 'react';
 import Home from '@/components/Home';
 
 // REGRA DE OURO 1: Server Component puro (sem 'use client')

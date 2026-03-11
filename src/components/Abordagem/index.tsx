@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function Abordagem() {
   return (
-    <main className='relative min-h-screen text-foreground overflow-hidden font-sans antialiased bg-background'>
+    <main className='relative min-h-screen text-foreground overflow-hidden font-sans antialiased'>
       <div className='aurora-bg'></div>
       <div className='aurora-line'></div>
       <Header />

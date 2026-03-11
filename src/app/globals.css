@@ -187,14 +187,24 @@ html {
   transform: translate(-50%, -50%);
   width: 80vw;
   height: 120vh;
+  /* Mudado para transparent puro para não sujar o Light Mode */
   background: radial-gradient(
     circle,
     rgba(16, 185, 129, 0.15) 0%,
-    rgba(15, 23, 42, 0) 60%
+    transparent 60%
   );
   filter: blur(100px);
   z-index: -1;
   pointer-events: none;
+}
+
+/* Opcional: Boost de brilho na Aurora apenas no modo Light */
+:root:not(.dark) .aurora-bg {
+  background: radial-gradient(
+    circle,
+    rgba(16, 185, 129, 0.25) 0%,
+    transparent 60%
+  );
 }
 
 .aurora-line {
