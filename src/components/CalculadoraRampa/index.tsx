@@ -1,11 +1,14 @@
 'use client';
+
 import React, { useState } from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
+import QrGen from '@/components/QrGen'; // Import do nosso novo componente!
 import {
   Info,
   Check,
-} from 'lucide-react'; // Ícones novos importados!
+  QrCode,
+} from 'lucide-react';
 
 export default function CalculadoraRampa() {
   const [mode, setMode] = useState<
@@ -15,7 +18,9 @@ export default function CalculadoraRampa() {
   const [c, setC] = useState('');
   const [i, setI] = useState('');
   const [showHelp, setShowHelp] =
-    useState(false); // Estado do nosso Modal Dialog
+    useState(false);
+  const [showQrCode, setShowQrCode] =
+    useState(false);
 
   const calculateResult = () => {
     const numH = parseFloat(h) || 0;
@@ -51,6 +56,10 @@ export default function CalculadoraRampa() {
       ).toFixed(2);
     return '0.00';
   };
+
+  // URL dinâmica baseada no ambiente (pode ser ajustada conforme a rota real da calculadora)
+  const calculatorUrl =
+    'https://riegos.dev/calculadora-rampa';
 
   return (
     <main className='relative min-h-screen text-foreground overflow-hidden font-sans antialiased'>
@@ -104,7 +113,11 @@ export default function CalculadoraRampa() {
                   // eslint-disable-next-line
                   setMode(tab.id as any)
                 }
-                className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${mode === tab.id ? 'bg-background shadow text-emerald-500' : 'text-muted-foreground hover:text-foreground'}`}>
+                className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
+                  mode === tab.id
+                    ? 'bg-background shadow text-emerald-500'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}>
                 {tab.label}
               </button>
             ))}
@@ -178,13 +191,23 @@ export default function CalculadoraRampa() {
                 : 'm'}
             </p>
           </div>
+
+          {/* Botão QR Code */}
+          <button
+            onClick={() =>
+              setShowQrCode(true)
+            }
+            className='w-full mt-6 flex items-center justify-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 font-bold hover:text-white hover:bg-emerald-600 transition-all border border-emerald-500/30 rounded-xl py-4 shadow-sm hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]'>
+            <QrCode className='w-5 h-5' />
+            Compartilhe a calculadora!
+          </button>
         </div>
       </div>
       <div className='relative z-10'>
         <Footer />
       </div>
 
-      {/* DIALOG DE INSTRUÇÕES (Custom Modal) */}
+      {/* DIALOG DE INSTRUÇÕES */}
       {showHelp && (
         <div className='fixed inset-0 z-[100] flex items-center justify-center px-4 backdrop-blur-md bg-background/60 transition-opacity'>
           <div className='glass-card p-8 rounded-3xl bg-card border-emerald-500/30 max-w-md w-full shadow-2xl shadow-emerald-900/20 transform transition-all scale-100'>
@@ -280,6 +303,42 @@ export default function CalculadoraRampa() {
               className='w-full bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.3)]'>
               <Check className='w-5 h-5' />{' '}
               Tudo certo!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* DIALOG DO QR CODE */}
+      {showQrCode && (
+        <div className='fixed inset-0 z-[100] flex items-center justify-center px-4 backdrop-blur-md bg-background/60 transition-opacity'>
+          <div className='glass-card p-8 rounded-3xl bg-card border-emerald-500/30 max-w-sm w-full shadow-2xl shadow-emerald-900/20 transform transition-all scale-100 flex flex-col items-center'>
+            <div className='w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/30 mb-4'>
+              <QrCode className='w-6 h-6 text-emerald-500' />
+            </div>
+
+            <h3 className='text-xl font-bold text-foreground text-center mb-2'>
+              Compartilhe a Calculadora
+            </h3>
+            <p className='text-sm text-muted-foreground text-center mb-6'>
+              Escaneie o QR Code abaixo
+              para acessar a ferramenta
+              direto no celular.
+            </p>
+
+            {/* AQUI ENTRA O COMPONENTE DINÂMICO */}
+            <div className='mb-8 w-48 h-48'>
+              <QrGen
+                value={calculatorUrl}
+                size={192}
+              />
+            </div>
+
+            <button
+              onClick={() =>
+                setShowQrCode(false)
+              }
+              className='w-full bg-slate-800 dark:bg-white/10 hover:bg-slate-700 dark:hover:bg-white/20 text-white px-6 py-3 rounded-xl font-bold transition flex items-center justify-center gap-2'>
+              Fechar
             </button>
           </div>
         </div>
