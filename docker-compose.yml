@@ -9,3 +9,6 @@ services:
       - '3001:3000' # <-- Expõe a 3001 na VPS e joga pra 3000 do contêiner
     environment:
       - NODE_ENV=production
+      - CRONOGRAMAS_CONTENT_DIR=/cronogramas-content
+    volumes:
+      - /srv/riegos/cronogramas-content:/cronogramas-content:ro
