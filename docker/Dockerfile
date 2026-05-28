@@ -1,5 +1,5 @@
 # Dockerfile Ultra-Otimizado para Next.js (Sem Prisma/Puppeteer)
-FROM node:20-alpine
+FROM node:24-alpine
 
 WORKDIR /app
 
