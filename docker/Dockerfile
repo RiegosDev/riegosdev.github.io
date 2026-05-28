@@ -3,11 +3,13 @@ FROM node:24-alpine
 
 WORKDIR /app
 
+ENV CI=true
+
 # Ativa o pnpm
 RUN corepack enable
 
 # Copia apenas os arquivos de dependência primeiro (Cache de Docker maravilhoso)
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Instala as dependências
 RUN pnpm install --frozen-lockfile
