@@ -10,5 +10,7 @@ services:
     environment:
       - NODE_ENV=production
       - CRONOGRAMAS_CONTENT_DIR=/cronogramas-content
+      - CF_ACCESS_TEAM_DOMAIN=${CF_ACCESS_TEAM_DOMAIN:-}
+      - CF_ACCESS_AUD=${CF_ACCESS_AUD:-}
     volumes:
       - /srv/riegos/cronogramas-content:/cronogramas-content:ro
